@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Studio</title>
+
+    <!-- Material Symbols -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Pickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors */
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252525;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-primary: #2196f3;
+            --accent-secondary: #1976d2;
+            --border-color: #404040;
+
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+
+            /* Sizes */
+            --sidebar-width: 240px;
+            --toolbar-height: 48px;
+            --panel-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "sidebar workspace panel";
+            grid-template-rows: var(--toolbar-height) 1fr;
+            grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
+        }
+
+        /* Header/Toolbar */
+        .app-header {
+            grid-area: header;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--spacing-md);
+            gap: var(--spacing-md);
+        }
+
+        .app-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-right: auto;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-content {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Main Workspace */
+        .workspace {
+            grid-area: workspace;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .workspace-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-xl);
+        }
+
+        /* Right Panel */
+        .panel {
+            grid-area: panel;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-section {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-content {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* Common Components */
+        .button {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .button:hover {
+            background: var(--accent-primary);
+        }
+
+        .button.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-secondary);
+        }
+
+        /* Search Bar */
+        .search-bar {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-sm);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 4px;
+        }
+
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+        }
+
+        .icon-item {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-sm);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .icon-item:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+
+        .icon-item.selected {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+        }
+
+
+        /* Workspace Specific Styles */
+        .workspace-toolbar {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .workspace-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Icon Preview */
+        .icon-preview {
+            position: relative;
+            padding: var(--spacing-xl);
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            min-width: 200px;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-layers {
+            position: relative;
+            display: inline-block;
+        }
+
+        .preview-icon {
+            font-size: 96px;
+            display: block;
+        }
+
+        .preview-icon.primary {
+            position: relative;
+            z-index: 2;
+        }
+
+        .preview-icon.secondary {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Panel Controls */
+        .panel-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .control-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+            font-size: 14px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Effect Options */
+        .effect-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .effect-option {
+            width: 100%;
+            text-align: left;
+        }
+
+        /* Code Preview */
+        .code-block {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            color: var(--text-secondary);
+        }
+
+        /* Export Options */
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: var(--spacing-md);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Library Selector */
+        .library-selector {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Style Selector */
+        .style-selector {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Pickr Customization */
+        .pickr {
+            width: 100%;
+        }
+
+        .pickr button {
+            width: 100%;
+            height: 32px;
+            border-radius: 4px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            body {
+                grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-areas:
+                    "header header"
+                    "workspace panel";
+                grid-template-columns: 1fr var(--panel-width);
+            }
+
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: var(--toolbar-height);
+                bottom: 0;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 100;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 4px;
+            color: var(--text-primary);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.error {
+            border-color: #f44336;
+        }
+
+        /* Add these styles for better preview visibility */
+        .preview-icon {
+            font-size: 96px;
+            display: block;
+            min-height: 96px;
+            min-width: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-preview.dark-bg {
+            background: #1a1a1a;
+        }
+
+        /* Add to your existing CSS */
+.icon-name {
+    display: none;
+    position: absolute;
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.icon-item:hover .icon-name {
+    display: block;
+}
+
+/* Style for the selected icon name in toolbar */
+.selected-icon-name {
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    margin-left: auto; /* This will push it to the right of the zoom controls */
+}
+
+.color-pickers-row {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.color-pickers-row .control-group {
+    flex: 1;
+}
+
+/* Tour styles */
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.tour-highlight {
+    position: absolute;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--accent-primary);
+    border-radius: 4px;
+    z-index: 1001;
+    animation: pulse 2s infinite;
+}
+
+.tour-tooltip {
+    position: absolute;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 16px;
+    max-width: 300px;
+    z-index: 1002;
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tour-tooltip-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(33, 150, 243, 0.4); }
+    70% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 10px rgba(33, 150, 243, 0); }
+    100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(33, 150, 243, 0); }
+}
+
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.tour-highlight {
+    position: absolute;
+    border: 2px solid var(--accent-primary);
+    border-radius: 4px;
+    z-index: 1001;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
+}
+    </style>
+</head>
+
+<body>
+    <!-- Main App Structure -->
+    <header class="app-header">
+        <h1 class="app-title">Icon Studio</h1>
+        <div class="library-selector">
+            <button class="button active" data-library="material">Material Symbols</button>
+            <button class="button" data-library="fa">Font Awesome</button>
+        </div>
+        <div class="style-selector">
+            <!-- Dynamically populated based on selected library -->
+        </div>
+    </header>
+
+    <!-- Left Sidebar - Icon Libraries -->
+    <aside class="sidebar">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search icons..." id="searchInput">
+        </div>
+        <div class="sidebar-content">
+            <div class="icon-grid" id="iconGrid">
+                <!-- Icons will be populated here -->
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+        <div class="workspace-toolbar">
+            <button class="button" id="toggleBackground">Toggle Background</button>
+            <button class="button" id="resetView">Reset</button>
+            <div class="zoom-controls">
+                <button class="button" id="zoomOut">-</button>
+                <span id="zoomLevel">100%</span>
+                <button class="button" id="zoomIn">+</button>
+            </div>
+            <span class="selected-icon-name" id="selectedIconName"></span>
+<button class="button help-button" id="startTour">
+    <span class="material-symbols-outlined">help_outline</span>
+</button>
+        </div>
+        <div class="workspace-content">
+            <div class="icon-preview" id="iconPreview">
+                <!-- Active icon preview -->
+                <div id="previewSection">
+                    <div class="preview-layers">
+                        <span class="preview-icon primary"></span>
+                        <span class="preview-icon secondary"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="workspace-footer">
+            <div class="icon-info">
+                <span id="iconName"></span>
+                <span id="iconDimensions"></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Right Panel - Controls -->
+        <aside class="panel">
+        <div class="panel-section">
+            <h2 class="panel-title">Style</h2>
+            <div class="style-controls">
+                <div class="color-pickers-row">
+                    <div class="control-group">
+                        <label>Primary Color</label>
+                        <div id="primaryColorPicker"></div>
+                    </div>
+                    <div class="control-group">
+                        <label>Secondary Color</label>
+                        <div id="secondaryPicker"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-content">
+            <!-- Material Controls -->
+            <div class="panel-section material-controls">
+                <h3>Properties</h3>
+                <div class="control-group">
+                    <label>Weight <span id="weightValue">400</span></label>
+                    <input type="range" id="weightSlider" min="100" max="700" step="100" value="400">
+                </div>
+                <div class="control-group">
+                    <label>Fill <span id="fillValue">0</span></label>
+                    <input type="range" id="fillSlider" min="0" max="1" step="1" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Grade <span id="gradeValue">0</span></label>
+                    <input type="range" id="gradeSlider" min="-50" max="200" step="1" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Size <span id="sizeValue">24</span></label>
+                    <input type="range" id="sizeSlider" min="20" max="48" step="4" value="24">
+                </div>
+            </div>
+
+            <!-- Font Awesome Controls -->
+            <div class="panel-section fa-controls" style="display: none;">
+                <div class="control-group">
+                    <label>Secondary Opacity <span id="opacityValue">0.4</span></label>
+                    <input type="range" id="opacitySlider" min="0" max="1" step="0.1" value="0.4">
+                </div>
+            </div>
+
+            <!-- Common Controls -->
+            <div class="panel-section">
+                <h3>Effects</h3>
+                <div class="control-group">
+                    <label>Offset <span id="offsetValue">2</span>px</label>
+                    <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2">
+                </div>
+                <div class="effect-options">
+                    <button class="button effect-option" data-effect="shadow">Drop Shadow</button>
+                    <button class="button effect-option" data-effect="glow">Glow Effect</button>
+                    <button class="button effect-option" data-effect="gradient">Gradient Fill</button>
+                </div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="panel-section">
+                <h3>Export</h3>
+                <div class="export-options">
+                    <button class="button" id="copyCSSBtn">Copy CSS</button>
+                    <button class="button" id="exportThemeBtn">Export Theme</button>
+                    <button class="button" id="saveConfigBtn">Save Configuration</button>
+                </div>
+                <div class="code-preview">
+                    <pre id="cssCode" class="code-block"></pre>
+                </div>
+            </div>
+            <div class="panel-section">
+                <!-- <h3>Saved Configurations</h3> -->
+                <div class="saved-icons">
+                    <!-- Saved configurations will appear here -->
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Hidden inputs for Pickr compatibility -->
+    <input type="hidden" id="primaryColor" value="#000000">
+    <input type="hidden" id="secondaryColor" value="#666666">
+
+    <!-- Modals -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Theme</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <pre id="themeCode" class="code-block"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="button" id="copyThemeBtn">Copy</button>
+                <button class="button" id="downloadThemeBtn">Download</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+    // Tour steps configuration
+    const tourSteps = [
+    {
+        target: '.library-selector',
+        content: 'Start by choosing your icon library. Choose between Material Symbols or Font Awesome.',
+        position: 'bottom'
+    },
+    {
+        target: '.style-selector',
+        content: 'Select the style variant for your chosen library (Outlined, Rounded, etc.).',
+        position: 'bottom'
+    },
+    {
+        target: '.search-bar',
+        content: 'Search for icons by name to find exactly what you need.',
+        position: 'right'
+    },
+    {
+        target: '.sidebar-content', // Changed from .icon-grid to .sidebar-content
+        content: 'Browse and click on any icon to select it for customization.',
+        position: 'right' // Consistently positioned on the right
+    },
+    {
+        target: '.color-pickers-row',
+        content: 'Choose primary and secondary colors for your icon.',
+        position: 'right' // Changed to right
+    },
+    {
+        target: '.effect-options',
+        content: 'Apply effects like shadows, glows, or gradients to enhance your icon.',
+        position: 'right' // Changed to right
+    },
+    {
+        target: '.workspace-content',
+        content: 'Preview your icon here. Use Ctrl + Mouse Wheel to zoom in/out.',
+        position: 'left'
+    },
+    {
+        target: '.export-options',
+        content: 'Export your customized icon as CSS, or save your configuration for later.',
+        position: 'right'
+    }
+];
+
+class Tour {
+    constructor(steps) {
+        this.steps = steps;
+        this.currentStep = 0;
+        this.overlay = null;
+        this.tooltip = null;
+    }
+
+    start() {
+        this.createOverlay();
+        this.showStep(0);
+    }
+
+    createOverlay() {
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'tour-overlay';
+        document.body.appendChild(this.overlay);
+    }
+
+    showStep(index) {
+        if (index >= this.steps.length) {
+            this.end();
+            return;
+        }
+
+        const step = this.steps[index];
+        const target = document.querySelector(step.target);
+        
+        if (!target) {
+            console.error(`Target not found: ${step.target}`);
+            return;
+        }
+
+        // Create highlight
+        const highlight = document.createElement('div');
+        highlight.className = 'tour-highlight';
+        const rect = target.getBoundingClientRect();
+        Object.assign(highlight.style, {
+            top: `${rect.top}px`,
+            left: `${rect.left}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`
+        });
+        document.body.appendChild(highlight);
+
+        // Create tooltip
+        if (this.tooltip) {
+            this.tooltip.remove();
+        }
+        
+        this.tooltip = document.createElement('div');
+        this.tooltip.className = 'tour-tooltip';
+        this.tooltip.innerHTML = `
+            <div>${step.content}</div>
+            <div class="tour-tooltip-buttons">
+                ${index > 0 ? '<button class="button" id="prevStep">Previous</button>' : ''}
+                <button class="button" id="nextStep">
+                    ${index === this.steps.length - 1 ? 'Finish' : 'Next'}
+                </button>
+            </div>
+        `;
+
+        // Position tooltip
+        const tooltipRect = {
+            top: rect.top,
+            left: rect.left,
+            width: 300, // max-width from CSS
+            height: 100 // approximate
+        };
+
+        switch (step.position) {
+            case 'bottom':
+                tooltipRect.top = rect.bottom + 10;
+                tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2;
+                break;
+            case 'top':
+                tooltipRect.top = rect.top - tooltipRect.height - 10;
+                tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2;
+                break;
+            case 'left':
+                tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2;
+                tooltipRect.left = rect.left - tooltipRect.width - 10;
+                break;
+            case 'right':
+                tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2;
+                tooltipRect.left = rect.right + 10;
+                break;
+        }
+
+        Object.assign(this.tooltip.style, {
+            top: `${tooltipRect.top}px`,
+            left: `${tooltipRect.left}px`
+        });
+
+        document.body.appendChild(this.tooltip);
+
+        // Add event listeners
+        const nextBtn = this.tooltip.querySelector('#nextStep');
+        const prevBtn = this.tooltip.querySelector('#prevStep');
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => this.next());
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => this.prev());
+        }
+    }
+
+    next() {
+        this.currentStep++;
+        this.showStep(this.currentStep);
+    }
+
+    prev() {
+        this.currentStep--;
+        this.showStep(this.currentStep);
+    }
+
+    end() {
+        if (this.overlay) {
+            this.overlay.remove();
+        }
+        if (this.tooltip) {
+            this.tooltip.remove();
+        }
+        document.querySelectorAll('.tour-highlight').forEach(el => el.remove());
+    }
+}
+
+// Add to your initialization code
+document.getElementById('startTour').addEventListener('click', () => {
+    const tour = new Tour(tourSteps);
+    tour.start();
+});
+
+
+    // Global state
+    let selectedIcon = null;
+    let currentLibrary = 'material';
+    let currentFamily = 'outlined';
+    let zoomLevel = 100;
+
+    // Icon libraries
+    const iconLibraries = {
+        material: [
+            'home', 'search', 'settings', 'favorite', 'account_circle', 'shopping_cart',
+            'delete', 'save', 'edit', 'mail', 'phone', 'person', 'lock', 'visibility',
+            'notification_important', 'schedule', 'today', 'cloud', 'folder', 'star',
+            'warning', 'error', 'info', 'help', 'print', 'share', 'refresh', 'done',
+            'more_vert', 'menu', 'close', 'arrow_back', 'arrow_forward', 'expand_more',
+            'check_circle', 'add', 'remove', 'camera', 'image', 'videocam', 'mic',
+            'volume_up', 'brightness_medium', 'wifi', 'bluetooth', 'battery_full',
+            'access_alarm', 'account_box', 'add_circle', 'alternate_email', 'android',
+            'announcement', 'architecture', 'arrow_drop_down', 'arrow_drop_up', 'assessment',
+            'assignment', 'attachment', 'audiotrack', 'auto_awesome', 'auto_stories',
+            'backpack', 'backup', 'book', 'bookmark', 'bug_report', 'build', 'cached',
+            'calendar_today', 'call', 'campaign', 'cancel', 'chat', 'check_box',
+            'chrome_reader_mode', 'clear', 'comment', 'computer', 'contact_mail',
+            'content_copy', 'content_paste', 'copyright', 'credit_card', 'dashboard',
+            'date_range', 'delete_forever', 'description', 'desktop_mac', 'devices',
+            'dns', 'done_all', 'download', 'drafts', 'eco', 'edit_notifications',
+            'emoji_events', 'explore', 'extension', 'face', 'facebook', 'fast_forward',
+            'fast_rewind', 'favorite_border', 'file_download', 'filter_list', 'flag',
+            'flash_on', 'flight', 'folder_open', 'format_quote', 'forum', 'games', 'get_app', 'gif', 'grade', 'group',
+            'group_add', 'headset', 'hearing', 'help_outline', 'highlight', 'history',
+            'home_work', 'hourglass_empty', 'http', 'https', 'important_devices',
+            'inbox', 'info_outline', 'input', 'insert_chart', 'insert_drive_file',
+            'insert_emoticon', 'insert_invitation', 'insert_link', 'insert_photo',
+            'keyboard', 'keyboard_arrow_down', 'keyboard_arrow_left', 'keyboard_arrow_right',
+            'keyboard_arrow_up', 'keyboard_voice', 'label', 'label_important', 'language',
+            'laptop', 'last_page', 'launch', 'layers', 'link', 'list', 'local_activity',
+            'local_airport', 'local_atm', 'local_bar', 'local_cafe', 'local_dining',
+            'local_drink', 'local_fire_department', 'local_florist', 'local_gas_station',
+            'local_grocery_store', 'local_hospital', 'local_hotel', 'local_laundry_service',
+            'local_library', 'local_mall', 'local_movies', 'local_offer', 'local_parking',
+            'local_pharmacy', 'local_phone', 'local_pizza', 'local_play', 'local_post_office',
+            'local_shipping', 'local_taxi', 'location_city', 'location_on', 'lock_open',
+            'looks', 'loop', 'loyalty', 'mail_outline', 'map', 'margin', 'mark_email_read',
+            'memory', 'menu_book', 'menu_open', 'message', 'mic_none', 'mic_off',
+            'money', 'money_off', 'monitor', 'mood', 'mood_bad', 'more_horiz',
+            'mouse', 'move_to_inbox', 'movie', 'movie_filter', 'music_note', 'music_off',
+            'music_video', 'my_location', 'nature', 'nature_people', 'navigate_before',
+            'navigate_next', 'near_me', 'network_cell', 'network_wifi', 'next_plan',
+            'night_shelter', 'nightlight', 'notes', 'notifications', 'notifications_active',
+            'notifications_none', 'notifications_off', 'offline_bolt', 'offline_pin',
+            'ondemand_video', 'opacity', 'open_in_browser', 'open_in_new', 'open_with',
+            'outlet', 'pages', 'pageview', 'palette', 'panorama', 'party_mode', 'pause',
+            'pause_circle_filled', 'pause_circle_outline', 'payment', 'people_outline',
+            'perm_camera_mic', 'perm_contact_calendar', 'perm_data_setting', 'perm_identity',
+            'perm_media', 'perm_phone_msg', 'perm_scan_wifi', 'person_add', 'person_outline',
+            'person_pin', 'person_pin_circle', 'person_remove', 'pets', 'phone_android',
+            'phone_bluetooth_speaker', 'phone_callback', 'phone_forwarded', 'phone_in_talk',
+            'phone_iphone', 'phone_locked', 'phone_missed', 'phone_paused', 'photo',
+            'photo_album', 'photo_camera', 'photo_filter', 'photo_library', 'photo_size_select_actual'
+        ],
+        fa: [
+            // Updated Font Awesome icon names
+            'house', // instead of 'home'
+            'magnifying-glass', // instead of 'search'
+            'gear', // instead of 'settings'
+            'heart',
+            'circle-user', // instead of 'user-circle'
+            'cart-shopping', // instead of 'cart'
+            'trash-can', // instead of 'trash'
+            'floppy-disk', // instead of 'save'
+            'pen', // instead of 'edit'
+            'envelope', // instead of 'mail'
+            'phone',
+            'user',
+            'lock',
+            'eye',
+            'bell',
+            'clock',
+            'calendar-days', // instead of 'calendar-day'
+            'cloud',
+            'folder',
+            'star',
+            'triangle-exclamation', // instead of 'warning'
+            'circle-exclamation', // instead of 'error'
+            'circle-info', // instead of 'info'
+            'circle-question', // instead of 'help'
+            'print',
+            'share',
+            'arrows-rotate', // instead of 'refresh'
+            'check',
+            'ellipsis-vertical', // instead of 'more-vert'
+            'bars', // instead of 'menu'
+            'xmark', // instead of 'close'
+            'arrow-left',
+            'arrow-right',
+            'chevron-down', // instead of 'expand-more'
+            'circle-check', // instead of 'check-circle'
+            'plus',
+            'minus',
+            'camera',
+            'image',
+            'video', // instead of 'videocam'
+            'microphone', // instead of 'mic'
+            'volume-high', // instead of 'volume-up'
+            'sun', // instead of 'brightness-medium'
+            'wifi',
+            'bluetooth',
+            'battery-full',
+            // Add more icons with their correct FA names...
+            'clock', // instead of 'access-alarm'
+            'square-user', // instead of 'account-box'
+            'circle-plus', // instead of 'add-circle'
+            'at', // instead of 'alternate-email'
+            'android',
+            'bullhorn', // instead of 'announcement'
+            'compass', // instead of 'architecture'
+            'caret-down', // instead of 'arrow-drop-down'
+            'caret-up', // instead of 'arrow-drop-up'
+            'chart-line', // instead of 'assessment'
+            'clipboard', // instead of 'assignment'
+            'paperclip', // instead of 'attachment'
+            'music', // instead of 'audiotrack'
+            'wand-magic-sparkles', // instead of 'auto-awesome'
+            'book-open', // instead of 'auto-stories'
+            'backpack',
+            'upload', // instead of 'backup'
+            'book',
+            'bookmark',
+            'bug',
+            'wrench', // instead of 'build'
+            'rotate', // instead of 'cached'
+            'calendar',
+            'phone-volume', // instead of 'call'
+            'megaphone', // instead of 'campaign'
+            'circle-xmark', // instead of 'cancel'
+            'comment',
+            'square-check', // instead of 'check-box'
+            'book-reader', // instead of 'chrome-reader-mode'
+            'broom', // instead of 'clear'
+            'message',
+            'desktop', // instead of 'computer'
+            'address-card', // instead of 'contact-mail'
+            'copy',
+            'paste',
+            'copyright',
+            'credit-card',
+            'gauge-high', // instead of 'dashboard'
+            // Continue with more icons...
+        ]
+    };
+    const faDuotoneClasses = {
+        'house': 'fa-duotone fa-house',
+        'magnifying-glass': 'fa-duotone fa-magnifying-glass',
+        'gear': 'fa-duotone fa-gear',
+        // ... add more mappings as needed
+    };
+    // Initialize everything when the document is ready
+    document.addEventListener('DOMContentLoaded', () => {
+    try {
+        initializeColorPickers();
+        initializeSavedConfigs();
+        initializeModals();
+        initializeLibrarySelectors();
+        initializeIconGrid();
+        initializeEventListeners();
+    } catch (error) {
+        console.error('Initialization error:', error);
+    }
+});
+
+    function initializeLibrarySelectors() {
+        // Populate style selector based on current library
+        const styleSelector = document.querySelector('.style-selector');
+
+        const materialStyles = [
+            { family: 'outlined', label: 'Outlined' },
+            { family: 'rounded', label: 'Rounded' },
+            { family: 'sharp', label: 'Sharp' }
+        ];
+
+        const faStyles = [
+            { family: 'solid', label: 'Solid' },
+            { family: 'regular', label: 'Regular' },
+            { family: 'light', label: 'Light' },
+            { family: 'duotone', label: 'Duotone' }
+        ];
+
+        function updateStyleButtons(library) {
+            const styles = library === 'material' ? materialStyles : faStyles;
+            styleSelector.innerHTML = styles.map(style => `
+            <button class="button${currentFamily === style.family ? ' active' : ''}" 
+                    data-family="${style.family}">
+                ${style.label}
+            </button>
+        `).join('');
+
+            // Add click handlers
+            styleSelector.querySelectorAll('.button').forEach(button => {
+                button.addEventListener('click', () => {
+                    currentFamily = button.dataset.family;
+                    styleSelector.querySelectorAll('.button').forEach(btn =>
+                        btn.classList.toggle('active', btn === button));
+                    initializeIconGrid();
+                    if (selectedIcon) updatePreview();
+                });
+            });
+        }
+
+        // Initial setup
+        updateStyleButtons(currentLibrary);
+    }
+
+    // Color picker initialization
+    function initializeColorPickers() {
+    try {
+        // Primary color picker
+        const primaryPickr = Pickr.create({
+            el: '#primaryColorPicker',
+            theme: 'nano',
+            default: '#000000',
+            swatches: [
+                '#000000', '#FFFFFF', '#2196F3', '#E91E63', '#4CAF50',
+                '#FFC107', '#9C27B0', '#795548', '#607D8B'
+            ],
+            components: {
+                preview: true,
+                opacity: true,
+                hue: true,
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    input: true,
+                    save: true
+                }
+            }
+        });
+
+        // Secondary color picker
+        const secondaryPickr = Pickr.create({
+            el: '#secondaryPicker',
+            theme: 'nano',
+            default: '#666666',
+            components: {
+                preview: true,
+                opacity: true,
+                hue: true,
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    input: true,
+                    save: true
+                }
+            }
+        });
+
+        // Handle color changes
+        if (primaryPickr) {
+            primaryPickr.on('change', (color) => {
+                document.getElementById('primaryColor').value = color.toHEXA().toString();
+                updatePreview();
+            });
+        }
+
+        if (secondaryPickr) {
+            secondaryPickr.on('change', (color) => {
+                document.getElementById('secondaryColor').value = color.toHEXA().toString();
+                updatePreview();
+            });
+        }
+    } catch (error) {
+        console.error('Color picker initialization failed:', error);
+    }
+}
+
+    // Initialize icon grid
+    function initializeIconGrid() {
+        const grid = document.getElementById('iconGrid');
+        grid.innerHTML = ''; // Clear existing icons
+
+        iconLibraries[currentLibrary].forEach(icon => {
+            const div = document.createElement('div');
+            div.className = 'icon-item';
+
+            if (currentLibrary === 'material') {
+                div.innerHTML = `
+                <span class="material-symbols-${currentFamily}">${icon}</span>
+                <span class="icon-name">${icon}</span>
+            `;
+            } else {
+                const iconClass = `fa-${currentFamily} fa-${icon}`;
+                div.innerHTML = `
+                <i class="${iconClass}"></i>
+                <span class="icon-name">${icon}</span>
+            `;
+            }
+
+            div.addEventListener('click', () => selectIcon(icon, div));
+            grid.appendChild(div);
+        });
+    }
+
+    // Event listeners initialization
+    function initializeEventListeners() {
+        // Library and style selectors
+        document.querySelectorAll('.library-selector .button').forEach(button => {
+            button.addEventListener('click', () => {
+                const library = button.dataset.library;
+                switchLibrary(library);
+            });
+        });
+
+        // Sliders
+        document.getElementById('weightSlider').addEventListener('input', (e) => {
+            document.getElementById('weightValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('fillSlider').addEventListener('input', (e) => {
+            document.getElementById('fillValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('gradeSlider').addEventListener('input', (e) => {
+            document.getElementById('gradeValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('sizeSlider').addEventListener('input', (e) => {
+            document.getElementById('sizeValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('offsetSlider').addEventListener('input', (e) => {
+            document.getElementById('offsetValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('opacitySlider').addEventListener('input', (e) => {
+            document.getElementById('opacityValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        // Effect buttons
+        document.querySelectorAll('.effect-option').forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+                updatePreview();
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.icon-item').forEach(item => {
+                const iconName = item.querySelector('.icon-name').textContent;
+                item.style.display = iconName.includes(searchTerm) ? 'flex' : 'none';
+            });
+        });
+
+        // Workspace controls
+        document.getElementById('toggleBackground').addEventListener('click', () => {
+            const preview = document.getElementById('iconPreview');
+            preview.classList.toggle('dark-bg');
+        });
+
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            zoomLevel = Math.min(zoomLevel + 25, 200);
+            updateZoom();
+        });
+
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            zoomLevel = Math.max(zoomLevel - 25, 50);
+            updateZoom();
+        });
+
+        // Export buttons
+        document.getElementById('copyCSSBtn').addEventListener('click', copyCSS);
+        document.getElementById('exportThemeBtn').addEventListener('click', showExportModal);
+        document.getElementById('saveConfigBtn').addEventListener('click', saveConfiguration);
+
+        document.querySelector('.workspace-content').addEventListener('wheel', (e) => {
+    // Prevent default scroll
+    e.preventDefault();
+    
+    // Only zoom if Ctrl key is pressed
+    if (e.ctrlKey || e.metaKey) {
+        // Zoom out
+        if (e.deltaY > 0) {
+            zoomLevel = Math.max(zoomLevel - 10, 50);
+        }
+        // Zoom in
+        else {
+            zoomLevel = Math.min(zoomLevel + 10, 200);
+        }
+        
+        updateZoom();
+    }
+}, { passive: false });
+
+    }
+
+    // Switch between icon libraries
+    // function switchLibrary(library) {
+    //     currentLibrary = library;
+    //     document.querySelectorAll('.library-selector .button').forEach(btn => {
+    //         btn.classList.toggle('active', btn.dataset.library === library);
+    //     });
+
+    //     // Show/hide library specific controls
+    //     document.querySelector('.material-controls').style.display =
+    //         library === 'material' ? 'block' : 'none';
+    //     document.querySelector('.fa-controls').style.display =
+    //         library === 'fa' ? 'block' : 'none';
+
+    //     // Update style selector
+    //     initializeLibrarySelectors();
+
+    //     // Reset family to default for new library
+    //     currentFamily = library === 'material' ? 'outlined' : 'solid';
+
+    //     // Update icon grid
+    //     initializeIconGrid();
+
+    //     // Clear selection
+    //     selectedIcon = null;
+    //     document.getElementById('previewSection').style.display = 'none';
+    // }
+
+    function switchLibrary(library) {
+    currentLibrary = library;
+    
+    // Update library buttons
+    document.querySelectorAll('.library-selector .button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.library === library);
+    });
+
+    // Show/hide library specific controls
+    const materialControls = document.querySelector('.material-controls');
+    const faControls = document.querySelector('.fa-controls');
+    
+    if (materialControls) {
+        materialControls.style.display = library === 'material' ? 'block' : 'none';
+    }
+    if (faControls) {
+        faControls.style.display = library === 'fa' ? 'block' : 'none';
+    }
+
+    // Update style selector
+    initializeLibrarySelectors();
+    
+    // Reset family to default for new library
+    currentFamily = library === 'material' ? 'outlined' : 'solid';
+
+    // Update icon grid
+    initializeIconGrid();
+    
+    // Clear selection
+    selectedIcon = null;
+    
+    const previewSection = document.getElementById('previewSection');
+    if (previewSection) {
+        previewSection.style.display = 'none';
+    }
+}
+
+    // Select an icon
+    function selectIcon(icon, element) {
+    try {
+        // Remove previous selection
+        document.querySelectorAll('.icon-item.selected')
+            .forEach(item => item.classList.remove('selected'));
+
+        // Add selection to clicked icon
+        element.classList.add('selected');
+        selectedIcon = icon;
+
+        // Update preview and info
+        updatePreview();
+        
+        // Update selected icon name in toolbar
+        const selectedIconName = document.getElementById('selectedIconName');
+        if (selectedIconName) {
+            selectedIconName.textContent = icon;
+        }
+
+        const previewSection = document.getElementById('previewSection');
+        if (previewSection) {
+            previewSection.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error in selectIcon:', error);
+    }
+}
+
+    // Update preview
+    function updatePreview() {
+        if (!selectedIcon) return;
+
+        const previewSection = document.getElementById('previewSection');
+    if (!previewSection) return;
+
+    const primaryIcon = document.querySelector('.preview-icon.primary');
+    const secondaryIcon = document.querySelector('.preview-icon.secondary');
+    if (!primaryIcon || !secondaryIcon) return;
+
+        const weight = document.getElementById('weightSlider').value;
+        const fill = document.getElementById('fillSlider').value;
+        const grade = document.getElementById('gradeSlider').value;
+        const size = document.getElementById('sizeSlider').value;
+        const offset = document.getElementById('offsetSlider').value;
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        const opacity = document.getElementById('opacitySlider').value;
+
+
+        // Clear previous icons
+        primaryIcon.className = 'preview-icon primary';
+        secondaryIcon.className = 'preview-icon secondary';
+
+        if (currentLibrary === 'material') {
+            // Material Symbols setup
+            const baseClass = `material-symbols-${currentFamily}`;
+            primaryIcon.className = `${baseClass} preview-icon primary`;
+            secondaryIcon.className = `${baseClass} preview-icon secondary`;
+
+            primaryIcon.textContent = selectedIcon;
+            secondaryIcon.textContent = selectedIcon;
+
+            const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+            primaryIcon.style.fontVariationSettings = variationSettings;
+            secondaryIcon.style.fontVariationSettings = variationSettings;
+        } else {
+            // Font Awesome setup
+            const baseClass = `fa-${currentFamily} fa-${selectedIcon}`;
+            primaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
+            secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
+        }
+
+        // Apply colors and positioning
+        primaryIcon.style.color = primaryColor;
+        secondaryIcon.style.color = secondaryColor;
+        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`;
+        secondaryIcon.style.opacity = opacity;
+
+        // Apply active effects
+        const activeEffects = Array.from(document.querySelectorAll('.effect-option.active'))
+            .map(opt => opt.dataset.effect);
+
+        applyEffects(primaryIcon, secondaryIcon, activeEffects);
+        updateCSS();
+    }
+
+    // Effect application functions
+    function applyEffects(primaryIcon, secondaryIcon, activeEffects) {
+    // Get colors at the start
+    const primaryColorEl = document.getElementById('primaryColor');
+    const secondaryColorEl = document.getElementById('secondaryColor');
+    
+    const primaryColor = primaryColorEl ? primaryColorEl.value : '#000000';
+    const secondaryColor = secondaryColorEl ? secondaryColorEl.value : '#666666';
+
+    // Reset existing effects
+    [primaryIcon, secondaryIcon].forEach(icon => {
+        if (!icon) return;
+        icon.style.filter = '';
+        icon.style.background = '';
+        icon.style.webkitBackgroundClip = '';
+        icon.style.webkitTextFillColor = '';
+    });
+
+    // Apply each active effect
+    activeEffects.forEach(effect => {
+        if (!primaryIcon) return;
+        
+        switch(effect) {
+            case 'shadow':
+                primaryIcon.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.3))';
+                break;
+            
+            case 'glow':
+                primaryIcon.style.filter = `drop-shadow(0 0 5px ${primaryColor})`;
+                break;
+            
+            case 'gradient':
+                primaryIcon.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`;
+                primaryIcon.style.webkitBackgroundClip = 'text';
+                primaryIcon.style.webkitTextFillColor = 'transparent';
+                // Remove secondary icon when gradient is active
+                if (secondaryIcon) {
+                    secondaryIcon.style.opacity = '0';
+                }
+                break;
+        }
+    });
+}
+
+    // Zoom functionality
+    function updateZoom() {
+        const preview = document.querySelector('.preview-layers');
+        preview.style.transform = `scale(${zoomLevel / 100})`;
+        document.getElementById('zoomLevel').textContent = `${zoomLevel}%`;
+    }
+
+    // Background toggle helper
+    function updateBackground(isDark) {
+        const preview = document.getElementById('iconPreview');
+        preview.style.background = isDark ? '#1a1a1a' : '#ffffff';
+    }
+
+    // Effect helper functions
+    function getEffectStyles(effects) {
+        const styles = [];
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+
+        effects.forEach(effect => {
+            switch (effect) {
+                case 'shadow':
+                    styles.push('filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));');
+                    break;
+                case 'glow':
+                    styles.push(`filter: drop-shadow(0 0 5px ${primaryColor});`);
+                    break;
+                case 'gradient':
+                    styles.push(`
+                    background: linear-gradient(45deg, ${primaryColor}, ${secondaryColor});
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                `);
+                    break;
+            }
+        });
+
+        return styles.join('\n    ');
+    }
+
+    // CSS Generation Functions
+    function updateCSS() {
+        if (!selectedIcon) return;
+
+        const weight = document.getElementById('weightSlider').value;
+        const fill = document.getElementById('fillSlider').value;
+        const grade = document.getElementById('gradeSlider').value;
+        const size = document.getElementById('sizeSlider').value;
+        const offset = document.getElementById('offsetSlider').value;
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        const opacity = document.getElementById('opacitySlider').value;
+
+        const activeEffects = Array.from(document.querySelectorAll('.effect-option.active'))
+            .map(opt => opt.dataset.effect);
+
+        let css = '';
+
+        if (currentLibrary === 'material') {
+            css = generateMaterialCSS(
+                selectedIcon,
+                { weight, fill, grade, size, offset, primaryColor, secondaryColor },
+                activeEffects
+            );
+        } else {
+            css = generateFontAwesomeCSS(
+                selectedIcon,
+                { primaryColor, secondaryColor, offset, opacity },
+                activeEffects
+            );
+        }
+
+        document.getElementById('cssCode').textContent = css;
+    }
+
+    function generateMaterialCSS(icon, options, effects) {
+        const className = `material-symbols-${currentFamily}`;
+        const iconName = icon.replace(/_/g, '-');
+
+        let css = `/* Material Symbols Icon Styles */
+.${className}.icon-${iconName} {
+    font-variation-settings: 
+        'FILL' ${options.fill},
+        'wght' ${options.weight},
+        'GRAD' ${options.grade},
+        'opsz' ${options.size};
+    color: ${options.primaryColor};
+    position: relative;
+    display: inline-block;
+}
+
+/* Two-tone effect */
+.${className}.icon-${iconName}::after {
+    content: "${icon}";
+    position: absolute;
+    left: ${options.offset}px;
+    top: ${options.offset}px;
+    color: ${options.secondaryColor};
+    z-index: -1;
+    font-variation-settings: 
+        'FILL' ${options.fill},
+        'wght' ${options.weight},
+        'GRAD' ${options.grade},
+        'opsz' ${options.size};
+}`;
+
+        // Add effects if any are active
+        if (effects.length > 0) {
+            css += '\n\n/* Applied effects */\n';
+            css += `.${className}.icon-${iconName} {\n    ${getEffectStyles(effects)}\n}`;
+        }
+
+        return css;
+    }
+
+    function generateFontAwesomeCSS(icon, options, effects) {
+        const className = `fa-${currentFamily}`;
+        const iconName = icon.replace(/_/g, '-');
+
+        let css = `/* Font Awesome Icon Styles */
+.${className}.fa-${iconName}-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.${className}.fa-${iconName} {
+    color: ${options.primaryColor};
+}
+
+/* Two-tone effect */
+.${className}.fa-${iconName}-secondary {
+    position: absolute;
+    left: ${options.offset}px;
+    top: ${options.offset}px;
+    color: ${options.secondaryColor};
+    opacity: ${options.opacity};
+    z-index: -1;
+}`;
+
+        // Add effects if any are active
+        if (effects.length > 0) {
+            css += '\n\n/* Applied effects */\n';
+            css += `.${className}.fa-${iconName} {\n    ${getEffectStyles(effects)}\n}`;
+        }
+
+        return css;
+    }
+
+    // Helper Functions
+    function sanitizeIconName(name) {
+        return name.replace(/[^a-zA-Z0-9-_]/g, '').toLowerCase();
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    function hexToRgba(hex, opacity = 1) {
+        let r = parseInt(hex.slice(1, 3), 16),
+            g = parseInt(hex.slice(3, 5), 16),
+            b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+
+    function getIconDimensions(iconElement) {
+        const rect = iconElement.getBoundingClientRect();
+        return {
+            width: Math.round(rect.width),
+            height: Math.round(rect.height)
+        };
+    }
+
+    function formatCSSValue(value, unit = '') {
+        return typeof value === 'number' ? `${value}${unit}` : value;
+    }
+
+    function validateConfiguration(config) {
+        const requiredFields = ['library', 'family', 'icon', 'primaryColor', 'secondaryColor'];
+        return requiredFields.every(field => config.hasOwnProperty(field));
+    }
+
+    function getCurrentConfiguration() {
+        return {
+            library: currentLibrary,
+            family: currentFamily,
+            icon: selectedIcon,
+            primaryColor: document.getElementById('primaryColor').value,
+            secondaryColor: document.getElementById('secondaryColor').value,
+            weight: parseInt(document.getElementById('weightSlider').value),
+            fill: parseInt(document.getElementById('fillSlider').value),
+            grade: parseInt(document.getElementById('gradeSlider').value),
+            size: parseInt(document.getElementById('sizeSlider').value),
+            offset: parseFloat(document.getElementById('offsetSlider').value),
+            opacity: parseFloat(document.getElementById('opacitySlider').value),
+            effects: Array.from(document.querySelectorAll('.effect-option.active'))
+                .map(opt => opt.dataset.effect)
+        };
+    }
+
+    function setSliderValue(sliderId, value, updateUI = true) {
+        const slider = document.getElementById(sliderId);
+        slider.value = value;
+        if (updateUI) {
+            const valueDisplay = document.getElementById(`${sliderId.replace('Slider', '')}Value`);
+            if (valueDisplay) {
+                valueDisplay.textContent = value;
+            }
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }, 100);
+    }
+
+    function generateUniqueId() {
+        return `icon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    function isValidColor(color) {
+        const s = new Option().style;
+        s.color = color;
+        return s.color !== '';
+    }
+
+    function copyToClipboard(text) {
+        // Modern browsers
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text)
+                .then(() => showNotification('Copied to clipboard!'))
+                .catch(err => showNotification('Failed to copy to clipboard', 'error'));
+        }
+
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showNotification('Copied to clipboard!');
+        } catch (err) {
+            document.body.removeChild(textarea);
+            showNotification('Failed to copy to clipboard', 'error');
+        }
+    }
+
+    function downloadFile(content, filename, type = 'text/plain') {
+        const blob = new Blob([content], { type });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function getPreferredColorScheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
+    }
+
+    // Error handling helper
+    function handleError(error, fallback) {
+        console.error(error);
+        if (typeof fallback === 'function') {
+            try {
+                fallback();
+            } catch (fallbackError) {
+                showNotification('An error occurred', 'error');
+            }
+        } else {
+            showNotification('An error occurred', 'error');
+        }
+    }
+
+    // Save and Load Functions
+    function saveConfiguration() {
+        try {
+            const config = getCurrentConfiguration();
+            const savedConfigs = getSavedConfigurations();
+            const configId = generateUniqueId();
+
+            // Add new configuration
+            savedConfigs[configId] = {
+                ...config,
+                name: `${config.icon} - ${new Date().toLocaleDateString()}`,
+                timestamp: Date.now()
+            };
+
+            // Save to localStorage
+            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs));
+
+            // Update saved configurations display
+            updateSavedConfigsList();
+            showNotification('Configuration saved successfully!');
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    function getSavedConfigurations() {
+        try {
+            const saved = localStorage.getItem('iconStudioConfigs');
+            return saved ? JSON.parse(saved) : {};
+        } catch (error) {
+            handleError(error);
+            return {};
+        }
+    }
+
+    function loadConfiguration(configId) {
+        try {
+            const savedConfigs = getSavedConfigurations();
+            const config = savedConfigs[configId];
+
+            if (!validateConfiguration(config)) {
+                throw new Error('Invalid configuration');
+            }
+
+            // Switch library if needed
+            if (config.library !== currentLibrary) {
+                switchLibrary(config.library);
+            }
+
+            // Update family if needed
+            if (config.family !== currentFamily) {
+                currentFamily = config.family;
+                updateFamilyButtons();
+            }
+
+            // Set colors
+            document.getElementById('primaryColor').value = config.primaryColor;
+            document.getElementById('secondaryColor').value = config.secondaryColor;
+
+            // Update color pickers
+            const primaryPickr = Pickr.getInstance('#primaryColorPicker');
+            const secondaryPickr = Pickr.getInstance('#secondaryPicker');
+            if (primaryPickr) primaryPickr.setColor(config.primaryColor);
+            if (secondaryPickr) secondaryPickr.setColor(config.secondaryColor);
+
+            // Set slider values
+            setSliderValue('weightSlider', config.weight);
+            setSliderValue('fillSlider', config.fill);
+            setSliderValue('gradeSlider', config.grade);
+            setSliderValue('sizeSlider', config.size);
+            setSliderValue('offsetSlider', config.offset);
+            setSliderValue('opacitySlider', config.opacity);
+
+            // Set effects
+            document.querySelectorAll('.effect-option').forEach(option => {
+                option.classList.toggle('active',
+                    config.effects.includes(option.dataset.effect)
+                );
+            });
+
+            // Select icon
+            selectedIcon = config.icon;
+            updatePreview();
+
+            showNotification('Configuration loaded successfully!');
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    function deleteConfiguration(configId) {
+        try {
+            const savedConfigs = getSavedConfigurations();
+            delete savedConfigs[configId];
+            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs));
+            updateSavedConfigsList();
+            showNotification('Configuration deleted');
+        } catch (error) {
+            handleError(error);
+        }
+    }
+
+    function updateSavedConfigsList() {
+    const container = document.querySelector('.saved-icons');
+    if (!container) {
+        console.warn('Saved icons container not found');
+        return;
+    }
+
+    const configs = getSavedConfigurations();
+    
+    // Clear and initialize container
+    try {
+        container.innerHTML = '<h3>Saved Configurations</h3>';
+        
+        if (Object.keys(configs).length === 0) {
+            container.innerHTML += '<p class="no-saves">No saved configurations</p>';
+            return;
+        }
+
+        const list = document.createElement('div');
+        list.className = 'saved-configs-list';
+
+        Object.entries(configs)
+            .sort(([, a], [, b]) => b.timestamp - a.timestamp)
+            .forEach(([id, config]) => {
+                const item = document.createElement('div');
+                item.className = 'saved-config-item';
+                item.innerHTML = `
+                    <span class="config-icon">
+                        ${config.library === 'material' 
+                            ? `<span class="material-symbols-${config.family}">${config.icon}</span>`
+                            : `<i class="fa-${config.family} fa-${config.icon}"></i>`
+                        }
+                    </span>
+                    <span class="config-name">${config.name}</span>
+                    <div class="config-actions">
+                        <button class="button" onclick="loadConfiguration('${id}')">Load</button>
+                        <button class="button delete" onclick="deleteConfiguration('${id}')">Delete</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+
+        container.appendChild(list);
+    } catch (error) {
+        console.error('Error updating saved configs list:', error);
+    }
+}
+
+    // Add this to your initialization
+    function initializeSavedConfigs() {
+        updateSavedConfigsList();
+    }
+
+    // Export Functions
+    function showExportModal() {
+        const modal = document.getElementById('exportModal');
+        const themeCode = generateThemeCSS();
+        document.getElementById('themeCode').textContent = themeCode;
+        modal.classList.add('active');
+    }
+
+    function generateThemeCSS() {
+        const config = getCurrentConfiguration();
+
+        let css = `/* Icon Studio Theme Export */
+/* Generated: ${new Date().toLocaleString()} */\n\n`;
+
+        if (currentLibrary === 'material') {
+            css += generateMaterialThemeCSS(config);
+        } else {
+            css += generateFontAwesomeThemeCSS(config);
+        }
+
+        // Add effect classes
+        css += generateEffectClassesCSS();
+
+        return css;
+    }
+
+    function generateMaterialThemeCSS(config) {
+        return `/* Material Symbols Base Styles */
+.material-symbols-${config.family} {
+    font-variation-settings: 
+        'FILL' ${config.fill},
+        'wght' ${config.weight},
+        'GRAD' ${config.grade},
+        'opsz' ${config.size};
+}
+
+/* Two-tone Effect Base */
+.material-symbols-${config.family}.two-tone {
+    position: relative;
+    display: inline-block;
+    color: ${config.primaryColor};
+}
+
+.material-symbols-${config.family}.two-tone::after {
+    content: attr(data-icon);
+    position: absolute;
+    left: ${config.offset}px;
+    top: ${config.offset}px;
+    color: ${config.secondaryColor};
+    z-index: -1;
+}\n`;
+    }
+
+    function generateFontAwesomeThemeCSS(config) {
+        return `/* Font Awesome Base Styles */
+.fa-${config.family}.two-tone-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.fa-${config.family}.two-tone {
+    color: ${config.primaryColor};
+}
+
+.fa-${config.family}.two-tone-secondary {
+    position: absolute;
+    left: ${config.offset}px;
+    top: ${config.offset}px;
+    color: ${config.secondaryColor};
+    opacity: ${config.opacity};
+    z-index: -1;
+}\n`;
+    }
+
+    function generateEffectClassesCSS() {
+        return `
+/* Effect Classes */
+.icon-shadow {
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+}
+
+.icon-glow {
+    filter: drop-shadow(0 0 5px var(--icon-color, currentColor));
+}
+
+.icon-gradient {
+    background: linear-gradient(45deg, var(--icon-gradient-start, #000), var(--icon-gradient-end, #666));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}\n`;
+
+    }
+
+    function copyCSS() {
+        const cssCode = document.getElementById('cssCode').textContent;
+        copyToClipboard(cssCode);
+    }
+
+    function copyThemeCSS() {
+        const themeCode = document.getElementById('themeCode').textContent;
+        copyToClipboard(themeCode);
+    }
+
+    function downloadThemeCSS() {
+        const themeCode = document.getElementById('themeCode').textContent;
+        const config = getCurrentConfiguration();
+        const filename = `icon-studio-theme-${config.library}-${config.family}-${selectedIcon}.css`;
+        downloadFile(themeCode, filename, 'text/css');
+    }
+
+    // Modal handling
+    function initializeModals() {
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+
+        // Close button handling
+        document.querySelectorAll('.modal-close').forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.modal').classList.remove('active');
+            });
+        });
+
+        // Export modal buttons
+        document.getElementById('copyThemeBtn').addEventListener('click', copyThemeCSS);
+        document.getElementById('downloadThemeBtn').addEventListener('click', downloadThemeCSS);
+    }
+
+
+</script>
+
+</html>
