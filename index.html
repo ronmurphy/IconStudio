@@ -778,29 +778,29 @@
         position: 'right'
     },
     {
-        target: '.sidebar-content', // Changed from .icon-grid to .sidebar-content
+        target: '.sidebar-content', 
         content: 'Browse and click on any icon to select it for customization.',
-        position: 'right' // Consistently positioned on the right
+        position: 'right' 
     },
     {
         target: '.color-pickers-row',
         content: 'Choose primary and secondary colors for your icon.',
-        position: 'right' // Changed to right
+        position: 'left' 
     },
     {
         target: '.effect-options',
         content: 'Apply effects like shadows, glows, or gradients to enhance your icon.',
-        position: 'right' // Changed to right
+        position: 'left' 
     },
     {
         target: '.workspace-content',
         content: 'Preview your icon here. Use Ctrl + Mouse Wheel to zoom in/out.',
-        position: 'left'
+        position: 'middle'
     },
     {
         target: '.export-options',
         content: 'Export your customized icon as CSS, or save your configuration for later.',
-        position: 'right'
+        position: 'left'
     }
 ];
 
@@ -1340,32 +1340,7 @@ document.getElementById('startTour').addEventListener('click', () => {
 
     }
 
-    // Switch between icon libraries
-    // function switchLibrary(library) {
-    //     currentLibrary = library;
-    //     document.querySelectorAll('.library-selector .button').forEach(btn => {
-    //         btn.classList.toggle('active', btn.dataset.library === library);
-    //     });
 
-    //     // Show/hide library specific controls
-    //     document.querySelector('.material-controls').style.display =
-    //         library === 'material' ? 'block' : 'none';
-    //     document.querySelector('.fa-controls').style.display =
-    //         library === 'fa' ? 'block' : 'none';
-
-    //     // Update style selector
-    //     initializeLibrarySelectors();
-
-    //     // Reset family to default for new library
-    //     currentFamily = library === 'material' ? 'outlined' : 'solid';
-
-    //     // Update icon grid
-    //     initializeIconGrid();
-
-    //     // Clear selection
-    //     selectedIcon = null;
-    //     document.getElementById('previewSection').style.display = 'none';
-    // }
 
     function switchLibrary(library) {
     currentLibrary = library;
