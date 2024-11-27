@@ -61,10 +61,11 @@
             overflow: hidden;
             display: grid;
             grid-template-areas:
-                "header header header"
-                "sidebar workspace panel";
-            grid-template-rows: var(--toolbar-height) 1fr;
-            grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
+        "header header header"
+        "workstrip workstrip workstrip"
+        "sidebar workspace panel";
+    grid-template-rows: var(--toolbar-height) auto 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
         }
 
         /* Header/Toolbar */
@@ -236,8 +237,8 @@
             padding: var(--spacing-xl);
             background: var(--bg-tertiary);
             border-radius: 8px;
-            min-width: 200px;
-            min-height: 200px;
+            min-width: 75px;
+            min-height: 75px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -592,6 +593,339 @@
     70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
     100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
 }
+
+/* Working Icons Strip */
+.working-icons-strip {
+    grid-area: workstrip;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.working-icons-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+}
+
+.auto-update-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* Toggle Switch Styles */
+.toggle-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: var(--spacing-md);
+}
+
+.toggle-label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    transition: 0.4s;
+}
+
+.toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.toggle-label input:checked + .toggle-slider {
+    background: var(--accent-primary);
+}
+
+.toggle-label input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+/* Working Icons Grid */
+.working-icons-grid {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    padding: var(--spacing-sm);
+    min-height: 100px;
+}
+
+.working-icon {
+    position: relative;
+    min-width: 94px;
+    height: 94px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.working-icon:hover {
+    background: var(--bg-primary);
+    transform: translateY(-2px);
+    transition: all 0.2s;
+}
+
+.working-icon .remove-icon {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.working-icon:hover .remove-icon {
+    opacity: 1;
+}
+
+.workspace-toolbar {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.toolbar-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.working-icons-strip {
+    padding: var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.workspace {
+    display: flex;
+    flex-direction: column;
+}
+
+.workspace-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl);
+    min-height: 0; /* Important for proper flex sizing */
+}
+
+.working-icons-strip {
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    max-height: 245px; /* Limit the height */
+    min-height: 120px; /* Ensure minimum visibility */
+}
+
+.working-icons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.working-icons-header h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.working-icons-options {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.working-icons-grid {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    padding: var(--spacing-sm);
+    /* Smooth scrolling for the grid */
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) var(--bg-tertiary);
+}
+
+/* Scrollbar styling */
+.working-icons-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.working-icons-grid::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+
+.working-icons-grid::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 3px;
+}
+
+.workspace-toolbar {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* fix thie eventually */
+.working-icons-strip {
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    height: 182px; /* Fixed height */
+    max-height: 240;
+}
+
+.working-icons-grid {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    padding: var(--spacing-sm);
+    height: 108px; /* Control height of icons row */
+
+}
+
+.working-icon {
+    position: relative;
+    min-width: 84px; /* Smaller width */
+    height: 84px; /* Smaller height */
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.working-icon .icon-preview {
+    font-size: 24px; /* Smaller icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.working-icon .icon-name {
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.working-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+/* Add tooltip for truncated names */
+.working-icon .icon-name:hover {
+    position: relative;
+}
+
+.working-icon .icon-name:hover::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+/* end fix this eventually you lazy ass */
+
+.workspace-toolbar {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-secondary);
+    height: var(--toolbar-height)+ 5px;
+    padding: 6px;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.icon-info {
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
     </style>
 </head>
 
@@ -608,6 +942,7 @@
         </div>
     </header>
 
+
     <!-- Left Sidebar - Icon Libraries -->
     <aside class="sidebar">
         <div class="search-bar">
@@ -623,21 +958,26 @@
     <!-- Main Workspace -->
     <main class="workspace">
         <div class="workspace-toolbar">
-            <button class="button" id="toggleBackground">Toggle Background</button>
-            <button class="button" id="resetView">Reset</button>
-            <div class="zoom-controls">
-                <button class="button" id="zoomOut">-</button>
-                <span id="zoomLevel">100%</span>
-                <button class="button" id="zoomIn">+</button>
+            <div class="toolbar-left">
+                <button class="button" id="toggleBackground">Toggle Background</button>
+                <button class="button" id="resetView">Reset</button>
+                <div class="zoom-controls">
+                    <button class="button" id="zoomOut">-</button>
+                    <span id="zoomLevel">100%</span>
+                    <button class="button" id="zoomIn">+</button>
+                <div class="icon-info">
+                    <span id="iconName"></span>
+                    <span id="iconDimensions"></span>
+                </div>
+                <button class="button help-button" id="startTour">
+                    <span class="material-symbols-outlined">help_outline</span>
+                </button>
             </div>
-            <span class="selected-icon-name" id="selectedIconName"></span>
-<button class="button help-button" id="startTour">
-    <span class="material-symbols-outlined">help_outline</span>
-</button>
         </div>
+        </div>
+    
         <div class="workspace-content">
             <div class="icon-preview" id="iconPreview">
-                <!-- Active icon preview -->
                 <div id="previewSection">
                     <div class="preview-layers">
                         <span class="preview-icon primary"></span>
@@ -646,13 +986,29 @@
                 </div>
             </div>
         </div>
-        <div class="workspace-footer">
-            <div class="icon-info">
-                <span id="iconName"></span>
-                <span id="iconDimensions"></span>
+    
+        <!-- Working Icons Strip at bottom -->
+        <div class="working-icons-strip">
+            <div class="working-icons-header">
+                <h3>Working Icons</h3>
+                <div class="working-icons-options">
+                    <div class="auto-update-toggle">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="autoUpdateIcons">
+                            <span class="toggle-slider"></span>
+                            Auto Update
+                        </label>
+                    </div>
+                    <button class="button" id="exportAllIcons">Export All</button>
+                </div>
+            </div>
+            <div class="working-icons-grid" id="workingIconsGrid">
+                <!-- Working icons will be dynamically added here -->
             </div>
         </div>
     </main>
+
+    <!-- </main> -->
 
     <!-- Right Panel - Controls -->
         <aside class="panel">
@@ -945,6 +1301,114 @@ document.getElementById('startTour').addEventListener('click', () => {
     let currentLibrary = 'material';
     let currentFamily = 'outlined';
     let zoomLevel = 100;
+
+// Working Icons Manager
+class WorkingIconsManager {
+    constructor() {
+        this.icons = new Map();
+        this.autoUpdate = false;
+    }
+
+    generateIdentifier(config) {
+        return `${config.library}-${config.family}-${config.icon}-${new Date().toISOString().split('T')[0]}`;
+    }
+
+    addOrUpdateIcon(config) {
+        const identifier = this.generateIdentifier(config);
+        
+        if (this.icons.has(identifier) && !this.autoUpdate) {
+            // Ask user if they want to update
+            if (!confirm('Update existing icon configuration?')) {
+                return false;
+            }
+        }
+        
+        this.icons.set(identifier, {...config});
+        this.updateDisplay();
+        return true;
+    }
+
+    loadIcon(identifier) {
+        const config = this.icons.get(identifier);
+        if (config) {
+            // Store current icon before loading new one
+            if (selectedIcon) {
+                const currentConfig = getCurrentConfiguration();
+                const currentIdentifier = this.generateIdentifier(currentConfig);
+                if (currentIdentifier !== identifier) {
+                    this.addOrUpdateIcon(currentConfig);
+                }
+            }
+
+            // Load the selected configuration
+            loadConfiguration(config);
+            selectedIcon = config.icon;
+            updatePreview();
+        }
+    }
+
+    removeIcon(identifier) {
+        this.icons.delete(identifier);
+        this.updateDisplay();
+    }
+
+    exportAllIcons() {
+        let css = '/* Icon Studio - Bulk Export */\n\n';
+        this.icons.forEach((config, identifier) => {
+            css += `/* ${config.icon} */\n`;
+            if (config.library === 'material') {
+                css += generateMaterialThemeCSS(config);
+            } else {
+                css += generateFontAwesomeThemeCSS(config);
+            }
+            css += '\n\n';
+        });
+        return css;
+    }
+
+    updateDisplay() {
+        const grid = document.getElementById('workingIconsGrid');
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+        
+        this.icons.forEach((config, identifier) => {
+            const iconElement = this.createIconElement(config, identifier);
+            grid.appendChild(iconElement);
+        });
+    }
+
+    createIconElement(config, identifier) {
+    const div = document.createElement('div');
+    div.className = 'working-icon';
+    div.innerHTML = `
+        <div class="icon-preview">
+            ${config.library === 'material' 
+                ? `<span class="material-symbols-${config.family}" 
+                     style="color: ${config.primaryColor}">${config.icon}</span>`
+                : `<i class="fa-${config.family} fa-${config.icon}" 
+                     style="color: ${config.primaryColor}"></i>`
+            }
+        </div>
+        <span class="icon-name" data-name="${config.icon}">${config.icon}</span>
+        <button class="remove-icon" title="Remove">×</button>
+    `;
+
+    // Add tooltip to show full configuration on hover
+    div.title = `${config.icon}\nPrimary: ${config.primaryColor}\nSecondary: ${config.secondaryColor}`;
+
+    div.querySelector('.remove-icon').onclick = (e) => {
+        e.stopPropagation();
+        this.removeIcon(identifier);
+    };
+
+    div.onclick = () => this.loadIcon(identifier);
+    return div;
+}
+}
+
+// Initialize working icons manager
+const workingIconsManager = new WorkingIconsManager();
 
     // Icon libraries
     const iconLibraries = {
@@ -1314,6 +1778,23 @@ document.getElementById('startTour').addEventListener('click', () => {
             updateZoom();
         });
 
+    // Working icons controls
+    const autoUpdateToggle = document.getElementById('autoUpdateIcons');
+    if (autoUpdateToggle) {
+        autoUpdateToggle.addEventListener('change', (e) => {
+            workingIconsManager.autoUpdate = e.checked;
+        });
+    }
+
+    const exportAllBtn = document.getElementById('exportAllIcons');
+    if (exportAllBtn) {
+        exportAllBtn.addEventListener('click', () => {
+            const css = workingIconsManager.exportAllIcons();
+            const filename = `icon-studio-theme-all-${new Date().toISOString().split('T')[0]}.css`;
+            downloadFile(css, filename, 'text/css');
+        });
+    }
+
         // Export buttons
         document.getElementById('copyCSSBtn').addEventListener('click', copyCSS);
         document.getElementById('exportThemeBtn').addEventListener('click', showExportModal);
@@ -1382,6 +1863,12 @@ document.getElementById('startTour').addEventListener('click', () => {
     // Select an icon
     function selectIcon(icon, element) {
     try {
+        // Store current icon if one exists
+        if (selectedIcon) {
+            const currentConfig = getCurrentConfiguration();
+            workingIconsManager.addOrUpdateIcon(currentConfig);
+        }
+
         // Remove previous selection
         document.querySelectorAll('.icon-item.selected')
             .forEach(item => item.classList.remove('selected'));
@@ -1392,11 +1879,9 @@ document.getElementById('startTour').addEventListener('click', () => {
 
         // Update preview and info
         updatePreview();
-        
-        // Update selected icon name in toolbar
-        const selectedIconName = document.getElementById('selectedIconName');
-        if (selectedIconName) {
-            selectedIconName.textContent = icon;
+        const iconNameElement = document.getElementById('iconName');
+        if (iconNameElement) {
+            iconNameElement.textContent = icon;
         }
 
         const previewSection = document.getElementById('previewSection');
@@ -2073,8 +2558,7 @@ document.getElementById('startTour').addEventListener('click', () => {
     function downloadThemeCSS() {
         const themeCode = document.getElementById('themeCode').textContent;
         const config = getCurrentConfiguration();
-        const filename = `icon-studio-theme-${config.library}-${config.family}-${selectedIcon}.css`;
-        downloadFile(themeCode, filename, 'text/css');
+        const filename = `icon-studio-theme-${config.library}-${config.family}-${selectedIcon}-${new Date().toISOString().split('T')[0]}.css`;        downloadFile(themeCode, filename, 'text/css');
     }
 
     // Modal handling
