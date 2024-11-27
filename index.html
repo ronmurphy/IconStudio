@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
 
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
     <style>
         /* Base Reset */
         * {
@@ -926,6 +928,20 @@
     font-size: 14px;
     color: var(--text-secondary);
 }
+
+ 
+
+/* Add to your CSS */
+.temp-icon-render {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+
     </style>
 </head>
 
@@ -955,27 +971,29 @@
         </div>
     </aside>
 
-    <!-- Main Workspace -->
-    <main class="workspace">
-        <div class="workspace-toolbar">
-            <div class="toolbar-left">
-                <button class="button" id="toggleBackground">Toggle Background</button>
-                <button class="button" id="resetView">Reset</button>
-                <div class="zoom-controls">
-                    <button class="button" id="zoomOut">-</button>
-                    <span id="zoomLevel">100%</span>
-                    <button class="button" id="zoomIn">+</button>
-                <div class="icon-info">
-                    <span id="iconName"></span>
-                    <span id="iconDimensions"></span>
-                </div>
-                <button class="button help-button" id="startTour">
-                    <span class="material-symbols-outlined">help_outline</span>
-                </button>
+<!-- Main Workspace -->
+<main class="workspace">
+    <div class="workspace-toolbar">
+        <div class="toolbar-left">
+            <button class="button" id="toggleBackground">Toggle Background</button>
+            <button class="button" id="resetView">Reset</button>
+            <div class="zoom-controls">
+                <button class="button" id="zoomOut">-</button>
+                <span id="zoomLevel">100%</span>
+                <button class="button" id="zoomIn">+</button>
             </div>
+        <div class="toolbar-right">
+            <div class="icon-info">
+                <span id="iconName"></span>
+                <span id="iconDimensions"></span>
+            </div>
+            <button class="button help-button" id="startTour">
+                <span class="material-symbols-outlined">help_outline</span>
+            </button>
         </div>
-        </div>
-    
+    </div>
+            </div>
+
         <div class="workspace-content">
             <div class="icon-preview" id="iconPreview">
                 <div id="previewSection">
@@ -1078,6 +1096,7 @@
                 <div class="export-options">
                     <button class="button" id="copyCSSBtn">Copy CSS</button>
                     <button class="button" id="exportThemeBtn">Export Theme</button>
+                    <button class="button" id="exportPNGBtn">Export PNG</button>
                     <button class="button" id="saveConfigBtn">Save Configuration</button>
                 </div>
                 <div class="code-preview">
@@ -1777,6 +1796,12 @@ const workingIconsManager = new WorkingIconsManager();
             zoomLevel = Math.max(zoomLevel - 25, 50);
             updateZoom();
         });
+
+        document.getElementById('exportPNGBtn').addEventListener('click', () => {
+    // Get current size setting or use default
+    const size = parseInt(document.getElementById('sizeSlider').value) * 2;
+    exportAsPNG(size);
+});
 
     // Working icons controls
     const autoUpdateToggle = document.getElementById('autoUpdateIcons');
@@ -2560,6 +2585,113 @@ const workingIconsManager = new WorkingIconsManager();
         const config = getCurrentConfiguration();
         const filename = `icon-studio-theme-${config.library}-${config.family}-${selectedIcon}-${new Date().toISOString().split('T')[0]}.css`;        downloadFile(themeCode, filename, 'text/css');
     }
+
+    function exportAsPNG(size) {
+    if (!selectedIcon) return;
+
+    // Create temporary container with proper sizing
+    const tempDiv = document.createElement('div');
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.left = '-9999px';
+    tempDiv.style.top = '-9999px';
+    tempDiv.style.width = `${size}px`;
+    tempDiv.style.height = `${size}px`;
+    tempDiv.style.display = 'flex';
+    tempDiv.style.alignItems = 'center';
+    tempDiv.style.justifyContent = 'center';
+    tempDiv.style.padding = '20%';
+    document.body.appendChild(tempDiv);
+
+    // Create icon with all current settings
+    const iconElement = document.createElement('span');
+    if (currentLibrary === 'material') {
+        iconElement.className = `material-symbols-${currentFamily}`;
+        iconElement.textContent = selectedIcon;
+        iconElement.style.fontVariationSettings = 
+            `'FILL' ${document.getElementById('fillSlider').value}, 
+             'wght' ${document.getElementById('weightSlider').value}, 
+             'GRAD' ${document.getElementById('gradeSlider').value}, 
+             'opsz' ${document.getElementById('sizeSlider').value}`;
+    } else {
+        iconElement.className = `fa-${currentFamily} fa-${selectedIcon}`;
+    }
+
+    // Apply current effects
+    const hasGradient = document.querySelector('.effect-option[data-effect="gradient"]').classList.contains('active');
+    if (hasGradient) {
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        iconElement.style.display = 'inline-block';
+        iconElement.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`;
+        iconElement.style.webkitBackgroundClip = 'text';
+        iconElement.style.backgroundClip = 'text';  // Added standard property
+        iconElement.style.webkitTextFillColor = 'transparent';
+        iconElement.style.textFillColor = 'transparent';  // Added standard property
+        iconElement.style.color = 'transparent';  // Ensure text is transparent
+    } else {
+        iconElement.style.color = document.getElementById('primaryColor').value;
+    }
+
+    iconElement.style.fontSize = `${size}px`;
+    iconElement.style.width = '100%';
+    iconElement.style.height = '100%';
+    iconElement.style.display = 'flex';
+    iconElement.style.alignItems = 'center';
+    iconElement.style.justifyContent = 'center';
+    tempDiv.appendChild(iconElement);
+
+    // Use html2canvas with adjusted settings
+    html2canvas(tempDiv, {
+        backgroundColor: null,
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        width: size,
+        height: size,
+        windowWidth: size,
+        windowHeight: size,
+        onclone: function(clonedDoc) {
+            // Ensure gradient is applied in the cloned document
+            const clonedIcon = clonedDoc.querySelector(`.material-symbols-${currentFamily}, [class*="fa-"]`);
+            if (clonedIcon && hasGradient) {
+                clonedIcon.style.webkitBackgroundClip = 'text';
+                clonedIcon.style.backgroundClip = 'text';
+                clonedIcon.style.webkitTextFillColor = 'transparent';
+                clonedIcon.style.textFillColor = 'transparent';
+            }
+        }
+    }).then(renderedCanvas => {
+        // Rest of the code remains the same...
+        document.body.removeChild(tempDiv);
+
+        const finalCanvas = document.createElement('canvas');
+        const finalCtx = finalCanvas.getContext('2d');
+        finalCanvas.width = size;
+        finalCanvas.height = size;
+
+        const scale = Math.min(
+            finalCanvas.width / renderedCanvas.width,
+            finalCanvas.height / renderedCanvas.height
+        );
+        
+        const x = (finalCanvas.width - renderedCanvas.width * scale) / 2;
+        const y = (finalCanvas.height - renderedCanvas.height * scale) / 2;
+        
+        finalCtx.drawImage(
+            renderedCanvas,
+            x, y,
+            renderedCanvas.width * scale,
+            renderedCanvas.height * scale
+        );
+
+        const link = document.createElement('a');
+        link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
+        link.href = finalCanvas.toDataURL('image/png');
+        link.click();
+    });
+}
+
 
     // Modal handling
     function initializeModals() {
