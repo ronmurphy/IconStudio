@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Icon Studio</title>
 
     <!-- Material Symbols -->
@@ -15,7 +15,8 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
+    <script src="https://kit.fontawesome.com/187c1afb2a.js" crossorigin="anonymous"></script>
 
     <!-- Pickr -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
@@ -56,18 +57,19 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             height: 100vh;
             overflow: hidden;
             display: grid;
             grid-template-areas:
-        "header header header"
-        "workstrip workstrip workstrip"
-        "sidebar workspace panel";
-    grid-template-rows: var(--toolbar-height) auto 1fr;
-    grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
+                'header header header'
+                'workstrip workstrip workstrip'
+                'sidebar workspace panel';
+            grid-template-rows: var(--toolbar-height) auto 1fr;
+            grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
         }
 
         /* Header/Toolbar */
@@ -143,7 +145,7 @@
 
         /* Common Components */
         .button {
-            padding: var(--spacing-sm) var(--spacing-md);
+            padding: var(--spacing-xs) var(--spacing-xs);
             background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
@@ -208,7 +210,6 @@
             border-color: var(--accent-primary);
             background: var(--accent-primary);
         }
-
 
         /* Workspace Specific Styles */
         .workspace-toolbar {
@@ -287,7 +288,7 @@
             font-size: 14px;
         }
 
-        .control-group input[type="range"] {
+        .control-group input[type='range'] {
             width: 100%;
             height: 4px;
             background: var(--bg-tertiary);
@@ -295,7 +296,7 @@
             -webkit-appearance: none;
         }
 
-        .control-group input[type="range"]::-webkit-slider-thumb {
+        .control-group input[type='range']::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
@@ -427,8 +428,8 @@
         @media (max-width: 768px) {
             body {
                 grid-template-areas:
-                    "header header"
-                    "workspace panel";
+                    'header header'
+                    'workspace panel';
                 grid-template-columns: 1fr var(--panel-width);
             }
 
@@ -488,481 +489,700 @@
         }
 
         /* Add to your existing CSS */
-.icon-name {
-    display: none;
-    position: absolute;
-    background: var(--bg-tertiary);
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        .icon-name {
+            display: none;
+            position: absolute;
+            background: var(--bg-tertiary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-.icon-item:hover .icon-name {
-    display: block;
-}
+        .icon-item:hover .icon-name {
+            display: block;
+        }
 
-/* Style for the selected icon name in toolbar */
-.selected-icon-name {
-    padding: 4px 8px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 14px;
-    margin-left: auto; /* This will push it to the right of the zoom controls */
-}
+        /* Style for the selected icon name in toolbar */
+        .selected-icon-name {
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: auto;
+            /* This will push it to the right of the zoom controls */
+        }
 
-.color-pickers-row {
+        .color-pickers-row {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .color-pickers-row .control-group {
+            flex: 1;
+        }
+
+        /* Tour styles */
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .tour-highlight {
+            position: absolute;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--accent-primary);
+            border-radius: 4px;
+            z-index: 1001;
+            animation: pulse 2s infinite;
+        }
+
+        .tour-tooltip {
+            position: absolute;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 16px;
+            max-width: 300px;
+            z-index: 1002;
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .tour-tooltip-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+                    0 0 0 0 rgba(33, 150, 243, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+                    0 0 0 10px rgba(33, 150, 243, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+                    0 0 0 0 rgba(33, 150, 243, 0);
+            }
+        }
+
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .tour-highlight {
+            position: absolute;
+            border: 2px solid var(--accent-primary);
+            border-radius: 4px;
+            z-index: 1001;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+            }
+        }
+
+        /* Working Icons Strip */
+        .working-icons-strip {
+            grid-area: workstrip;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .working-icons-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--spacing-md);
+        }
+
+        .auto-update-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-label {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            gap: var(--spacing-md);
+        }
+
+        .toggle-label input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 24px;
+            transition: 0.4s;
+        }
+
+        .toggle-slider:before {
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        .toggle-label input:checked+.toggle-slider {
+            background: var(--accent-primary);
+        }
+
+        .toggle-label input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Working Icons Grid */
+        .working-icons-grid {
+            display: flex;
+            gap: var(--spacing-md);
+            overflow-x: auto;
+            padding: var(--spacing-sm);
+            min-height: 100px;
+        }
+
+        .working-icon {
+            position: relative;
+            min-width: 94px;
+            height: 94px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: var(--spacing-sm);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .working-icon:hover {
+            background: var(--bg-primary);
+            transform: translateY(-2px);
+            transition: all 0.2s;
+        }
+
+        .working-icon .remove-icon {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .working-icon:hover .remove-icon {
+            opacity: 1;
+        }
+
+        .workspace-toolbar {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .toolbar-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .working-icons-strip {
+            padding: var(--spacing-sm);
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .workspace {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .workspace-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--spacing-xl);
+            min-height: 0;
+            /* Important for proper flex sizing */
+        }
+
+        .working-icons-strip {
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            max-height: 245px;
+            /* Limit the height */
+            min-height: 120px;
+            /* Ensure minimum visibility */
+        }
+
+        .working-icons-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .working-icons-header h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .working-icons-options {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .working-icons-grid {
+            display: flex;
+            gap: var(--spacing-md);
+            overflow-x: auto;
+            padding: var(--spacing-sm);
+            /* Smooth scrolling for the grid */
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-primary) var(--bg-tertiary);
+        }
+
+        /* Scrollbar styling */
+        .working-icons-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .working-icons-grid::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+        }
+
+        .working-icons-grid::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 3px;
+        }
+
+        .workspace-toolbar {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        /* fix thie eventually */
+        .working-icons-strip {
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            height: 182px;
+            /* Fixed height */
+            max-height: 240;
+        }
+
+        .working-icons-grid {
+            display: flex;
+            gap: var(--spacing-md);
+            overflow-x: auto;
+            padding: var(--spacing-sm);
+            height: 108px;
+            /* Control height of icons row */
+        }
+
+        .working-icon {
+            position: relative;
+            min-width: 84px;
+            /* Smaller width */
+            height: 84px;
+            /* Smaller height */
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: var(--spacing-xs);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .working-icon .icon-preview {
+            font-size: 24px;
+            /* Smaller icon size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .working-icon .icon-name {
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .working-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        /* Add tooltip for truncated names */
+        .working-icon .icon-name:hover {
+            position: relative;
+        }
+
+        .working-icon .icon-name:hover::after {
+            content: attr(data-name);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-tertiary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        /* end fix this eventually you lazy ass */
+
+        .workspace-toolbar {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            height: var(--toolbar-height) + 5px;
+            padding: 6px;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .icon-info {
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Add to your CSS */
+        .temp-icon-render {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .library-dropdown {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            min-width: 200px;
+            appearance: none;
+            position: relative;
+        }
+
+        .library-dropdown:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        /* Custom dropdown arrow */
+        .library-selector {
+            position: relative;
+        }
+
+        .library-selector::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+            font-size: 12px;
+        }
+
+        /* Optgroup styling */
+        .library-dropdown optgroup {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            padding: 8px 0;
+        }
+
+        .library-dropdown option {
+            background: var(--bg-tertiary);
+            padding: 8px 12px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .loading-icon {
+            font-size: 48px;
+            animation: spin 2s linear infinite;
+            color: var(--accent-primary);
+        }
+
+        .loading-text {
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .library-controls {
     display: flex;
+    align-items: center;
     gap: var(--spacing-md);
 }
 
-.color-pickers-row .control-group {
-    flex: 1;
-}
-
-/* Tour styles */
-.tour-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
-    pointer-events: none;
-}
-
-.tour-highlight {
-    position: absolute;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
-    border: 2px solid var(--accent-primary);
-    border-radius: 4px;
-    z-index: 1001;
-    animation: pulse 2s infinite;
-}
-
-.tour-tooltip {
-    position: absolute;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 16px;
-    max-width: 300px;
-    z-index: 1002;
+.library-dropdown {
+    background: var(--bg-tertiary);
     color: var(--text-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.tour-tooltip-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(33, 150, 243, 0.4); }
-    70% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 10px rgba(33, 150, 243, 0); }
-    100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 0 0 rgba(33, 150, 243, 0); }
-}
-
-.tour-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    z-index: 1000;
-    pointer-events: none;
-}
-
-.tour-highlight {
-    position: absolute;
-    border: 2px solid var(--accent-primary);
-    border-radius: 4px;
-    z-index: 1001;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
-}
-
-/* Working Icons Strip */
-.working-icons-strip {
-    grid-area: workstrip;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    padding: var(--spacing-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.working-icons-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 var(--spacing-md);
-}
-
-.auto-update-toggle {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-/* Toggle Switch Styles */
-.toggle-label {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    gap: var(--spacing-md);
-}
-
-.toggle-label input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.toggle-slider {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-    background: var(--bg-tertiary);
-    border-radius: 24px;
-    transition: 0.4s;
-}
-
-.toggle-slider:before {
-    content: "";
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background: var(--text-primary);
-    border-radius: 50%;
-    transition: 0.4s;
-}
-
-.toggle-label input:checked + .toggle-slider {
-    background: var(--accent-primary);
-}
-
-.toggle-label input:checked + .toggle-slider:before {
-    transform: translateX(24px);
-}
-
-/* Working Icons Grid */
-.working-icons-grid {
-    display: flex;
-    gap: var(--spacing-md);
-    overflow-x: auto;
-    padding: var(--spacing-sm);
-    min-height: 100px;
-}
-
-.working-icon {
-    position: relative;
-    min-width: 94px;
-    height: 94px;
-    background: var(--bg-tertiary);
     border: 1px solid var(--border-color);
+    padding: 8px 12px;
     border-radius: 4px;
-    padding: var(--spacing-sm);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.working-icon:hover {
-    background: var(--bg-primary);
-    transform: translateY(-2px);
-    transition: all 0.2s;
-}
-
-.working-icon .remove-icon {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--accent-primary);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.working-icon:hover .remove-icon {
-    opacity: 1;
-}
-
-.workspace-toolbar {
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.toolbar-controls {
-    display: flex;
-    gap: var(--spacing-md);
-    align-items: center;
-}
-
-.working-icons-strip {
-    padding: var(--spacing-sm);
-    background: var(--bg-tertiary);
-    border-radius: 4px;
-}
-
-.workspace {
-    display: flex;
-    flex-direction: column;
-}
-
-.workspace-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-xl);
-    min-height: 0; /* Important for proper flex sizing */
-}
-
-.working-icons-strip {
-    border-top: 1px solid var(--border-color);
-    padding: var(--spacing-md);
-    background: var(--bg-secondary);
-    max-height: 245px; /* Limit the height */
-    min-height: 120px; /* Ensure minimum visibility */
-}
-
-.working-icons-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-sm);
-}
-
-.working-icons-header h3 {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-secondary);
-}
-
-.working-icons-options {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-.working-icons-grid {
-    display: flex;
-    gap: var(--spacing-md);
-    overflow-x: auto;
-    padding: var(--spacing-sm);
-    /* Smooth scrolling for the grid */
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-primary) var(--bg-tertiary);
-}
-
-/* Scrollbar styling */
-.working-icons-grid::-webkit-scrollbar {
-    height: 6px;
-}
-
-.working-icons-grid::-webkit-scrollbar-track {
-    background: var(--bg-tertiary);
-    border-radius: 3px;
-}
-
-.working-icons-grid::-webkit-scrollbar-thumb {
-    background: var(--accent-primary);
-    border-radius: 3px;
-}
-
-.workspace-toolbar {
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.toolbar-group {
-    display: flex;
-    gap: var(--spacing-md);
-    align-items: center;
-}
-
-.zoom-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-/* fix thie eventually */
-.working-icons-strip {
-    border-top: 1px solid var(--border-color);
-    padding: var(--spacing-md);
-    background: var(--bg-secondary);
-    height: 182px; /* Fixed height */
-    max-height: 240;
-}
-
-.working-icons-grid {
-    display: flex;
-    gap: var(--spacing-md);
-    overflow-x: auto;
-    padding: var(--spacing-sm);
-    height: 108px; /* Control height of icons row */
-
-}
-
-.working-icon {
-    position: relative;
-    min-width: 84px; /* Smaller width */
-    height: 84px; /* Smaller height */
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: var(--spacing-xs);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-}
-
-.working-icon .icon-preview {
-    font-size: 24px; /* Smaller icon size */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.working-icon .icon-name {
-    font-size: 9px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-.working-icon:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
-}
-
-/* Add tooltip for truncated names */
-.working-icon .icon-name:hover {
+    min-width: 200px;
+    appearance: none;
     position: relative;
 }
 
-.working-icon .icon-name:hover::after {
-    content: attr(data-name);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bg-tertiary);
-    padding: 4px 8px;
-    border-radius: 4px;
+.help-button {
+    margin-left: var(--spacing-sm);
+}
+
+/* Style for the icon count info */
+.library-info {
     font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-}
-/* end fix this eventually you lazy ass */
-
-.workspace-toolbar {
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--bg-secondary);
-    height: var(--toolbar-height)+ 5px;
-    padding: 6px;
+    color: var(--text-secondary);
+    margin-top: 4px;
 }
 
-.toolbar-left, .toolbar-right {
+.icon-count-badge {
+    padding: 2px 6px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-family: monospace;
+}
+.library-controls {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
 }
 
-.zoom-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.icon-info {
-    padding: 4px 8px;
+.icon-count-badge {
+    padding: 2px 6px;
     background: var(--bg-tertiary);
     border-radius: 4px;
-    font-size: 14px;
+    font-family: monospace;
     color: var(--text-secondary);
+    font-size: 12px;
+    min-width: fit-content;
 }
-
- 
-
-/* Add to your CSS */
-.temp-icon-render {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
-
 
     </style>
 </head>
 
 <body>
+    <!-- Add this right after the body opening tag -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <span class="material-symbols-outlined loading-icon">sync</span>
+            <span class="loading-text">Loading Icons...</span>
+        </div>
+    </div>
+
     <!-- Main App Structure -->
     <header class="app-header">
         <h1 class="app-title">Icon Studio</h1>
-        <div class="library-selector">
+
+
+        <div class="toolbar-section">
+            <div class="library-controls">
+                <span id="iconCount" class="icon-count-badge"></span>
+                <select class="library-dropdown" id="librarySelect">
+                    <optgroup label="Material Symbols">
+                        <option value="material-outlined">Outlined</option>
+                        <option value="material-rounded">Rounded</option>
+                        <option value="material-sharp">Sharp</option>
+                    </optgroup>
+                    <optgroup label="Font Awesome">
+                        <option value="fa-solid">Solid</option>
+                        <option value="fa-regular">Regular</option>
+                        <option value="fa-brands">Brands</option>
+                    </optgroup>
+                </select>
+                <!-- Add this right after the library-dropdown -->
+<!-- <div class="library-info">
+    <span id="iconCount" class="icon-count-badge"></span>
+</div> -->
+                <button class="button help-button" id="startTour">
+                    <span class="material-symbols-outlined">help_outline</span>
+                </button>
+            </div>
+        </div>
+        <div class="style-selector" style="display: none">
+            <!-- Dynamically populated based on selected library -->
+       </div>
+
+
+
+        <!-- <div class="library-selector">
             <button class="button active" data-library="material">Material Symbols</button>
             <button class="button" data-library="fa">Font Awesome</button>
-        </div>
-        <div class="style-selector">
-            <!-- Dynamically populated based on selected library -->
-        </div>
-    </header>
+        </div> -->
 
+        <!-- <div class="library-selector">
+            <select class="library-dropdown" id="librarySelect">
+                <optgroup label="Material Symbols">
+                    <option value="material-outlined">Outlined</option>
+                    <option value="material-rounded">Rounded</option>
+                    <option value="material-sharp">Sharp</option>
+                </optgroup>
+                <optgroup label="Font Awesome">
+                    <option value="fa-solid">Solid</option>
+                    <option value="fa-regular">Regular</option>
+                    <option value="fa-brands">Brands</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="style-selector" style="display: none">
+             <!-- Dynamically populated based on selected library -->
+        </div>
+        <!-- <button class="button help-button" id="startTour">
+            <span class="material-symbols-outlined">help_outline</span>
+        </button> -->
+    </header>
 
     <!-- Left Sidebar - Icon Libraries -->
     <aside class="sidebar">
         <div class="search-bar">
-            <input type="text" class="search-input" placeholder="Search icons..." id="searchInput">
+            <input type="text" class="search-input" placeholder="Search icons..." id="searchInput" />
         </div>
         <div class="sidebar-content">
             <div class="icon-grid" id="iconGrid">
@@ -971,28 +1191,30 @@
         </div>
     </aside>
 
-<!-- Main Workspace -->
-<main class="workspace">
-    <div class="workspace-toolbar">
-        <div class="toolbar-left">
-            <button class="button" id="toggleBackground">Toggle Background</button>
-            <button class="button" id="resetView">Reset</button>
-            <div class="zoom-controls">
-                <button class="button" id="zoomOut">-</button>
-                <span id="zoomLevel">100%</span>
-                <button class="button" id="zoomIn">+</button>
-            </div>
-        <div class="toolbar-right">
-            <div class="icon-info">
-                <span id="iconName"></span>
-                <span id="iconDimensions"></span>
-            </div>
-            <button class="button help-button" id="startTour">
+    <!-- Main Workspace -->
+    <main class="workspace">
+        <div class="workspace-toolbar">
+            <div class="toolbar-left">
+                <button class="button" id="toggleBackground">
+                    Toggle Background
+                </button>
+                <button class="button" id="resetView">Reset</button>
+                <div class="zoom-controls">
+                    <button class="button" id="zoomOut">-</button>
+                    <span id="zoomLevel">100%</span>
+                    <button class="button" id="zoomIn">+</button>
+                </div>
+                <div class="toolbar-right">
+                    <div class="icon-info">
+                        <span id="iconName"></span>
+                        <span id="iconDimensions"></span>
+                    </div>
+                    <!-- <button class="button help-button" id="startTour">
                 <span class="material-symbols-outlined">help_outline</span>
-            </button>
-        </div>
-    </div>
+            </button> -->
+                </div>
             </div>
+        </div>
 
         <div class="workspace-content">
             <div class="icon-preview" id="iconPreview">
@@ -1004,7 +1226,7 @@
                 </div>
             </div>
         </div>
-    
+
         <!-- Working Icons Strip at bottom -->
         <div class="working-icons-strip">
             <div class="working-icons-header">
@@ -1012,7 +1234,7 @@
                 <div class="working-icons-options">
                     <div class="auto-update-toggle">
                         <label class="toggle-label">
-                            <input type="checkbox" id="autoUpdateIcons">
+                            <input type="checkbox" id="autoUpdateIcons" />
                             <span class="toggle-slider"></span>
                             Auto Update
                         </label>
@@ -1029,9 +1251,10 @@
     <!-- </main> -->
 
     <!-- Right Panel - Controls -->
-        <aside class="panel">
+    <aside class="panel">
         <div class="panel-section">
             <h2 class="panel-title">Style</h2>
+
             <div class="style-controls">
                 <div class="color-pickers-row">
                     <div class="control-group">
@@ -1052,27 +1275,27 @@
                 <h3>Properties</h3>
                 <div class="control-group">
                     <label>Weight <span id="weightValue">400</span></label>
-                    <input type="range" id="weightSlider" min="100" max="700" step="100" value="400">
+                    <input type="range" id="weightSlider" min="100" max="700" step="100" value="400" />
                 </div>
                 <div class="control-group">
                     <label>Fill <span id="fillValue">0</span></label>
-                    <input type="range" id="fillSlider" min="0" max="1" step="1" value="0">
+                    <input type="range" id="fillSlider" min="0" max="1" step="1" value="0" />
                 </div>
                 <div class="control-group">
                     <label>Grade <span id="gradeValue">0</span></label>
-                    <input type="range" id="gradeSlider" min="-50" max="200" step="1" value="0">
+                    <input type="range" id="gradeSlider" min="-50" max="200" step="1" value="0" />
                 </div>
                 <div class="control-group">
                     <label>Size <span id="sizeValue">24</span></label>
-                    <input type="range" id="sizeSlider" min="20" max="48" step="4" value="24">
+                    <input type="range" id="sizeSlider" min="20" max="48" step="4" value="24" />
                 </div>
             </div>
 
             <!-- Font Awesome Controls -->
-            <div class="panel-section fa-controls" style="display: none;">
+            <div class="panel-section fa-controls" style="display: none">
                 <div class="control-group">
                     <label>Secondary Opacity <span id="opacityValue">0.4</span></label>
-                    <input type="range" id="opacitySlider" min="0" max="1" step="0.1" value="0.4">
+                    <input type="range" id="opacitySlider" min="0" max="1" step="0.1" value="0.4" />
                 </div>
             </div>
 
@@ -1081,12 +1304,18 @@
                 <h3>Effects</h3>
                 <div class="control-group">
                     <label>Offset <span id="offsetValue">2</span>px</label>
-                    <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2">
+                    <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2" />
                 </div>
                 <div class="effect-options">
-                    <button class="button effect-option" data-effect="shadow">Drop Shadow</button>
-                    <button class="button effect-option" data-effect="glow">Glow Effect</button>
-                    <button class="button effect-option" data-effect="gradient">Gradient Fill</button>
+                    <button class="button effect-option" data-effect="shadow">
+                        Drop Shadow
+                    </button>
+                    <button class="button effect-option" data-effect="glow">
+                        Glow Effect
+                    </button>
+                    <button class="button effect-option" data-effect="gradient">
+                        Gradient Fill
+                    </button>
                 </div>
             </div>
 
@@ -1097,7 +1326,9 @@
                     <button class="button" id="copyCSSBtn">Copy CSS</button>
                     <button class="button" id="exportThemeBtn">Export Theme</button>
                     <button class="button" id="exportPNGBtn">Export PNG</button>
-                    <button class="button" id="saveConfigBtn">Save Configuration</button>
+                    <button class="button" id="saveConfigBtn">
+                        Save Configuration
+                    </button>
                 </div>
                 <div class="code-preview">
                     <pre id="cssCode" class="code-block"></pre>
@@ -1113,8 +1344,8 @@
     </aside>
 
     <!-- Hidden inputs for Pickr compatibility -->
-    <input type="hidden" id="primaryColor" value="#000000">
-    <input type="hidden" id="secondaryColor" value="#666666">
+    <input type="hidden" id="primaryColor" value="#000000" />
+    <input type="hidden" id="secondaryColor" value="#666666" />
 
     <!-- Modals -->
     <div class="modal" id="exportModal">
@@ -1134,970 +1365,1103 @@
     </div>
 </body>
 <script>
-
     // Tour steps configuration
     const tourSteps = [
-    {
-        target: '.library-selector',
-        content: 'Start by choosing your icon library. Choose between Material Symbols or Font Awesome.',
-        position: 'bottom'
-    },
-    {
-        target: '.style-selector',
-        content: 'Select the style variant for your chosen library (Outlined, Rounded, etc.).',
-        position: 'bottom'
-    },
-    {
-        target: '.search-bar',
-        content: 'Search for icons by name to find exactly what you need.',
-        position: 'right'
-    },
-    {
-        target: '.sidebar-content', 
-        content: 'Browse and click on any icon to select it for customization.',
-        position: 'right' 
-    },
-    {
-        target: '.color-pickers-row',
-        content: 'Choose primary and secondary colors for your icon.',
-        position: 'left' 
-    },
-    {
-        target: '.effect-options',
-        content: 'Apply effects like shadows, glows, or gradients to enhance your icon.',
-        position: 'left' 
-    },
-    {
-        target: '.workspace-content',
-        content: 'Preview your icon here. Use Ctrl + Mouse Wheel to zoom in/out.',
-        position: 'middle'
-    },
-    {
-        target: '.export-options',
-        content: 'Export your customized icon as CSS, or save your configuration for later.',
-        position: 'left'
-    }
-];
+        {
+            target: '.library-selector',
+            content:
+                'Start by choosing your icon library. Choose between Material Symbols or Font Awesome.',
+            position: 'bottom'
+        },
+        {
+            target: '.style-selector',
+            content:
+                'Select the style variant for your chosen library (Outlined, Rounded, etc.).',
+            position: 'bottom'
+        },
+        {
+            target: '.search-bar',
+            content: 'Search for icons by name to find exactly what you need.',
+            position: 'right'
+        },
+        {
+            target: '.sidebar-content',
+            content: 'Browse and click on any icon to select it for customization.',
+            position: 'right'
+        },
+        {
+            target: '.color-pickers-row',
+            content: 'Choose primary and secondary colors for your icon.',
+            position: 'left'
+        },
+        {
+            target: '.effect-options',
+            content:
+                'Apply effects like shadows, glows, or gradients to enhance your icon.',
+            position: 'left'
+        },
+        {
+            target: '.workspace-content',
+            content:
+                'Preview your icon here. Use Ctrl + Mouse Wheel to zoom in/out.',
+            position: 'middle'
+        },
+        {
+            target: '.export-options',
+            content:
+                'Export your customized icon as CSS, or save your configuration for later.',
+            position: 'left'
+        }
+    ]
 
-class Tour {
-    constructor(steps) {
-        this.steps = steps;
-        this.currentStep = 0;
-        this.overlay = null;
-        this.tooltip = null;
-    }
-
-    start() {
-        this.createOverlay();
-        this.showStep(0);
-    }
-
-    createOverlay() {
-        this.overlay = document.createElement('div');
-        this.overlay.className = 'tour-overlay';
-        document.body.appendChild(this.overlay);
-    }
-
-    showStep(index) {
-        if (index >= this.steps.length) {
-            this.end();
-            return;
+    class Tour {
+        constructor(steps) {
+            this.steps = steps
+            this.currentStep = 0
+            this.overlay = null
+            this.tooltip = null
         }
 
-        const step = this.steps[index];
-        const target = document.querySelector(step.target);
-        
-        if (!target) {
-            console.error(`Target not found: ${step.target}`);
-            return;
+        start() {
+            this.createOverlay()
+            this.showStep(0)
         }
 
-        // Create highlight
-        const highlight = document.createElement('div');
-        highlight.className = 'tour-highlight';
-        const rect = target.getBoundingClientRect();
-        Object.assign(highlight.style, {
-            top: `${rect.top}px`,
-            left: `${rect.left}px`,
-            width: `${rect.width}px`,
-            height: `${rect.height}px`
-        });
-        document.body.appendChild(highlight);
-
-        // Create tooltip
-        if (this.tooltip) {
-            this.tooltip.remove();
+        createOverlay() {
+            this.overlay = document.createElement('div')
+            this.overlay.className = 'tour-overlay'
+            document.body.appendChild(this.overlay)
         }
-        
-        this.tooltip = document.createElement('div');
-        this.tooltip.className = 'tour-tooltip';
-        this.tooltip.innerHTML = `
+
+        showStep(index) {
+            if (index >= this.steps.length) {
+                this.end()
+                return
+            }
+
+            const step = this.steps[index]
+            const target = document.querySelector(step.target)
+
+            if (!target) {
+                console.error(`Target not found: ${step.target}`)
+                return
+            }
+
+            // Create highlight
+            const highlight = document.createElement('div')
+            highlight.className = 'tour-highlight'
+            const rect = target.getBoundingClientRect()
+            Object.assign(highlight.style, {
+                top: `${rect.top}px`,
+                left: `${rect.left}px`,
+                width: `${rect.width}px`,
+                height: `${rect.height}px`
+            })
+            document.body.appendChild(highlight)
+
+            // Create tooltip
+            if (this.tooltip) {
+                this.tooltip.remove()
+            }
+
+            this.tooltip = document.createElement('div')
+            this.tooltip.className = 'tour-tooltip'
+            this.tooltip.innerHTML = `
             <div>${step.content}</div>
             <div class="tour-tooltip-buttons">
-                ${index > 0 ? '<button class="button" id="prevStep">Previous</button>' : ''}
+                ${index > 0
+                    ? '<button class="button" id="prevStep">Previous</button>'
+                    : ''
+                }
                 <button class="button" id="nextStep">
                     ${index === this.steps.length - 1 ? 'Finish' : 'Next'}
                 </button>
             </div>
-        `;
+        `
 
-        // Position tooltip
-        const tooltipRect = {
-            top: rect.top,
-            left: rect.left,
-            width: 300, // max-width from CSS
-            height: 100 // approximate
-        };
+            // Position tooltip
+            const tooltipRect = {
+                top: rect.top,
+                left: rect.left,
+                width: 300, // max-width from CSS
+                height: 100 // approximate
+            }
 
-        switch (step.position) {
-            case 'bottom':
-                tooltipRect.top = rect.bottom + 10;
-                tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2;
-                break;
-            case 'top':
-                tooltipRect.top = rect.top - tooltipRect.height - 10;
-                tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2;
-                break;
-            case 'left':
-                tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2;
-                tooltipRect.left = rect.left - tooltipRect.width - 10;
-                break;
-            case 'right':
-                tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2;
-                tooltipRect.left = rect.right + 10;
-                break;
-        }
+            switch (step.position) {
+                case 'bottom':
+                    tooltipRect.top = rect.bottom + 10
+                    tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2
+                    break
+                case 'top':
+                    tooltipRect.top = rect.top - tooltipRect.height - 10
+                    tooltipRect.left = rect.left + (rect.width - tooltipRect.width) / 2
+                    break
+                case 'left':
+                    tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2
+                    tooltipRect.left = rect.left - tooltipRect.width - 10
+                    break
+                case 'right':
+                    tooltipRect.top = rect.top + (rect.height - tooltipRect.height) / 2
+                    tooltipRect.left = rect.right + 10
+                    break
+            }
 
-        Object.assign(this.tooltip.style, {
-            top: `${tooltipRect.top}px`,
-            left: `${tooltipRect.left}px`
-        });
+            Object.assign(this.tooltip.style, {
+                top: `${tooltipRect.top}px`,
+                left: `${tooltipRect.left}px`
+            })
 
-        document.body.appendChild(this.tooltip);
+            document.body.appendChild(this.tooltip)
 
-        // Add event listeners
-        const nextBtn = this.tooltip.querySelector('#nextStep');
-        const prevBtn = this.tooltip.querySelector('#prevStep');
-        
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => this.next());
-        }
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => this.prev());
-        }
-    }
+            // Add event listeners
+            const nextBtn = this.tooltip.querySelector('#nextStep')
+            const prevBtn = this.tooltip.querySelector('#prevStep')
 
-    next() {
-        this.currentStep++;
-        this.showStep(this.currentStep);
-    }
-
-    prev() {
-        this.currentStep--;
-        this.showStep(this.currentStep);
-    }
-
-    end() {
-        if (this.overlay) {
-            this.overlay.remove();
-        }
-        if (this.tooltip) {
-            this.tooltip.remove();
-        }
-        document.querySelectorAll('.tour-highlight').forEach(el => el.remove());
-    }
-}
-
-// Add to your initialization code
-document.getElementById('startTour').addEventListener('click', () => {
-    const tour = new Tour(tourSteps);
-    tour.start();
-});
-
-
-    // Global state
-    let selectedIcon = null;
-    let currentLibrary = 'material';
-    let currentFamily = 'outlined';
-    let zoomLevel = 100;
-
-// Working Icons Manager
-class WorkingIconsManager {
-    constructor() {
-        this.icons = new Map();
-        this.autoUpdate = false;
-    }
-
-    generateIdentifier(config) {
-        return `${config.library}-${config.family}-${config.icon}-${new Date().toISOString().split('T')[0]}`;
-    }
-
-    addOrUpdateIcon(config) {
-        const identifier = this.generateIdentifier(config);
-        
-        if (this.icons.has(identifier) && !this.autoUpdate) {
-            // Ask user if they want to update
-            if (!confirm('Update existing icon configuration?')) {
-                return false;
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => this.next())
+            }
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => this.prev())
             }
         }
-        
-        this.icons.set(identifier, {...config});
-        this.updateDisplay();
-        return true;
+
+        next() {
+            this.currentStep++
+            this.showStep(this.currentStep)
+        }
+
+        prev() {
+            this.currentStep--
+            this.showStep(this.currentStep)
+        }
+
+        end() {
+            if (this.overlay) {
+                this.overlay.remove()
+            }
+            if (this.tooltip) {
+                this.tooltip.remove()
+            }
+            document.querySelectorAll('.tour-highlight').forEach(el => el.remove())
+        }
     }
 
-    loadIcon(identifier) {
-        const config = this.icons.get(identifier);
-        if (config) {
-            // Store current icon before loading new one
-            if (selectedIcon) {
-                const currentConfig = getCurrentConfiguration();
-                const currentIdentifier = this.generateIdentifier(currentConfig);
-                if (currentIdentifier !== identifier) {
-                    this.addOrUpdateIcon(currentConfig);
+    // Add to your initialization code
+    document.getElementById('startTour').addEventListener('click', () => {
+        const tour = new Tour(tourSteps)
+        tour.start()
+    })
+
+    // Global state
+    let selectedIcon = null
+    let currentLibrary = 'material'
+    let currentFamily = 'outlined'
+    let zoomLevel = 100
+
+    // Working Icons Manager
+    class WorkingIconsManager {
+        constructor() {
+            this.icons = new Map()
+            this.autoUpdate = false
+        }
+
+        generateIdentifier(config) {
+            return `${config.library}-${config.family}-${config.icon}-${new Date().toISOString().split('T')[0]
+                }`
+        }
+
+        addOrUpdateIcon(config) {
+            const identifier = this.generateIdentifier(config)
+
+            if (this.icons.has(identifier) && !this.autoUpdate) {
+                // Ask user if they want to update
+                if (!confirm('Update existing icon configuration?')) {
+                    return false
                 }
             }
 
-            // Load the selected configuration
-            loadConfiguration(config);
-            selectedIcon = config.icon;
-            updatePreview();
+            this.icons.set(identifier, { ...config })
+            this.updateDisplay()
+            return true
         }
-    }
 
-    removeIcon(identifier) {
-        this.icons.delete(identifier);
-        this.updateDisplay();
-    }
+        loadIcon(identifier) {
+            const config = this.icons.get(identifier)
+            if (config) {
+                // Store current icon before loading new one
+                if (selectedIcon) {
+                    const currentConfig = getCurrentConfiguration()
+                    const currentIdentifier = this.generateIdentifier(currentConfig)
+                    if (currentIdentifier !== identifier) {
+                        this.addOrUpdateIcon(currentConfig)
+                    }
+                }
 
-    exportAllIcons() {
-        let css = '/* Icon Studio - Bulk Export */\n\n';
-        this.icons.forEach((config, identifier) => {
-            css += `/* ${config.icon} */\n`;
-            if (config.library === 'material') {
-                css += generateMaterialThemeCSS(config);
-            } else {
-                css += generateFontAwesomeThemeCSS(config);
+                // Load the selected configuration
+                loadConfiguration(config)
+                selectedIcon = config.icon
+                updatePreview()
             }
-            css += '\n\n';
-        });
-        return css;
-    }
+        }
 
-    updateDisplay() {
-        const grid = document.getElementById('workingIconsGrid');
-        if (!grid) return;
-        
-        grid.innerHTML = '';
-        
-        this.icons.forEach((config, identifier) => {
-            const iconElement = this.createIconElement(config, identifier);
-            grid.appendChild(iconElement);
-        });
-    }
+        removeIcon(identifier) {
+            this.icons.delete(identifier)
+            this.updateDisplay()
+        }
 
-    createIconElement(config, identifier) {
-    const div = document.createElement('div');
-    div.className = 'working-icon';
-    div.innerHTML = `
+        exportAllIcons() {
+            let css = '/* Icon Studio - Bulk Export */\n\n'
+            this.icons.forEach((config, identifier) => {
+                css += `/* ${config.icon} */\n`
+                if (config.library === 'material') {
+                    css += generateMaterialThemeCSS(config)
+                } else {
+                    css += generateFontAwesomeThemeCSS(config)
+                }
+                css += '\n\n'
+            })
+            return css
+        }
+
+        updateDisplay() {
+            const grid = document.getElementById('workingIconsGrid')
+            if (!grid) return
+
+            grid.innerHTML = ''
+
+            this.icons.forEach((config, identifier) => {
+                const iconElement = this.createIconElement(config, identifier)
+                grid.appendChild(iconElement)
+            })
+        }
+
+        createIconElement(config, identifier) {
+            const div = document.createElement('div')
+            div.className = 'working-icon'
+            div.innerHTML = `
         <div class="icon-preview">
-            ${config.library === 'material' 
-                ? `<span class="material-symbols-${config.family}" 
+            ${config.library === 'material'
+                    ? `<span class="material-symbols-${config.family}" 
                      style="color: ${config.primaryColor}">${config.icon}</span>`
-                : `<i class="fa-${config.family} fa-${config.icon}" 
+                    : `<i class="fa-${config.family} fa-${config.icon}" 
                      style="color: ${config.primaryColor}"></i>`
-            }
+                }
         </div>
         <span class="icon-name" data-name="${config.icon}">${config.icon}</span>
         <button class="remove-icon" title="Remove">×</button>
-    `;
+    `
 
-    // Add tooltip to show full configuration on hover
-    div.title = `${config.icon}\nPrimary: ${config.primaryColor}\nSecondary: ${config.secondaryColor}`;
+            // Add tooltip to show full configuration on hover
+            div.title = `${config.icon}\nPrimary: ${config.primaryColor}\nSecondary: ${config.secondaryColor}`
 
-    div.querySelector('.remove-icon').onclick = (e) => {
-        e.stopPropagation();
-        this.removeIcon(identifier);
-    };
+            div.querySelector('.remove-icon').onclick = e => {
+                e.stopPropagation()
+                this.removeIcon(identifier)
+            }
 
-    div.onclick = () => this.loadIcon(identifier);
-    return div;
-}
-}
+            div.onclick = () => this.loadIcon(identifier)
+            return div
+        }
+    }
 
-// Initialize working icons manager
-const workingIconsManager = new WorkingIconsManager();
+    // Initialize working icons manager
+    const workingIconsManager = new WorkingIconsManager()
 
     // Icon libraries
-    const iconLibraries = {
-        material: [
-            'home', 'search', 'settings', 'favorite', 'account_circle', 'shopping_cart',
-            'delete', 'save', 'edit', 'mail', 'phone', 'person', 'lock', 'visibility',
-            'notification_important', 'schedule', 'today', 'cloud', 'folder', 'star',
-            'warning', 'error', 'info', 'help', 'print', 'share', 'refresh', 'done',
-            'more_vert', 'menu', 'close', 'arrow_back', 'arrow_forward', 'expand_more',
-            'check_circle', 'add', 'remove', 'camera', 'image', 'videocam', 'mic',
-            'volume_up', 'brightness_medium', 'wifi', 'bluetooth', 'battery_full',
-            'access_alarm', 'account_box', 'add_circle', 'alternate_email', 'android',
-            'announcement', 'architecture', 'arrow_drop_down', 'arrow_drop_up', 'assessment',
-            'assignment', 'attachment', 'audiotrack', 'auto_awesome', 'auto_stories',
-            'backpack', 'backup', 'book', 'bookmark', 'bug_report', 'build', 'cached',
-            'calendar_today', 'call', 'campaign', 'cancel', 'chat', 'check_box',
-            'chrome_reader_mode', 'clear', 'comment', 'computer', 'contact_mail',
-            'content_copy', 'content_paste', 'copyright', 'credit_card', 'dashboard',
-            'date_range', 'delete_forever', 'description', 'desktop_mac', 'devices',
-            'dns', 'done_all', 'download', 'drafts', 'eco', 'edit_notifications',
-            'emoji_events', 'explore', 'extension', 'face', 'facebook', 'fast_forward',
-            'fast_rewind', 'favorite_border', 'file_download', 'filter_list', 'flag',
-            'flash_on', 'flight', 'folder_open', 'format_quote', 'forum', 'games', 'get_app', 'gif', 'grade', 'group',
-            'group_add', 'headset', 'hearing', 'help_outline', 'highlight', 'history',
-            'home_work', 'hourglass_empty', 'http', 'https', 'important_devices',
-            'inbox', 'info_outline', 'input', 'insert_chart', 'insert_drive_file',
-            'insert_emoticon', 'insert_invitation', 'insert_link', 'insert_photo',
-            'keyboard', 'keyboard_arrow_down', 'keyboard_arrow_left', 'keyboard_arrow_right',
-            'keyboard_arrow_up', 'keyboard_voice', 'label', 'label_important', 'language',
-            'laptop', 'last_page', 'launch', 'layers', 'link', 'list', 'local_activity',
-            'local_airport', 'local_atm', 'local_bar', 'local_cafe', 'local_dining',
-            'local_drink', 'local_fire_department', 'local_florist', 'local_gas_station',
-            'local_grocery_store', 'local_hospital', 'local_hotel', 'local_laundry_service',
-            'local_library', 'local_mall', 'local_movies', 'local_offer', 'local_parking',
-            'local_pharmacy', 'local_phone', 'local_pizza', 'local_play', 'local_post_office',
-            'local_shipping', 'local_taxi', 'location_city', 'location_on', 'lock_open',
-            'looks', 'loop', 'loyalty', 'mail_outline', 'map', 'margin', 'mark_email_read',
-            'memory', 'menu_book', 'menu_open', 'message', 'mic_none', 'mic_off',
-            'money', 'money_off', 'monitor', 'mood', 'mood_bad', 'more_horiz',
-            'mouse', 'move_to_inbox', 'movie', 'movie_filter', 'music_note', 'music_off',
-            'music_video', 'my_location', 'nature', 'nature_people', 'navigate_before',
-            'navigate_next', 'near_me', 'network_cell', 'network_wifi', 'next_plan',
-            'night_shelter', 'nightlight', 'notes', 'notifications', 'notifications_active',
-            'notifications_none', 'notifications_off', 'offline_bolt', 'offline_pin',
-            'ondemand_video', 'opacity', 'open_in_browser', 'open_in_new', 'open_with',
-            'outlet', 'pages', 'pageview', 'palette', 'panorama', 'party_mode', 'pause',
-            'pause_circle_filled', 'pause_circle_outline', 'payment', 'people_outline',
-            'perm_camera_mic', 'perm_contact_calendar', 'perm_data_setting', 'perm_identity',
-            'perm_media', 'perm_phone_msg', 'perm_scan_wifi', 'person_add', 'person_outline',
-            'person_pin', 'person_pin_circle', 'person_remove', 'pets', 'phone_android',
-            'phone_bluetooth_speaker', 'phone_callback', 'phone_forwarded', 'phone_in_talk',
-            'phone_iphone', 'phone_locked', 'phone_missed', 'phone_paused', 'photo',
-            'photo_album', 'photo_camera', 'photo_filter', 'photo_library', 'photo_size_select_actual'
-        ],
-        fa: [
-            // Updated Font Awesome icon names
-            'house', // instead of 'home'
-            'magnifying-glass', // instead of 'search'
-            'gear', // instead of 'settings'
-            'heart',
-            'circle-user', // instead of 'user-circle'
-            'cart-shopping', // instead of 'cart'
-            'trash-can', // instead of 'trash'
-            'floppy-disk', // instead of 'save'
-            'pen', // instead of 'edit'
-            'envelope', // instead of 'mail'
-            'phone',
-            'user',
-            'lock',
-            'eye',
-            'bell',
-            'clock',
-            'calendar-days', // instead of 'calendar-day'
-            'cloud',
-            'folder',
-            'star',
-            'triangle-exclamation', // instead of 'warning'
-            'circle-exclamation', // instead of 'error'
-            'circle-info', // instead of 'info'
-            'circle-question', // instead of 'help'
-            'print',
-            'share',
-            'arrows-rotate', // instead of 'refresh'
-            'check',
-            'ellipsis-vertical', // instead of 'more-vert'
-            'bars', // instead of 'menu'
-            'xmark', // instead of 'close'
-            'arrow-left',
-            'arrow-right',
-            'chevron-down', // instead of 'expand-more'
-            'circle-check', // instead of 'check-circle'
-            'plus',
-            'minus',
-            'camera',
-            'image',
-            'video', // instead of 'videocam'
-            'microphone', // instead of 'mic'
-            'volume-high', // instead of 'volume-up'
-            'sun', // instead of 'brightness-medium'
-            'wifi',
-            'bluetooth',
-            'battery-full',
-            // Add more icons with their correct FA names...
-            'clock', // instead of 'access-alarm'
-            'square-user', // instead of 'account-box'
-            'circle-plus', // instead of 'add-circle'
-            'at', // instead of 'alternate-email'
-            'android',
-            'bullhorn', // instead of 'announcement'
-            'compass', // instead of 'architecture'
-            'caret-down', // instead of 'arrow-drop-down'
-            'caret-up', // instead of 'arrow-drop-up'
-            'chart-line', // instead of 'assessment'
-            'clipboard', // instead of 'assignment'
-            'paperclip', // instead of 'attachment'
-            'music', // instead of 'audiotrack'
-            'wand-magic-sparkles', // instead of 'auto-awesome'
-            'book-open', // instead of 'auto-stories'
-            'backpack',
-            'upload', // instead of 'backup'
-            'book',
-            'bookmark',
-            'bug',
-            'wrench', // instead of 'build'
-            'rotate', // instead of 'cached'
-            'calendar',
-            'phone-volume', // instead of 'call'
-            'megaphone', // instead of 'campaign'
-            'circle-xmark', // instead of 'cancel'
-            'comment',
-            'square-check', // instead of 'check-box'
-            'book-reader', // instead of 'chrome-reader-mode'
-            'broom', // instead of 'clear'
-            'message',
-            'desktop', // instead of 'computer'
-            'address-card', // instead of 'contact-mail'
-            'copy',
-            'paste',
-            'copyright',
-            'credit-card',
-            'gauge-high', // instead of 'dashboard'
-            // Continue with more icons...
-        ]
-    };
-    const faDuotoneClasses = {
-        'house': 'fa-duotone fa-house',
-        'magnifying-glass': 'fa-duotone fa-magnifying-glass',
-        'gear': 'fa-duotone fa-gear',
-        // ... add more mappings as needed
-    };
-    // Initialize everything when the document is ready
-    document.addEventListener('DOMContentLoaded', () => {
-    try {
-        initializeColorPickers();
-        initializeSavedConfigs();
-        initializeModals();
-        initializeLibrarySelectors();
-        initializeIconGrid();
-        initializeEventListeners();
-    } catch (error) {
-        console.error('Initialization error:', error);
+
+    let iconLibraries = {
+        material: [], // We can start with empty arrays
+        fa: {}
     }
-});
+
+    // initialization code
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            const iconsLoaded = await loadIcons()
+            if (iconsLoaded) {
+                initializeColorPickers()
+                initializeSavedConfigs()
+                initializeModals()
+                initializeLibrarySelectors()
+                initializeIconGrid()
+                initializeEventListeners()
+            }
+        } catch (error) {
+            console.error('Initialization error:', error)
+        }
+    })
+
+    async function loadFontAwesomeIcons() {
+        try {
+            const response = await fetch('fa_free_icons.json')
+            const faIcons = await response.json()
+            iconLibraries.fa = faIcons
+            console.log('Font Awesome icons loaded successfully')
+        } catch (error) {
+            console.error('Error loading Font Awesome icons:', error)
+        }
+    }
+
+    async function loadIcons() {
+        const loadingOverlay = document.getElementById('loadingOverlay')
+        const loadingText = loadingOverlay.querySelector('.loading-text')
+
+        try {
+            loadingText.textContent = 'Loading Material Icons...'
+            const materialResponse = await fetch('material_icons.json')
+            const materialData = await materialResponse.json()
+
+            loadingText.textContent = 'Loading Font Awesome Icons...'
+            const faResponse = await fetch('fa_free_icons.json')
+            const faData = await faResponse.json()
+
+            // Update iconLibraries object
+            iconLibraries = {
+                material: materialData.material,
+                fa: faData
+            }
+
+            loadingText.textContent = 'Initializing...'
+
+            // Verify data integrity
+            if (!iconLibraries.material || !iconLibraries.fa) {
+                throw new Error('Icon data is incomplete')
+            }
+
+            console.log('Icons loaded successfully:', {
+                material: iconLibraries.material.length,
+                fa: {
+                    solid: iconLibraries.fa.solid.length,
+                    regular: iconLibraries.fa.regular.length,
+                    brands: iconLibraries.fa.brands.length
+                }
+            })
+
+            // Hide loading overlay with fade effect
+            loadingOverlay.style.opacity = '0'
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none'
+            }, 500)
+
+            return true
+        } catch (error) {
+            console.error('Error loading icons:', error)
+            loadingText.textContent =
+                'Error loading icons. Please refresh the page.'
+            loadingOverlay.classList.add('error')
+            return false
+        }
+    }
+
+    function updateIconCount() {
+    const dropdown = document.getElementById('librarySelect');
+    const countDisplay = document.getElementById('iconCount');
+    const selected = dropdown.value;
+    const [library, family] = selected.split('-');
+
+    let count;
+    if (library === 'material') {
+        count = `${iconLibraries.material.length} Material icons`;
+    } else {
+        count = `${iconLibraries.fa[family].length} Font Awesome ${family} icons`;
+    }
+
+    // For the badge version
+    if (countDisplay) {
+        countDisplay.textContent = count;
+    }
+
+    // For the tooltip version
+    // dropdown.setAttribute('data-count', 
+    //     `Material: ${iconLibraries.material.length} icons\n` +
+    //     `FA Solid: ${iconLibraries.fa.solid.length} icons\n` +
+    //     `FA Regular: ${iconLibraries.fa.regular.length} icons\n` +
+    //     `FA Brands: ${iconLibraries.fa.brands.length} icons`
+    // );
+}
 
     function initializeLibrarySelectors() {
         // Populate style selector based on current library
-        const styleSelector = document.querySelector('.style-selector');
+        const styleSelector = document.querySelector('.style-selector')
 
         const materialStyles = [
             { family: 'outlined', label: 'Outlined' },
             { family: 'rounded', label: 'Rounded' },
             { family: 'sharp', label: 'Sharp' }
-        ];
+        ]
 
         const faStyles = [
             { family: 'solid', label: 'Solid' },
             { family: 'regular', label: 'Regular' },
             { family: 'light', label: 'Light' },
             { family: 'duotone', label: 'Duotone' }
-        ];
+        ]
 
         function updateStyleButtons(library) {
-            const styles = library === 'material' ? materialStyles : faStyles;
-            styleSelector.innerHTML = styles.map(style => `
-            <button class="button${currentFamily === style.family ? ' active' : ''}" 
+            const styles = library === 'material' ? materialStyles : faStyles
+            styleSelector.innerHTML = styles
+                .map(
+                    style => `
+            <button class="button${currentFamily === style.family ? ' active' : ''
+                        }" 
                     data-family="${style.family}">
                 ${style.label}
             </button>
-        `).join('');
+        `
+                )
+                .join('')
 
             // Add click handlers
             styleSelector.querySelectorAll('.button').forEach(button => {
                 button.addEventListener('click', () => {
-                    currentFamily = button.dataset.family;
-                    styleSelector.querySelectorAll('.button').forEach(btn =>
-                        btn.classList.toggle('active', btn === button));
-                    initializeIconGrid();
-                    if (selectedIcon) updatePreview();
-                });
-            });
+                    currentFamily = button.dataset.family
+                    styleSelector
+                        .querySelectorAll('.button')
+                        .forEach(btn => btn.classList.toggle('active', btn === button))
+                    initializeIconGrid()
+                    if (selectedIcon) updatePreview()
+                })
+            })
         }
 
         // Initial setup
-        updateStyleButtons(currentLibrary);
+        updateStyleButtons(currentLibrary)
     }
 
     // Color picker initialization
     function initializeColorPickers() {
-    try {
-        // Primary color picker
-        const primaryPickr = Pickr.create({
-            el: '#primaryColorPicker',
-            theme: 'nano',
-            default: '#000000',
-            swatches: [
-                '#000000', '#FFFFFF', '#2196F3', '#E91E63', '#4CAF50',
-                '#FFC107', '#9C27B0', '#795548', '#607D8B'
-            ],
-            components: {
-                preview: true,
-                opacity: true,
-                hue: true,
-                interaction: {
-                    hex: true,
-                    rgba: true,
-                    input: true,
-                    save: true
+        try {
+            // Primary color picker
+            const primaryPickr = Pickr.create({
+                el: '#primaryColorPicker',
+                theme: 'nano',
+                default: '#000000',
+                swatches: [
+                    '#000000',
+                    '#FFFFFF',
+                    '#2196F3',
+                    '#E91E63',
+                    '#4CAF50',
+                    '#FFC107',
+                    '#9C27B0',
+                    '#795548',
+                    '#607D8B'
+                ],
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+                    interaction: {
+                        hex: true,
+                        rgba: true,
+                        input: true,
+                        save: true
+                    }
                 }
-            }
-        });
+            })
 
-        // Secondary color picker
-        const secondaryPickr = Pickr.create({
-            el: '#secondaryPicker',
-            theme: 'nano',
-            default: '#666666',
-            components: {
-                preview: true,
-                opacity: true,
-                hue: true,
-                interaction: {
-                    hex: true,
-                    rgba: true,
-                    input: true,
-                    save: true
+            // Secondary color picker
+            const secondaryPickr = Pickr.create({
+                el: '#secondaryPicker',
+                theme: 'nano',
+                default: '#666666',
+                swatches: [
+                    '#000000',
+                    '#FFFFFF',
+                    '#2196F3',
+                    '#E91E63',
+                    '#4CAF50',
+                    '#FFC107',
+                    '#9C27B0',
+                    '#795548',
+                    '#607D8B'
+                ],
+                components: {
+                    preview: true,
+                    opacity: true,
+                    hue: true,
+                    interaction: {
+                        hex: true,
+                        rgba: true,
+                        input: true,
+                        save: true
+                    }
                 }
+            })
+
+            // Handle color changes
+            if (primaryPickr) {
+                primaryPickr.on('change', color => {
+                    document.getElementById('primaryColor').value = color
+                        .toHEXA()
+                        .toString()
+                    updatePreview()
+                })
             }
+
+            if (secondaryPickr) {
+                secondaryPickr.on('change', color => {
+                    document.getElementById('secondaryColor').value = color
+                        .toHEXA()
+                        .toString()
+                    updatePreview()
+                })
+            }
+        } catch (error) {
+            console.error('Color picker initialization failed:', error)
+        }
+    }
+
+    // Initialize icon grid
+    //     function initializeIconGrid() {
+    //         const grid = document.getElementById('iconGrid');
+    //         grid.innerHTML = ''; // Clear existing icons
+
+    //         iconLibraries[currentLibrary].forEach(icon => {
+    //             const div = document.createElement('div');
+    //             div.className = 'icon-item';
+
+    //             // if (currentLibrary === 'material') {
+    //             //     div.innerHTML = `
+    //             //     <span class="material-symbols-${currentFamily}">${icon}</span>
+    //             //     <span class="icon-name">${icon}</span>
+    //             // `;
+    //             // } else {
+    //             //     const iconClass = `fa-${currentFamily} fa-${icon}`;
+    //             //     div.innerHTML = `
+    //             //     <i class="${iconClass}"></i>
+    //             //     <span class="icon-name">${icon}</span>
+    //             // `;
+    //             // }
+
+    //             // In the initializeIconGrid function
+    // if (currentLibrary === 'material') {
+    //     div.innerHTML = `
+    //         <span class="material-symbols-${currentFamily}">${icon}</span>
+    //         <span class="icon-name">${icon}</span>
+    //     `;
+    // } else { // Font Awesome
+    //     let prefix;
+    //     switch(currentFamily) {
+    //         case 'solid':
+    //             prefix = 'fas';
+    //             break;
+    //         case 'regular':
+    //             prefix = 'far';
+    //             break;
+    //         case 'brands':
+    //             prefix = 'fab';
+    //             break;
+    //         default:
+    //             prefix = 'fas';
+    //     }
+    //     div.innerHTML = `
+    //         <i class="${prefix} fa-${icon}"></i>
+    //         <span class="icon-name">${icon}</span>
+    //     `;
+    // }
+
+    //             div.addEventListener('click', () => selectIcon(icon, div));
+    //             grid.appendChild(div);
+    //         });
+    //     }
+
+    // Event listeners initialization
+
+    // function initializeIconGrid() {
+    //     const grid = document.getElementById('iconGrid')
+    //     grid.innerHTML = '' // Clear existing icons
+
+    //     if (currentLibrary === 'material') {
+    //         iconLibraries.material.forEach(icon =>
+    //             createIconElement(icon, 'material')
+    //         )
+    //     } else {
+    //         // Get the correct FA icon list based on family
+    //         const icons = iconLibraries.fa[currentFamily] || []
+    //         icons.forEach(icon => createIconElement(icon, 'fa'))
+    //     }
+    // }
+
+    // function createIconElement(icon, library) {
+    //     const div = document.createElement('div')
+    //     div.className = 'icon-item'
+
+    //     if (library === 'material') {
+    //         div.innerHTML = `
+    //         <span class="material-symbols-${currentFamily}">${icon}</span>
+    //         <span class="icon-name">${icon}</span>
+    //     `
+    //     } else {
+    //         const prefix = getFAPrefix(currentFamily)
+    //         div.innerHTML = `
+    //         <i class="${prefix} fa-${icon}"></i>
+    //         <span class="icon-name">${icon}</span>
+    //     `
+    //     }
+
+    //     div.addEventListener('click', () => selectIcon(icon, div))
+    //     grid.appendChild(div)
+    // }
+
+    function initializeIconGrid() {
+    const grid = document.getElementById('iconGrid');
+    grid.innerHTML = ''; // Clear existing icons
+    
+    if (currentLibrary === 'material') {
+        iconLibraries.material.forEach(icon => {
+            createIconElement(icon, 'material', grid);  // Pass grid as parameter
         });
-
-        // Handle color changes
-        if (primaryPickr) {
-            primaryPickr.on('change', (color) => {
-                document.getElementById('primaryColor').value = color.toHEXA().toString();
-                updatePreview();
-            });
-        }
-
-        if (secondaryPickr) {
-            secondaryPickr.on('change', (color) => {
-                document.getElementById('secondaryColor').value = color.toHEXA().toString();
-                updatePreview();
-            });
-        }
-    } catch (error) {
-        console.error('Color picker initialization failed:', error);
+    } else {
+        // Get the correct FA icon list based on family
+        const icons = iconLibraries.fa[currentFamily] || [];
+        icons.forEach(icon => {
+            createIconElement(icon, 'fa', grid);  // Pass grid as parameter
+        });
     }
 }
 
-    // Initialize icon grid
-    function initializeIconGrid() {
-        const grid = document.getElementById('iconGrid');
-        grid.innerHTML = ''; // Clear existing icons
+function createIconElement(icon, library, grid) {  // Add grid parameter
+    const div = document.createElement('div');
+    div.className = 'icon-item';
+    
+    if (library === 'material') {
+        div.innerHTML = `
+            <span class="material-symbols-${currentFamily}">${icon}</span>
+            <span class="icon-name">${icon}</span>
+        `;
+    } else {
+        const prefix = getFAPrefix(currentFamily);
+        div.innerHTML = `
+            <i class="${prefix} fa-${icon}"></i>
+            <span class="icon-name">${icon}</span>
+        `;
+    }
+    
+    div.addEventListener('click', () => selectIcon(icon, div));
+    grid.appendChild(div);
+}
 
-        iconLibraries[currentLibrary].forEach(icon => {
-            const div = document.createElement('div');
-            div.className = 'icon-item';
-
-            if (currentLibrary === 'material') {
-                div.innerHTML = `
-                <span class="material-symbols-${currentFamily}">${icon}</span>
-                <span class="icon-name">${icon}</span>
-            `;
-            } else {
-                const iconClass = `fa-${currentFamily} fa-${icon}`;
-                div.innerHTML = `
-                <i class="${iconClass}"></i>
-                <span class="icon-name">${icon}</span>
-            `;
-            }
-
-            div.addEventListener('click', () => selectIcon(icon, div));
-            grid.appendChild(div);
-        });
+    function getFAPrefix(family) {
+        switch (family) {
+            case 'solid':
+                return 'fas'
+            case 'regular':
+                return 'far'
+            case 'brands':
+                return 'fab'
+            default:
+                return 'fas'
+        }
     }
 
-    // Event listeners initialization
     function initializeEventListeners() {
         // Library and style selectors
         document.querySelectorAll('.library-selector .button').forEach(button => {
             button.addEventListener('click', () => {
-                const library = button.dataset.library;
-                switchLibrary(library);
-            });
-        });
+                const library = button.dataset.library
+                switchLibrary(library)
+            })
+        })
 
         // Sliders
-        document.getElementById('weightSlider').addEventListener('input', (e) => {
-            document.getElementById('weightValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('weightSlider').addEventListener('input', e => {
+            document.getElementById('weightValue').textContent = e.target.value
+            updatePreview()
+        })
 
-        document.getElementById('fillSlider').addEventListener('input', (e) => {
-            document.getElementById('fillValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('fillSlider').addEventListener('input', e => {
+            document.getElementById('fillValue').textContent = e.target.value
+            updatePreview()
+        })
 
-        document.getElementById('gradeSlider').addEventListener('input', (e) => {
-            document.getElementById('gradeValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('gradeSlider').addEventListener('input', e => {
+            document.getElementById('gradeValue').textContent = e.target.value
+            updatePreview()
+        })
 
-        document.getElementById('sizeSlider').addEventListener('input', (e) => {
-            document.getElementById('sizeValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('sizeSlider').addEventListener('input', e => {
+            document.getElementById('sizeValue').textContent = e.target.value
+            updatePreview()
+        })
 
-        document.getElementById('offsetSlider').addEventListener('input', (e) => {
-            document.getElementById('offsetValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('offsetSlider').addEventListener('input', e => {
+            document.getElementById('offsetValue').textContent = e.target.value
+            updatePreview()
+        })
 
-        document.getElementById('opacitySlider').addEventListener('input', (e) => {
-            document.getElementById('opacityValue').textContent = e.target.value;
-            updatePreview();
-        });
+        document.getElementById('opacitySlider').addEventListener('input', e => {
+            document.getElementById('opacityValue').textContent = e.target.value
+            updatePreview()
+        })
 
         // Effect buttons
         document.querySelectorAll('.effect-option').forEach(button => {
             button.addEventListener('click', () => {
-                button.classList.toggle('active');
-                updatePreview();
-            });
-        });
+                button.classList.toggle('active')
+                updatePreview()
+            })
+        })
 
         // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const searchTerm = e.target.value.toLowerCase()
             document.querySelectorAll('.icon-item').forEach(item => {
-                const iconName = item.querySelector('.icon-name').textContent;
-                item.style.display = iconName.includes(searchTerm) ? 'flex' : 'none';
-            });
-        });
+                const iconName = item.querySelector('.icon-name').textContent
+                item.style.display = iconName.includes(searchTerm) ? 'flex' : 'none'
+            })
+        })
 
         // Workspace controls
-        document.getElementById('toggleBackground').addEventListener('click', () => {
-            const preview = document.getElementById('iconPreview');
-            preview.classList.toggle('dark-bg');
-        });
+        document
+            .getElementById('toggleBackground')
+            .addEventListener('click', () => {
+                const preview = document.getElementById('iconPreview')
+                preview.classList.toggle('dark-bg')
+            })
 
         document.getElementById('zoomIn').addEventListener('click', () => {
-            zoomLevel = Math.min(zoomLevel + 25, 200);
-            updateZoom();
-        });
+            zoomLevel = Math.min(zoomLevel + 25, 200)
+            updateZoom()
+        })
 
         document.getElementById('zoomOut').addEventListener('click', () => {
-            zoomLevel = Math.max(zoomLevel - 25, 50);
-            updateZoom();
-        });
+            zoomLevel = Math.max(zoomLevel - 25, 50)
+            updateZoom()
+        })
 
         document.getElementById('exportPNGBtn').addEventListener('click', () => {
-    // Get current size setting or use default
-    const size = parseInt(document.getElementById('sizeSlider').value) * 2;
-    exportAsPNG(size);
-});
+            // Get current size setting or use default
+            const size = parseInt(document.getElementById('sizeSlider').value) * 2
+            exportAsPNG(size)
+        })
 
-    // Working icons controls
-    const autoUpdateToggle = document.getElementById('autoUpdateIcons');
-    if (autoUpdateToggle) {
-        autoUpdateToggle.addEventListener('change', (e) => {
-            workingIconsManager.autoUpdate = e.checked;
-        });
-    }
+        // Working icons controls
+        const autoUpdateToggle = document.getElementById('autoUpdateIcons')
+        if (autoUpdateToggle) {
+            autoUpdateToggle.addEventListener('change', e => {
+                workingIconsManager.autoUpdate = e.checked
+            })
+        }
 
-    const exportAllBtn = document.getElementById('exportAllIcons');
-    if (exportAllBtn) {
-        exportAllBtn.addEventListener('click', () => {
-            const css = workingIconsManager.exportAllIcons();
-            const filename = `icon-studio-theme-all-${new Date().toISOString().split('T')[0]}.css`;
-            downloadFile(css, filename, 'text/css');
-        });
-    }
+        const exportAllBtn = document.getElementById('exportAllIcons')
+        if (exportAllBtn) {
+            exportAllBtn.addEventListener('click', () => {
+                const css = workingIconsManager.exportAllIcons()
+                const filename = `icon-studio-theme-all-${new Date().toISOString().split('T')[0]
+                    }.css`
+                downloadFile(css, filename, 'text/css')
+            })
+        }
+
+        document
+            .getElementById('librarySelect')
+            .addEventListener('change', function (e) {
+                const [library, family] = e.target.value.split('-')
+                currentLibrary = library
+                currentFamily = family
+
+                // Update icon grid
+                initializeIconGrid();
+                updateIconCount();
+
+                // Clear current selection
+                selectedIcon = null
+                const previewSection = document.getElementById('previewSection')
+                if (previewSection) {
+                    previewSection.style.display = 'none'
+                }
+            })
 
         // Export buttons
-        document.getElementById('copyCSSBtn').addEventListener('click', copyCSS);
-        document.getElementById('exportThemeBtn').addEventListener('click', showExportModal);
-        document.getElementById('saveConfigBtn').addEventListener('click', saveConfiguration);
+        document.getElementById('copyCSSBtn').addEventListener('click', copyCSS)
+        document
+            .getElementById('exportThemeBtn')
+            .addEventListener('click', showExportModal)
+        document
+            .getElementById('saveConfigBtn')
+            .addEventListener('click', saveConfiguration)
 
-        document.querySelector('.workspace-content').addEventListener('wheel', (e) => {
-    // Prevent default scroll
-    e.preventDefault();
-    
-    // Only zoom if Ctrl key is pressed
-    if (e.ctrlKey || e.metaKey) {
-        // Zoom out
-        if (e.deltaY > 0) {
-            zoomLevel = Math.max(zoomLevel - 10, 50);
-        }
-        // Zoom in
-        else {
-            zoomLevel = Math.min(zoomLevel + 10, 200);
-        }
-        
-        updateZoom();
+        document.querySelector('.workspace-content').addEventListener(
+            'wheel',
+            e => {
+                // Prevent default scroll
+                e.preventDefault()
+
+                // Only zoom if Ctrl key is pressed
+                if (e.ctrlKey || e.metaKey) {
+                    // Zoom out
+                    if (e.deltaY > 0) {
+                        zoomLevel = Math.max(zoomLevel - 10, 50)
+                    }
+                    // Zoom in
+                    else {
+                        zoomLevel = Math.min(zoomLevel + 10, 200)
+                    }
+
+                    updateZoom()
+                }
+            },
+            { passive: false }
+        )
     }
-}, { passive: false });
-
-    }
-
-
 
     function switchLibrary(library) {
-    currentLibrary = library;
-    
-    // Update library buttons
-    document.querySelectorAll('.library-selector .button').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.library === library);
-    });
+        currentLibrary = library
 
-    // Show/hide library specific controls
-    const materialControls = document.querySelector('.material-controls');
-    const faControls = document.querySelector('.fa-controls');
-    
-    if (materialControls) {
-        materialControls.style.display = library === 'material' ? 'block' : 'none';
-    }
-    if (faControls) {
-        faControls.style.display = library === 'fa' ? 'block' : 'none';
-    }
+        // Update library buttons
+        document.querySelectorAll('.library-selector .button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.library === library)
+        })
 
-    // Update style selector
-    initializeLibrarySelectors();
-    
-    // Reset family to default for new library
-    currentFamily = library === 'material' ? 'outlined' : 'solid';
+        // Show/hide library specific controls
+        const materialControls = document.querySelector('.material-controls')
+        const faControls = document.querySelector('.fa-controls')
 
-    // Update icon grid
-    initializeIconGrid();
-    
-    // Clear selection
-    selectedIcon = null;
-    
-    const previewSection = document.getElementById('previewSection');
-    if (previewSection) {
-        previewSection.style.display = 'none';
+        if (materialControls) {
+            materialControls.style.display =
+                library === 'material' ? 'block' : 'none'
+        }
+        if (faControls) {
+            faControls.style.display = library === 'fa' ? 'block' : 'none'
+        }
+
+        // Update style selector
+        initializeLibrarySelectors()
+
+        // Reset family to default for new library
+        currentFamily = library === 'material' ? 'outlined' : 'solid'
+
+        // Update icon grid
+        initializeIconGrid()
+
+        // Clear selection
+        selectedIcon = null
+
+        const previewSection = document.getElementById('previewSection')
+        if (previewSection) {
+            previewSection.style.display = 'none'
+        }
     }
-}
 
     // Select an icon
     function selectIcon(icon, element) {
-    try {
-        // Store current icon if one exists
-        if (selectedIcon) {
-            const currentConfig = getCurrentConfiguration();
-            workingIconsManager.addOrUpdateIcon(currentConfig);
+        try {
+            // Store current icon if one exists
+            if (selectedIcon) {
+                const currentConfig = getCurrentConfiguration()
+                workingIconsManager.addOrUpdateIcon(currentConfig)
+            }
+
+            // Remove previous selection
+            document
+                .querySelectorAll('.icon-item.selected')
+                .forEach(item => item.classList.remove('selected'))
+
+            // Add selection to clicked icon
+            element.classList.add('selected')
+            selectedIcon = icon
+
+            // Update preview and info
+            updatePreview()
+            const iconNameElement = document.getElementById('iconName')
+            if (iconNameElement) {
+                iconNameElement.textContent = icon
+            }
+
+            const previewSection = document.getElementById('previewSection')
+            if (previewSection) {
+                previewSection.style.display = 'block'
+            }
+        } catch (error) {
+            console.error('Error in selectIcon:', error)
         }
-
-        // Remove previous selection
-        document.querySelectorAll('.icon-item.selected')
-            .forEach(item => item.classList.remove('selected'));
-
-        // Add selection to clicked icon
-        element.classList.add('selected');
-        selectedIcon = icon;
-
-        // Update preview and info
-        updatePreview();
-        const iconNameElement = document.getElementById('iconName');
-        if (iconNameElement) {
-            iconNameElement.textContent = icon;
-        }
-
-        const previewSection = document.getElementById('previewSection');
-        if (previewSection) {
-            previewSection.style.display = 'block';
-        }
-    } catch (error) {
-        console.error('Error in selectIcon:', error);
     }
-}
 
     // Update preview
     function updatePreview() {
-        if (!selectedIcon) return;
+        if (!selectedIcon) return
 
-        const previewSection = document.getElementById('previewSection');
-    if (!previewSection) return;
+        const previewSection = document.getElementById('previewSection')
+        if (!previewSection) return
 
-    const primaryIcon = document.querySelector('.preview-icon.primary');
-    const secondaryIcon = document.querySelector('.preview-icon.secondary');
-    if (!primaryIcon || !secondaryIcon) return;
+        const primaryIcon = document.querySelector('.preview-icon.primary')
+        const secondaryIcon = document.querySelector('.preview-icon.secondary')
+        if (!primaryIcon || !secondaryIcon) return
 
-        const weight = document.getElementById('weightSlider').value;
-        const fill = document.getElementById('fillSlider').value;
-        const grade = document.getElementById('gradeSlider').value;
-        const size = document.getElementById('sizeSlider').value;
-        const offset = document.getElementById('offsetSlider').value;
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
-        const opacity = document.getElementById('opacitySlider').value;
-
+        const weight = document.getElementById('weightSlider').value
+        const fill = document.getElementById('fillSlider').value
+        const grade = document.getElementById('gradeSlider').value
+        const size = document.getElementById('sizeSlider').value
+        const offset = document.getElementById('offsetSlider').value
+        const primaryColor = document.getElementById('primaryColor').value
+        const secondaryColor = document.getElementById('secondaryColor').value
+        const opacity = document.getElementById('opacitySlider').value
 
         // Clear previous icons
-        primaryIcon.className = 'preview-icon primary';
-        secondaryIcon.className = 'preview-icon secondary';
+        primaryIcon.className = 'preview-icon primary'
+        secondaryIcon.className = 'preview-icon secondary'
 
         if (currentLibrary === 'material') {
             // Material Symbols setup
-            const baseClass = `material-symbols-${currentFamily}`;
-            primaryIcon.className = `${baseClass} preview-icon primary`;
-            secondaryIcon.className = `${baseClass} preview-icon secondary`;
+            const baseClass = `material-symbols-${currentFamily}`
+            primaryIcon.className = `${baseClass} preview-icon primary`
+            secondaryIcon.className = `${baseClass} preview-icon secondary`
 
-            primaryIcon.textContent = selectedIcon;
-            secondaryIcon.textContent = selectedIcon;
+            primaryIcon.textContent = selectedIcon
+            secondaryIcon.textContent = selectedIcon
 
-            const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
-            primaryIcon.style.fontVariationSettings = variationSettings;
-            secondaryIcon.style.fontVariationSettings = variationSettings;
+            const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`
+            primaryIcon.style.fontVariationSettings = variationSettings
+            secondaryIcon.style.fontVariationSettings = variationSettings
         } else {
             // Font Awesome setup
-            const baseClass = `fa-${currentFamily} fa-${selectedIcon}`;
-            primaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
-            secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
+            const baseClass = `fa-${currentFamily} fa-${selectedIcon}`
+            primaryIcon.innerHTML = `<i class="${baseClass}"></i>`
+            secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`
         }
 
         // Apply colors and positioning
-        primaryIcon.style.color = primaryColor;
-        secondaryIcon.style.color = secondaryColor;
-        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`;
-        secondaryIcon.style.opacity = opacity;
+        primaryIcon.style.color = primaryColor
+        secondaryIcon.style.color = secondaryColor
+        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`
+        secondaryIcon.style.opacity = opacity
 
         // Apply active effects
-        const activeEffects = Array.from(document.querySelectorAll('.effect-option.active'))
-            .map(opt => opt.dataset.effect);
+        const activeEffects = Array.from(
+            document.querySelectorAll('.effect-option.active')
+        ).map(opt => opt.dataset.effect)
 
-        applyEffects(primaryIcon, secondaryIcon, activeEffects);
-        updateCSS();
+        applyEffects(primaryIcon, secondaryIcon, activeEffects)
+        updateCSS()
     }
 
     // Effect application functions
     function applyEffects(primaryIcon, secondaryIcon, activeEffects) {
-    // Get colors at the start
-    const primaryColorEl = document.getElementById('primaryColor');
-    const secondaryColorEl = document.getElementById('secondaryColor');
-    
-    const primaryColor = primaryColorEl ? primaryColorEl.value : '#000000';
-    const secondaryColor = secondaryColorEl ? secondaryColorEl.value : '#666666';
+        // Get colors at the start
+        const primaryColorEl = document.getElementById('primaryColor')
+        const secondaryColorEl = document.getElementById('secondaryColor')
 
-    // Reset existing effects
-    [primaryIcon, secondaryIcon].forEach(icon => {
-        if (!icon) return;
-        icon.style.filter = '';
-        icon.style.background = '';
-        icon.style.webkitBackgroundClip = '';
-        icon.style.webkitTextFillColor = '';
-    });
+        const primaryColor = primaryColorEl ? primaryColorEl.value : '#000000'
+        const secondaryColor = secondaryColorEl
+            ? secondaryColorEl.value
+            : '#666666'
 
-    // Apply each active effect
-    activeEffects.forEach(effect => {
-        if (!primaryIcon) return;
-        
-        switch(effect) {
-            case 'shadow':
-                primaryIcon.style.filter = 'drop-shadow(2px 2px 2px rgba(0,0,0,0.3))';
-                break;
-            
-            case 'glow':
-                primaryIcon.style.filter = `drop-shadow(0 0 5px ${primaryColor})`;
-                break;
-            
-            case 'gradient':
-                primaryIcon.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`;
-                primaryIcon.style.webkitBackgroundClip = 'text';
-                primaryIcon.style.webkitTextFillColor = 'transparent';
-                // Remove secondary icon when gradient is active
-                if (secondaryIcon) {
-                    secondaryIcon.style.opacity = '0';
-                }
-                break;
-        }
-    });
-}
+            // Reset existing effects
+            ;[primaryIcon, secondaryIcon].forEach(icon => {
+                if (!icon) return
+                icon.style.filter = ''
+                icon.style.background = ''
+                icon.style.webkitBackgroundClip = ''
+                icon.style.webkitTextFillColor = ''
+            })
+
+        // Apply each active effect
+        activeEffects.forEach(effect => {
+            if (!primaryIcon) return
+
+            switch (effect) {
+                case 'shadow':
+                    primaryIcon.style.filter =
+                        'drop-shadow(2px 2px 2px rgba(0,0,0,0.3))'
+                    break
+
+                case 'glow':
+                    primaryIcon.style.filter = `drop-shadow(0 0 5px ${primaryColor})`
+                    break
+
+                case 'gradient':
+                    primaryIcon.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`
+                    primaryIcon.style.webkitBackgroundClip = 'text'
+                    primaryIcon.style.webkitTextFillColor = 'transparent'
+                    // Remove secondary icon when gradient is active
+                    if (secondaryIcon) {
+                        secondaryIcon.style.opacity = '0'
+                    }
+                    break
+            }
+        })
+    }
 
     // Zoom functionality
     function updateZoom() {
-        const preview = document.querySelector('.preview-layers');
-        preview.style.transform = `scale(${zoomLevel / 100})`;
-        document.getElementById('zoomLevel').textContent = `${zoomLevel}%`;
+        const preview = document.querySelector('.preview-layers')
+        preview.style.transform = `scale(${zoomLevel / 100})`
+        document.getElementById('zoomLevel').textContent = `${zoomLevel}%`
     }
 
     // Background toggle helper
     function updateBackground(isDark) {
-        const preview = document.getElementById('iconPreview');
-        preview.style.background = isDark ? '#1a1a1a' : '#ffffff';
+        const preview = document.getElementById('iconPreview')
+        preview.style.background = isDark ? '#1a1a1a' : '#ffffff'
     }
 
     // Effect helper functions
     function getEffectStyles(effects) {
-        const styles = [];
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
+        const styles = []
+        const primaryColor = document.getElementById('primaryColor').value
+        const secondaryColor = document.getElementById('secondaryColor').value
 
         effects.forEach(effect => {
             switch (effect) {
                 case 'shadow':
-                    styles.push('filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));');
-                    break;
+                    styles.push('filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));')
+                    break
                 case 'glow':
-                    styles.push(`filter: drop-shadow(0 0 5px ${primaryColor});`);
-                    break;
+                    styles.push(`filter: drop-shadow(0 0 5px ${primaryColor});`)
+                    break
                 case 'gradient':
                     styles.push(`
                     background: linear-gradient(45deg, ${primaryColor}, ${secondaryColor});
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
-                `);
-                    break;
+                `)
+                    break
             }
-        });
+        })
 
-        return styles.join('\n    ');
+        return styles.join('\n    ')
     }
 
     // CSS Generation Functions
     function updateCSS() {
-        if (!selectedIcon) return;
+        if (!selectedIcon) return
 
-        const weight = document.getElementById('weightSlider').value;
-        const fill = document.getElementById('fillSlider').value;
-        const grade = document.getElementById('gradeSlider').value;
-        const size = document.getElementById('sizeSlider').value;
-        const offset = document.getElementById('offsetSlider').value;
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
-        const opacity = document.getElementById('opacitySlider').value;
+        const weight = document.getElementById('weightSlider').value
+        const fill = document.getElementById('fillSlider').value
+        const grade = document.getElementById('gradeSlider').value
+        const size = document.getElementById('sizeSlider').value
+        const offset = document.getElementById('offsetSlider').value
+        const primaryColor = document.getElementById('primaryColor').value
+        const secondaryColor = document.getElementById('secondaryColor').value
+        const opacity = document.getElementById('opacitySlider').value
 
-        const activeEffects = Array.from(document.querySelectorAll('.effect-option.active'))
-            .map(opt => opt.dataset.effect);
+        const activeEffects = Array.from(
+            document.querySelectorAll('.effect-option.active')
+        ).map(opt => opt.dataset.effect)
 
-        let css = '';
+        let css = ''
 
         if (currentLibrary === 'material') {
             css = generateMaterialCSS(
                 selectedIcon,
                 { weight, fill, grade, size, offset, primaryColor, secondaryColor },
                 activeEffects
-            );
+            )
         } else {
             css = generateFontAwesomeCSS(
                 selectedIcon,
                 { primaryColor, secondaryColor, offset, opacity },
                 activeEffects
-            );
+            )
         }
 
-        document.getElementById('cssCode').textContent = css;
+        document.getElementById('cssCode').textContent = css
     }
 
     function generateMaterialCSS(icon, options, effects) {
-        const className = `material-symbols-${currentFamily}`;
-        const iconName = icon.replace(/_/g, '-');
+        const className = `material-symbols-${currentFamily}`
+        const iconName = icon.replace(/_/g, '-')
 
         let css = `/* Material Symbols Icon Styles */
 .${className}.icon-${iconName} {
@@ -2124,20 +2488,22 @@ const workingIconsManager = new WorkingIconsManager();
         'wght' ${options.weight},
         'GRAD' ${options.grade},
         'opsz' ${options.size};
-}`;
+}`
 
         // Add effects if any are active
         if (effects.length > 0) {
-            css += '\n\n/* Applied effects */\n';
-            css += `.${className}.icon-${iconName} {\n    ${getEffectStyles(effects)}\n}`;
+            css += '\n\n/* Applied effects */\n'
+            css += `.${className}.icon-${iconName} {\n    ${getEffectStyles(
+                effects
+            )}\n}`
         }
 
-        return css;
+        return css
     }
 
     function generateFontAwesomeCSS(icon, options, effects) {
-        const className = `fa-${currentFamily}`;
-        const iconName = icon.replace(/_/g, '-');
+        const className = `fa-${currentFamily}`
+        const iconName = icon.replace(/_/g, '-')
 
         let css = `/* Font Awesome Icon Styles */
 .${className}.fa-${iconName}-wrapper {
@@ -2157,56 +2523,64 @@ const workingIconsManager = new WorkingIconsManager();
     color: ${options.secondaryColor};
     opacity: ${options.opacity};
     z-index: -1;
-}`;
+}`
 
         // Add effects if any are active
         if (effects.length > 0) {
-            css += '\n\n/* Applied effects */\n';
-            css += `.${className}.fa-${iconName} {\n    ${getEffectStyles(effects)}\n}`;
+            css += '\n\n/* Applied effects */\n'
+            css += `.${className}.fa-${iconName} {\n    ${getEffectStyles(
+                effects
+            )}\n}`
         }
 
-        return css;
+        return css
     }
 
     // Helper Functions
     function sanitizeIconName(name) {
-        return name.replace(/[^a-zA-Z0-9-_]/g, '').toLowerCase();
+        return name.replace(/[^a-zA-Z0-9-_]/g, '').toLowerCase()
     }
 
     function debounce(func, wait) {
-        let timeout;
+        let timeout
         return function executedFunction(...args) {
             const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
+                clearTimeout(timeout)
+                func(...args)
+            }
+            clearTimeout(timeout)
+            timeout = setTimeout(later, wait)
+        }
     }
 
     function hexToRgba(hex, opacity = 1) {
         let r = parseInt(hex.slice(1, 3), 16),
             g = parseInt(hex.slice(3, 5), 16),
-            b = parseInt(hex.slice(5, 7), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            b = parseInt(hex.slice(5, 7), 16)
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`
     }
 
     function getIconDimensions(iconElement) {
-        const rect = iconElement.getBoundingClientRect();
+        const rect = iconElement.getBoundingClientRect()
         return {
             width: Math.round(rect.width),
             height: Math.round(rect.height)
-        };
+        }
     }
 
     function formatCSSValue(value, unit = '') {
-        return typeof value === 'number' ? `${value}${unit}` : value;
+        return typeof value === 'number' ? `${value}${unit}` : value
     }
 
     function validateConfiguration(config) {
-        const requiredFields = ['library', 'family', 'icon', 'primaryColor', 'secondaryColor'];
-        return requiredFields.every(field => config.hasOwnProperty(field));
+        const requiredFields = [
+            'library',
+            'family',
+            'icon',
+            'primaryColor',
+            'secondaryColor'
+        ]
+        return requiredFields.every(field => config.hasOwnProperty(field))
     }
 
     function getCurrentConfiguration() {
@@ -2222,237 +2596,248 @@ const workingIconsManager = new WorkingIconsManager();
             size: parseInt(document.getElementById('sizeSlider').value),
             offset: parseFloat(document.getElementById('offsetSlider').value),
             opacity: parseFloat(document.getElementById('opacitySlider').value),
-            effects: Array.from(document.querySelectorAll('.effect-option.active'))
-                .map(opt => opt.dataset.effect)
-        };
+            effects: Array.from(
+                document.querySelectorAll('.effect-option.active')
+            ).map(opt => opt.dataset.effect)
+        }
     }
 
     function setSliderValue(sliderId, value, updateUI = true) {
-        const slider = document.getElementById(sliderId);
-        slider.value = value;
+        const slider = document.getElementById(sliderId)
+        slider.value = value
         if (updateUI) {
-            const valueDisplay = document.getElementById(`${sliderId.replace('Slider', '')}Value`);
+            const valueDisplay = document.getElementById(
+                `${sliderId.replace('Slider', '')}Value`
+            )
             if (valueDisplay) {
-                valueDisplay.textContent = value;
+                valueDisplay.textContent = value
             }
         }
     }
 
     function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        document.body.appendChild(notification);
+        const notification = document.createElement('div')
+        notification.className = `notification ${type}`
+        notification.textContent = message
+        document.body.appendChild(notification)
 
         setTimeout(() => {
-            notification.classList.add('show');
+            notification.classList.add('show')
             setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 2000);
-        }, 100);
+                notification.classList.remove('show')
+                setTimeout(() => notification.remove(), 300)
+            }, 2000)
+        }, 100)
     }
 
     function generateUniqueId() {
-        return `icon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `icon-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     }
 
     function isValidColor(color) {
-        const s = new Option().style;
-        s.color = color;
-        return s.color !== '';
+        const s = new Option().style
+        s.color = color
+        return s.color !== ''
     }
 
     function copyToClipboard(text) {
         // Modern browsers
         if (navigator.clipboard && window.isSecureContext) {
-            return navigator.clipboard.writeText(text)
+            return navigator.clipboard
+                .writeText(text)
                 .then(() => showNotification('Copied to clipboard!'))
-                .catch(err => showNotification('Failed to copy to clipboard', 'error'));
+                .catch(err =>
+                    showNotification('Failed to copy to clipboard', 'error')
+                )
         }
 
         // Fallback for older browsers
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
+        const textarea = document.createElement('textarea')
+        textarea.value = text
+        textarea.style.position = 'fixed'
+        textarea.style.opacity = '0'
+        document.body.appendChild(textarea)
+        textarea.select()
 
         try {
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            showNotification('Copied to clipboard!');
+            document.execCommand('copy')
+            document.body.removeChild(textarea)
+            showNotification('Copied to clipboard!')
         } catch (err) {
-            document.body.removeChild(textarea);
-            showNotification('Failed to copy to clipboard', 'error');
+            document.body.removeChild(textarea)
+            showNotification('Failed to copy to clipboard', 'error')
         }
     }
 
     function downloadFile(content, filename, type = 'text/plain') {
-        const blob = new Blob([content], { type });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const blob = new Blob([content], { type })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
     }
 
     function getPreferredColorScheme() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark';
+        if (
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+        ) {
+            return 'dark'
         }
-        return 'light';
+        return 'light'
     }
 
     // Error handling helper
     function handleError(error, fallback) {
-        console.error(error);
+        console.error(error)
         if (typeof fallback === 'function') {
             try {
-                fallback();
+                fallback()
             } catch (fallbackError) {
-                showNotification('An error occurred', 'error');
+                showNotification('An error occurred', 'error')
             }
         } else {
-            showNotification('An error occurred', 'error');
+            showNotification('An error occurred', 'error')
         }
     }
 
     // Save and Load Functions
     function saveConfiguration() {
         try {
-            const config = getCurrentConfiguration();
-            const savedConfigs = getSavedConfigurations();
-            const configId = generateUniqueId();
+            const config = getCurrentConfiguration()
+            const savedConfigs = getSavedConfigurations()
+            const configId = generateUniqueId()
 
             // Add new configuration
             savedConfigs[configId] = {
                 ...config,
                 name: `${config.icon} - ${new Date().toLocaleDateString()}`,
                 timestamp: Date.now()
-            };
+            }
 
             // Save to localStorage
-            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs));
+            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs))
 
             // Update saved configurations display
-            updateSavedConfigsList();
-            showNotification('Configuration saved successfully!');
+            updateSavedConfigsList()
+            showNotification('Configuration saved successfully!')
         } catch (error) {
-            handleError(error);
+            handleError(error)
         }
     }
 
     function getSavedConfigurations() {
         try {
-            const saved = localStorage.getItem('iconStudioConfigs');
-            return saved ? JSON.parse(saved) : {};
+            const saved = localStorage.getItem('iconStudioConfigs')
+            return saved ? JSON.parse(saved) : {}
         } catch (error) {
-            handleError(error);
-            return {};
+            handleError(error)
+            return {}
         }
     }
 
     function loadConfiguration(configId) {
         try {
-            const savedConfigs = getSavedConfigurations();
-            const config = savedConfigs[configId];
+            const savedConfigs = getSavedConfigurations()
+            const config = savedConfigs[configId]
 
             if (!validateConfiguration(config)) {
-                throw new Error('Invalid configuration');
+                throw new Error('Invalid configuration')
             }
 
             // Switch library if needed
             if (config.library !== currentLibrary) {
-                switchLibrary(config.library);
+                switchLibrary(config.library)
             }
 
             // Update family if needed
             if (config.family !== currentFamily) {
-                currentFamily = config.family;
-                updateFamilyButtons();
+                currentFamily = config.family
+                updateFamilyButtons()
             }
 
             // Set colors
-            document.getElementById('primaryColor').value = config.primaryColor;
-            document.getElementById('secondaryColor').value = config.secondaryColor;
+            document.getElementById('primaryColor').value = config.primaryColor
+            document.getElementById('secondaryColor').value = config.secondaryColor
 
             // Update color pickers
-            const primaryPickr = Pickr.getInstance('#primaryColorPicker');
-            const secondaryPickr = Pickr.getInstance('#secondaryPicker');
-            if (primaryPickr) primaryPickr.setColor(config.primaryColor);
-            if (secondaryPickr) secondaryPickr.setColor(config.secondaryColor);
+            const primaryPickr = Pickr.getInstance('#primaryColorPicker')
+            const secondaryPickr = Pickr.getInstance('#secondaryPicker')
+            if (primaryPickr) primaryPickr.setColor(config.primaryColor)
+            if (secondaryPickr) secondaryPickr.setColor(config.secondaryColor)
 
             // Set slider values
-            setSliderValue('weightSlider', config.weight);
-            setSliderValue('fillSlider', config.fill);
-            setSliderValue('gradeSlider', config.grade);
-            setSliderValue('sizeSlider', config.size);
-            setSliderValue('offsetSlider', config.offset);
-            setSliderValue('opacitySlider', config.opacity);
+            setSliderValue('weightSlider', config.weight)
+            setSliderValue('fillSlider', config.fill)
+            setSliderValue('gradeSlider', config.grade)
+            setSliderValue('sizeSlider', config.size)
+            setSliderValue('offsetSlider', config.offset)
+            setSliderValue('opacitySlider', config.opacity)
 
             // Set effects
             document.querySelectorAll('.effect-option').forEach(option => {
-                option.classList.toggle('active',
+                option.classList.toggle(
+                    'active',
                     config.effects.includes(option.dataset.effect)
-                );
-            });
+                )
+            })
 
             // Select icon
-            selectedIcon = config.icon;
-            updatePreview();
+            selectedIcon = config.icon
+            updatePreview()
 
-            showNotification('Configuration loaded successfully!');
+            showNotification('Configuration loaded successfully!')
         } catch (error) {
-            handleError(error);
+            handleError(error)
         }
     }
 
     function deleteConfiguration(configId) {
         try {
-            const savedConfigs = getSavedConfigurations();
-            delete savedConfigs[configId];
-            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs));
-            updateSavedConfigsList();
-            showNotification('Configuration deleted');
+            const savedConfigs = getSavedConfigurations()
+            delete savedConfigs[configId]
+            localStorage.setItem('iconStudioConfigs', JSON.stringify(savedConfigs))
+            updateSavedConfigsList()
+            showNotification('Configuration deleted')
         } catch (error) {
-            handleError(error);
+            handleError(error)
         }
     }
 
     function updateSavedConfigsList() {
-    const container = document.querySelector('.saved-icons');
-    if (!container) {
-        console.warn('Saved icons container not found');
-        return;
-    }
-
-    const configs = getSavedConfigurations();
-    
-    // Clear and initialize container
-    try {
-        container.innerHTML = '<h3>Saved Configurations</h3>';
-        
-        if (Object.keys(configs).length === 0) {
-            container.innerHTML += '<p class="no-saves">No saved configurations</p>';
-            return;
+        const container = document.querySelector('.saved-icons')
+        if (!container) {
+            console.warn('Saved icons container not found')
+            return
         }
 
-        const list = document.createElement('div');
-        list.className = 'saved-configs-list';
+        const configs = getSavedConfigurations()
 
-        Object.entries(configs)
-            .sort(([, a], [, b]) => b.timestamp - a.timestamp)
-            .forEach(([id, config]) => {
-                const item = document.createElement('div');
-                item.className = 'saved-config-item';
-                item.innerHTML = `
+        // Clear and initialize container
+        try {
+            container.innerHTML = '<h3>Saved Configurations</h3>'
+
+            if (Object.keys(configs).length === 0) {
+                container.innerHTML +=
+                    '<p class="no-saves">No saved configurations</p>'
+                return
+            }
+
+            const list = document.createElement('div')
+            list.className = 'saved-configs-list'
+
+            Object.entries(configs)
+                .sort(([, a], [, b]) => b.timestamp - a.timestamp)
+                .forEach(([id, config]) => {
+                    const item = document.createElement('div')
+                    item.className = 'saved-config-item'
+                    item.innerHTML = `
                     <span class="config-icon">
-                        ${config.library === 'material' 
+                        ${config.library === 'material'
                             ? `<span class="material-symbols-${config.family}">${config.icon}</span>`
                             : `<i class="fa-${config.family} fa-${config.icon}"></i>`
                         }
@@ -2462,45 +2847,45 @@ const workingIconsManager = new WorkingIconsManager();
                         <button class="button" onclick="loadConfiguration('${id}')">Load</button>
                         <button class="button delete" onclick="deleteConfiguration('${id}')">Delete</button>
                     </div>
-                `;
-                list.appendChild(item);
-            });
+                `
+                    list.appendChild(item)
+                })
 
-        container.appendChild(list);
-    } catch (error) {
-        console.error('Error updating saved configs list:', error);
+            container.appendChild(list)
+        } catch (error) {
+            console.error('Error updating saved configs list:', error)
+        }
     }
-}
 
     // Add this to your initialization
     function initializeSavedConfigs() {
-        updateSavedConfigsList();
+        updateSavedConfigsList()
     }
 
     // Export Functions
     function showExportModal() {
-        const modal = document.getElementById('exportModal');
-        const themeCode = generateThemeCSS();
-        document.getElementById('themeCode').textContent = themeCode;
-        modal.classList.add('active');
+        const modal = document.getElementById('exportModal')
+        const themeCode = generateThemeCSS()
+        document.getElementById('themeCode').textContent = themeCode
+        modal.classList.add('active')
     }
 
     function generateThemeCSS() {
-        const config = getCurrentConfiguration();
+        const config = getCurrentConfiguration()
 
         let css = `/* Icon Studio Theme Export */
-/* Generated: ${new Date().toLocaleString()} */\n\n`;
+/* Generated: ${new Date().toLocaleString()} */\n\n`
 
         if (currentLibrary === 'material') {
-            css += generateMaterialThemeCSS(config);
+            css += generateMaterialThemeCSS(config)
         } else {
-            css += generateFontAwesomeThemeCSS(config);
+            css += generateFontAwesomeThemeCSS(config)
         }
 
         // Add effect classes
-        css += generateEffectClassesCSS();
+        css += generateEffectClassesCSS()
 
-        return css;
+        return css
     }
 
     function generateMaterialThemeCSS(config) {
@@ -2527,7 +2912,7 @@ const workingIconsManager = new WorkingIconsManager();
     top: ${config.offset}px;
     color: ${config.secondaryColor};
     z-index: -1;
-}\n`;
+}\n`
     }
 
     function generateFontAwesomeThemeCSS(config) {
@@ -2548,7 +2933,7 @@ const workingIconsManager = new WorkingIconsManager();
     color: ${config.secondaryColor};
     opacity: ${config.opacity};
     z-index: -1;
-}\n`;
+}\n`
     }
 
     function generateEffectClassesCSS() {
@@ -2566,157 +2951,164 @@ const workingIconsManager = new WorkingIconsManager();
     background: linear-gradient(45deg, var(--icon-gradient-start, #000), var(--icon-gradient-end, #666));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}\n`;
-
+}\n`
     }
 
     function copyCSS() {
-        const cssCode = document.getElementById('cssCode').textContent;
-        copyToClipboard(cssCode);
+        const cssCode = document.getElementById('cssCode').textContent
+        copyToClipboard(cssCode)
     }
 
     function copyThemeCSS() {
-        const themeCode = document.getElementById('themeCode').textContent;
-        copyToClipboard(themeCode);
+        const themeCode = document.getElementById('themeCode').textContent
+        copyToClipboard(themeCode)
     }
 
     function downloadThemeCSS() {
-        const themeCode = document.getElementById('themeCode').textContent;
-        const config = getCurrentConfiguration();
-        const filename = `icon-studio-theme-${config.library}-${config.family}-${selectedIcon}-${new Date().toISOString().split('T')[0]}.css`;        downloadFile(themeCode, filename, 'text/css');
+        const themeCode = document.getElementById('themeCode').textContent
+        const config = getCurrentConfiguration()
+        const filename = `icon-studio-theme-${config.library}-${config.family
+            }-${selectedIcon}-${new Date().toISOString().split('T')[0]}.css`
+        downloadFile(themeCode, filename, 'text/css')
     }
 
     function exportAsPNG(size) {
-    if (!selectedIcon) return;
+        if (!selectedIcon) return
 
-    // Create temporary container with proper sizing
-    const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    tempDiv.style.top = '-9999px';
-    tempDiv.style.width = `${size}px`;
-    tempDiv.style.height = `${size}px`;
-    tempDiv.style.display = 'flex';
-    tempDiv.style.alignItems = 'center';
-    tempDiv.style.justifyContent = 'center';
-    tempDiv.style.padding = '20%';
-    document.body.appendChild(tempDiv);
+        // Create temporary container with proper sizing
+        const tempDiv = document.createElement('div')
+        tempDiv.style.position = 'absolute'
+        tempDiv.style.left = '-9999px'
+        tempDiv.style.top = '-9999px'
+        tempDiv.style.width = `${size}px`
+        tempDiv.style.height = `${size}px`
+        tempDiv.style.display = 'flex'
+        tempDiv.style.alignItems = 'center'
+        tempDiv.style.justifyContent = 'center'
+        tempDiv.style.padding = '20%'
+        document.body.appendChild(tempDiv)
 
-    // Create icon with all current settings
-    const iconElement = document.createElement('span');
-    if (currentLibrary === 'material') {
-        iconElement.className = `material-symbols-${currentFamily}`;
-        iconElement.textContent = selectedIcon;
-        iconElement.style.fontVariationSettings = 
-            `'FILL' ${document.getElementById('fillSlider').value}, 
+        // Create icon with all current settings
+        const iconElement = document.createElement('span')
+        if (currentLibrary === 'material') {
+            iconElement.className = `material-symbols-${currentFamily}`
+            iconElement.textContent = selectedIcon
+            iconElement.style.fontVariationSettings = `'FILL' ${document.getElementById('fillSlider').value
+                }, 
              'wght' ${document.getElementById('weightSlider').value}, 
              'GRAD' ${document.getElementById('gradeSlider').value}, 
-             'opsz' ${document.getElementById('sizeSlider').value}`;
-    } else {
-        iconElement.className = `fa-${currentFamily} fa-${selectedIcon}`;
-    }
-
-    // Apply current effects
-    const hasGradient = document.querySelector('.effect-option[data-effect="gradient"]').classList.contains('active');
-    if (hasGradient) {
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
-        iconElement.style.display = 'inline-block';
-        iconElement.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`;
-        iconElement.style.webkitBackgroundClip = 'text';
-        iconElement.style.backgroundClip = 'text';  // Added standard property
-        iconElement.style.webkitTextFillColor = 'transparent';
-        iconElement.style.textFillColor = 'transparent';  // Added standard property
-        iconElement.style.color = 'transparent';  // Ensure text is transparent
-    } else {
-        iconElement.style.color = document.getElementById('primaryColor').value;
-    }
-
-    iconElement.style.fontSize = `${size}px`;
-    iconElement.style.width = '100%';
-    iconElement.style.height = '100%';
-    iconElement.style.display = 'flex';
-    iconElement.style.alignItems = 'center';
-    iconElement.style.justifyContent = 'center';
-    tempDiv.appendChild(iconElement);
-
-    // Use html2canvas with adjusted settings
-    html2canvas(tempDiv, {
-        backgroundColor: null,
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        width: size,
-        height: size,
-        windowWidth: size,
-        windowHeight: size,
-        onclone: function(clonedDoc) {
-            // Ensure gradient is applied in the cloned document
-            const clonedIcon = clonedDoc.querySelector(`.material-symbols-${currentFamily}, [class*="fa-"]`);
-            if (clonedIcon && hasGradient) {
-                clonedIcon.style.webkitBackgroundClip = 'text';
-                clonedIcon.style.backgroundClip = 'text';
-                clonedIcon.style.webkitTextFillColor = 'transparent';
-                clonedIcon.style.textFillColor = 'transparent';
-            }
+             'opsz' ${document.getElementById('sizeSlider').value}`
+        } else {
+            iconElement.className = `fa-${currentFamily} fa-${selectedIcon}`
         }
-    }).then(renderedCanvas => {
-        // Rest of the code remains the same...
-        document.body.removeChild(tempDiv);
 
-        const finalCanvas = document.createElement('canvas');
-        const finalCtx = finalCanvas.getContext('2d');
-        finalCanvas.width = size;
-        finalCanvas.height = size;
+        // Apply current effects
+        const hasGradient = document
+            .querySelector('.effect-option[data-effect="gradient"]')
+            .classList.contains('active')
+        if (hasGradient) {
+            const primaryColor = document.getElementById('primaryColor').value
+            const secondaryColor = document.getElementById('secondaryColor').value
+            iconElement.style.display = 'inline-block'
+            iconElement.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`
+            iconElement.style.webkitBackgroundClip = 'text'
+            iconElement.style.backgroundClip = 'text' // Added standard property
+            iconElement.style.webkitTextFillColor = 'transparent'
+            iconElement.style.textFillColor = 'transparent' // Added standard property
+            iconElement.style.color = 'transparent' // Ensure text is transparent
+        } else {
+            iconElement.style.color = document.getElementById('primaryColor').value
+        }
 
-        const scale = Math.min(
-            finalCanvas.width / renderedCanvas.width,
-            finalCanvas.height / renderedCanvas.height
-        );
-        
-        const x = (finalCanvas.width - renderedCanvas.width * scale) / 2;
-        const y = (finalCanvas.height - renderedCanvas.height * scale) / 2;
-        
-        finalCtx.drawImage(
-            renderedCanvas,
-            x, y,
-            renderedCanvas.width * scale,
-            renderedCanvas.height * scale
-        );
+        iconElement.style.fontSize = `${size}px`
+        iconElement.style.width = '100%'
+        iconElement.style.height = '100%'
+        iconElement.style.display = 'flex'
+        iconElement.style.alignItems = 'center'
+        iconElement.style.justifyContent = 'center'
+        tempDiv.appendChild(iconElement)
 
-        const link = document.createElement('a');
-        link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
-        link.href = finalCanvas.toDataURL('image/png');
-        link.click();
-    });
-}
+        // Use html2canvas with adjusted settings
+        html2canvas(tempDiv, {
+            backgroundColor: null,
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+            width: size,
+            height: size,
+            windowWidth: size,
+            windowHeight: size,
+            onclone: function (clonedDoc) {
+                // Ensure gradient is applied in the cloned document
+                const clonedIcon = clonedDoc.querySelector(
+                    `.material-symbols-${currentFamily}, [class*="fa-"]`
+                )
+                if (clonedIcon && hasGradient) {
+                    clonedIcon.style.webkitBackgroundClip = 'text'
+                    clonedIcon.style.backgroundClip = 'text'
+                    clonedIcon.style.webkitTextFillColor = 'transparent'
+                    clonedIcon.style.textFillColor = 'transparent'
+                }
+            }
+        }).then(renderedCanvas => {
+            // Rest of the code remains the same...
+            document.body.removeChild(tempDiv)
 
+            const finalCanvas = document.createElement('canvas')
+            const finalCtx = finalCanvas.getContext('2d')
+            finalCanvas.width = size
+            finalCanvas.height = size
+
+            const scale = Math.min(
+                finalCanvas.width / renderedCanvas.width,
+                finalCanvas.height / renderedCanvas.height
+            )
+
+            const x = (finalCanvas.width - renderedCanvas.width * scale) / 2
+            const y = (finalCanvas.height - renderedCanvas.height * scale) / 2
+
+            finalCtx.drawImage(
+                renderedCanvas,
+                x,
+                y,
+                renderedCanvas.width * scale,
+                renderedCanvas.height * scale
+            )
+
+            const link = document.createElement('a')
+            link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`
+            link.href = finalCanvas.toDataURL('image/png')
+            link.click()
+        })
+    }
 
     // Modal handling
     function initializeModals() {
         // Close modal when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
+            modal.addEventListener('click', e => {
                 if (e.target === modal) {
-                    modal.classList.remove('active');
+                    modal.classList.remove('active')
                 }
-            });
-        });
+            })
+        })
 
         // Close button handling
         document.querySelectorAll('.modal-close').forEach(button => {
             button.addEventListener('click', () => {
-                button.closest('.modal').classList.remove('active');
-            });
-        });
+                button.closest('.modal').classList.remove('active')
+            })
+        })
 
         // Export modal buttons
-        document.getElementById('copyThemeBtn').addEventListener('click', copyThemeCSS);
-        document.getElementById('downloadThemeBtn').addEventListener('click', downloadThemeCSS);
+        document
+            .getElementById('copyThemeBtn')
+            .addEventListener('click', copyThemeCSS)
+        document
+            .getElementById('downloadThemeBtn')
+            .addEventListener('click', downloadThemeCSS)
     }
-
-
 </script>
 
 </html>
