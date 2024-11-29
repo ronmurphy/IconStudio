@@ -1168,6 +1168,89 @@
 .gradient-angles button:hover {
     background: var(--bg-tertiary);
 }
+
+.gradient-angles button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.gradient-angles button .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.effect-option[data-effect="gradient"] {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+#currentGradientDirection {
+    font-size: 18px;
+}
+
+
+
+.effects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.effects-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.effect-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+/* Updated split button styles */
+.split-button {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.split-button .effect-option {
+    border-radius: 4px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.split-button .dropdown-trigger {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    border-radius: 0 4px 4px 0;
+    border-left: 1px solid var(--border-color);
+}
+
+.gradient-angles {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 4px;
+    z-index: 1000;
+}
     </style>
 </head>
 
@@ -1345,7 +1428,7 @@
             </div>
 
             <!-- Common Controls -->
-            <div class="panel-section">
+            <!-- <div class="panel-section">
                 <h3>Effects</h3>
                 <div class="control-group">
                     <label>Offset <span id="offsetValue">2</span>px</label>
@@ -1358,22 +1441,64 @@
                     <button class="button effect-option" data-effect="glow">
                         Glow Effect
                     </button>
-                    <!-- <button class="button effect-option" data-effect="gradient">
-                        Gradient Fill
-                    </button> -->
+
 
                     <div class="split-button">
-                        <button class="button effect-option" data-effect="gradient">Gradient</button>
+                        Gradient <span id="currentGradientDirection" class="material-symbols-outlined">north_east</span>
                         <button class="button dropdown-trigger">▼</button>
-                        <div class="gradient-angles">
-                            <button data-angle="top-right">↗️ Top Right</button>
-                            <button data-angle="top-left">↖️ Top Left</button>
-                            <button data-angle="bottom-right">↘️ Bottom Right</button>
-                            <button data-angle="bottom-left">↙️ Bottom Left</button>
+                        <div class="gradient-angles"> -->
+
+
+    <div class="panel-section">
+    <h3>Effects</h3>
+    <div class="effects-grid">
+        <!-- Left Column -->
+        <div class="effects-column">
+            <div class="control-group">
+                <label>Offset <span id="offsetValue">2</span>px</label>
+                <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2">
+            </div>
+            <div class="effect-options">
+                <button class="button effect-option" data-effect="shadow">Drop Shadow</button>
+                <button class="button effect-option" data-effect="glow">Glow Effect</button>
+                <div class="split-button">
+                    <button class="button effect-option" data-effect="gradient">
+                        Gradient <span id="currentGradientDirection" class="material-symbols-outlined">north_east</span>
+                    </button>
+                    <button class="button dropdown-trigger">▼</button>
+                    <div class="gradient-angles">
+                            <button data-angle="top-right">
+                                <span class="material-symbols-outlined">north_east</span> Top Right
+                            </button>
+                            <button data-angle="top-left">
+                                <span class="material-symbols-outlined">north_west</span> Top Left
+                            </button>
+                            <button data-angle="bottom-right">
+                                <span class="material-symbols-outlined">south_east</span> Bottom Right
+                            </button>
+                            <button data-angle="bottom-left">
+                                <span class="material-symbols-outlined">south_west</span> Bottom Left
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="effects-column">
+                <div class="effect-options">
+                    <div class="effects-column">
+                        <div class="control-group">
+                            <label>Rotation <span id="rotateValue">0</span>°</label>
+                            <input type="range" id="rotateSlider" min="0" max="360" step="45" value="0">
+                        </div>
+                    <button class="button effect-option" data-effect="new2">New Effect 2</button>
+                    <button class="button effect-option" data-effect="new3">New Effect 3</button>
+                    <button class="button effect-option" data-effect="new4">New Effect 4</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
             <!-- Export Section -->
             <div class="panel-section">
@@ -1615,18 +1740,25 @@
     let zoomLevel = 100
     let primaryPickr, secondaryPickr; 
 
-const GRADIENT_ANGLES = {
-    'bottom-left': { start: [0, 0], end: [1, 1] },        // 45 degrees - bottom right x
-    'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees - bottom left x
-    'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees - top right x
-    'top-right': { start: [1, 1], end: [0, 0] }       // -135 degrees - top left
-};
+// const GRADIENT_ANGLES = {
+//     'bottom-left': { start: [0, 0], end: [1, 1] },        // 45 degrees - bottom right x
+//     'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees - bottom left x
+//     'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees - top right x
+//     'top-right': { start: [1, 1], end: [0, 0] }       // -135 degrees - top left
+// };
+
+// const GRADIENT_DIRECTIONS = {
+//     'bottom-left': { angle: 45, coords: { start: [0, 0], end: [1, 1] } },
+//     'top-left': { angle: 135, coords: { start: [1, 0], end: [0, 1] } },
+//     'bottom-right': { angle: 315, coords: { start: [0, 1], end: [1, 0] } },
+//     'top-right': { angle: 225, coords: { start: [1, 1], end: [0, 0] } }
+// };
 
 const GRADIENT_DIRECTIONS = {
-    'bottom-left': { angle: 45, coords: { start: [0, 0], end: [1, 1] } },
-    'top-left': { angle: 135, coords: { start: [1, 0], end: [0, 1] } },
-    'bottom-right': { angle: 315, coords: { start: [0, 1], end: [1, 0] } },
-    'top-right': { angle: 225, coords: { start: [1, 1], end: [0, 0] } }
+    'top-right': { angle: 225, coords: { start: [1, 0], end: [0, 1] } },    // Primary color starts at top-right
+    'top-left': { angle: 135, coords: { start: [0, 0], end: [1, 1] } },     // Primary color starts at top-left
+    'bottom-right': { angle: 315, coords: { start: [1, 1], end: [0, 0] } }, // Primary color starts at bottom-right
+    'bottom-left': { angle: 45, coords: { start: [0, 1], end: [1, 0] } }    // Primary color starts at bottom-left
 };
 
 let currentGradientAngle = 'top-right'; // Default
@@ -1928,8 +2060,19 @@ function initializeGradientControls() {
     // Handle angle selection
     gradientAngles.addEventListener('click', (e) => {
         const button = e.target.closest('button');
-        if (button) {
-            currentGradientAngle = button.dataset.angle;
+    if (button) {
+        currentGradientAngle = button.dataset.angle;
+        
+        // Update the direction indicator
+        const directionIcon = document.getElementById('currentGradientDirection');
+        // Map direction to icon name
+        const iconMap = {
+            'top-right': 'north_east',
+            'top-left': 'north_west',
+            'bottom-right': 'south_east',
+            'bottom-left': 'south_west'
+        };
+        directionIcon.textContent = iconMap[currentGradientAngle];
 
             if (selectedIcon) {
                 // Just update preview - it handles everything now
@@ -2157,6 +2300,11 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
             })
         })
 
+        document.getElementById('rotateSlider').addEventListener('input', (e) => {
+    document.getElementById('rotateValue').textContent = e.target.value;
+    updatePreview();
+});
+
         // Search functionality
         document.getElementById('searchInput').addEventListener('input', e => {
             const searchTerm = e.target.value.toLowerCase()
@@ -2368,6 +2516,7 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
     const primaryColor = document.getElementById('primaryColor').value;
     const secondaryColor = document.getElementById('secondaryColor').value;
     const opacity = document.getElementById('opacitySlider').value;
+    const rotation = document.getElementById('rotateSlider').value;
 
     // Clear previous icons and styles
     primaryIcon.className = 'preview-icon primary';
@@ -2413,6 +2562,18 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
     if (!effects.includes('gradient')) {
         applyEffects(primaryIcon, secondaryIcon, effects);
     }
+
+        // Apply rotation along with other transforms
+        if (rotation !== "0") {
+        primaryIcon.style.transform = `rotate(${rotation}deg)`;
+        // If there's an offset, combine transforms
+        if (effects.includes('gradient')) {
+            secondaryIcon.style.opacity = '0';
+        } else {
+            secondaryIcon.style.transform = `translate(${offset}px, ${offset}px) rotate(${rotation}deg)`;
+        }
+    }
+
     
     updateCSS();
 }
@@ -2612,6 +2773,12 @@ function calculateCSSAngle(start, end) {
                 effects
             )}\n}`
         }
+
+        const rotation = document.getElementById('rotateSlider').value;
+    if (rotation !== "0") {
+        css += `\n/* Rotation */\n`;
+        css += `.${className}.icon-${iconName} {\n    transform: rotate(${rotation}deg);\n}`;
+    }
 
         return css
     }
@@ -3131,35 +3298,80 @@ const identifier = workingIconsManager.generateIdentifier(getCurrentConfiguratio
     ctx.textBaseline = 'middle';
     
     // Function to draw the icon with specific color/position
+    // function drawIcon(color, offsetX = 0, offsetY = 0) {
+    //     ctx.fillStyle = color;
+        
+    //     if (effects.includes('shadow')) {
+    //         ctx.shadowColor = 'rgba(0,0,0,0.3)';
+    //         ctx.shadowBlur = 4;
+    //         ctx.shadowOffsetX = 2;
+    //         ctx.shadowOffsetY = 2;
+    //     }
+        
+    //     if (effects.includes('glow')) {
+    //         ctx.shadowColor = color;
+    //         ctx.shadowBlur = 20; // Increased blur for more visible glow
+    //         ctx.shadowOffsetX = 0;
+    //         ctx.shadowOffsetY = 0;
+    //     }
+        
+    //     const centerX = canvas.width/2 + offsetX;
+    //     const centerY = canvas.height/2 + offsetY;
+        
+    //     ctx.fillText(selectedIcon, centerX, centerY);
+        
+    //     // Reset shadow effects
+    //     ctx.shadowColor = 'transparent';
+    //     ctx.shadowBlur = 0;
+    //     ctx.shadowOffsetX = 0;
+    //     ctx.shadowOffsetY = 0;
+    // }
+    
+
     function drawIcon(color, offsetX = 0, offsetY = 0) {
-        ctx.fillStyle = color;
-        
-        if (effects.includes('shadow')) {
-            ctx.shadowColor = 'rgba(0,0,0,0.3)';
-            ctx.shadowBlur = 4;
-            ctx.shadowOffsetX = 2;
-            ctx.shadowOffsetY = 2;
-        }
-        
-        if (effects.includes('glow')) {
-            ctx.shadowColor = color;
-            ctx.shadowBlur = 20; // Increased blur for more visible glow
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-        }
-        
-        const centerX = canvas.width/2 + offsetX;
-        const centerY = canvas.height/2 + offsetY;
-        
-        ctx.fillText(selectedIcon, centerX, centerY);
-        
-        // Reset shadow effects
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
+    ctx.fillStyle = color;
+    
+    // Save the current context state
+    ctx.save();
+    
+    // Apply shadow/glow effects before rotation
+    if (effects.includes('shadow')) {
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+    }
+    
+    if (effects.includes('glow')) {
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 20;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
     }
     
+    const centerX = canvas.width/2 + offsetX;
+    const centerY = canvas.height/2 + offsetY;
+    
+    // Apply rotation around the center point
+    const rotation = parseInt(document.getElementById('rotateSlider').value);
+    if (rotation !== 0) {
+        ctx.translate(centerX, centerY);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.translate(-centerX, -centerY);
+    }
+    
+    // Draw the icon
+    ctx.fillText(selectedIcon, centerX, centerY);
+    
+    // Restore the context to its original state
+    ctx.restore();
+    
+    // Reset shadow effects
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+}
     // Clear canvas with transparency
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
