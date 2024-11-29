@@ -1614,11 +1614,19 @@
     let currentFamily = 'outlined'
     let zoomLevel = 100
     let primaryPickr, secondaryPickr; 
-    const GRADIENT_ANGLES = {
-    'top-right': { start: [0, 0], end: [1, 1] },        // 45 degrees
-    'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees
-    'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees
-    'bottom-left': { start: [1, 1], end: [0, 0] }       // -135 degrees
+
+const GRADIENT_ANGLES = {
+    'bottom-left': { start: [0, 0], end: [1, 1] },        // 45 degrees - bottom right x
+    'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees - bottom left x
+    'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees - top right x
+    'top-right': { start: [1, 1], end: [0, 0] }       // -135 degrees - top left
+};
+
+const GRADIENT_DIRECTIONS = {
+    'bottom-left': { angle: 45, coords: { start: [0, 0], end: [1, 1] } },
+    'top-left': { angle: 135, coords: { start: [1, 0], end: [0, 1] } },
+    'bottom-right': { angle: 315, coords: { start: [0, 1], end: [1, 0] } },
+    'top-right': { angle: 225, coords: { start: [1, 1], end: [0, 0] } }
 };
 
 let currentGradientAngle = 'top-right'; // Default
@@ -1653,6 +1661,16 @@ let currentGradientAngle = 'top-right'; // Default
 
         this.updateDisplay();
         return true;
+    }
+
+    updateWithoutConfirm(config) {
+        const identifier = this.generateIdentifier(config);
+        this.icons.set(identifier, {
+            ...config,
+            gradientAngle: currentGradientAngle,
+            timestamp: Date.now()
+        });
+        this.updateDisplay();
     }
 
         loadIcon(identifier) {
@@ -1892,7 +1910,7 @@ let currentGradientAngle = 'top-right'; // Default
         updateStyleButtons(currentLibrary)
     }
 
-    function initializeGradientControls() {
+function initializeGradientControls() {
     const dropdownTrigger = document.querySelector('.split-button .dropdown-trigger');
     const gradientAngles = document.querySelector('.gradient-angles');
 
@@ -1912,11 +1930,22 @@ let currentGradientAngle = 'top-right'; // Default
         const button = e.target.closest('button');
         if (button) {
             currentGradientAngle = button.dataset.angle;
-            updatePreview();
+
+            if (selectedIcon) {
+                // Just update preview - it handles everything now
+                updatePreview();
+
+                // Silently update working icons without confirmation
+                const config = getCurrentConfiguration();
+                config.gradientAngle = currentGradientAngle;
+                workingIconsManager.updateWithoutConfirm(config);
+            }
+            
             gradientAngles.classList.remove('active');
         }
     });
 }
+
 
     function initializeQuickFeatures() {
     document.getElementById('swapColorsBtn').addEventListener('click', () => {
@@ -2317,63 +2346,99 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
         }
     }
 
-    // Update preview
     function updatePreview() {
-        if (!selectedIcon) return
+    if (!selectedIcon) return;
 
-        const previewSection = document.getElementById('previewSection')
-        if (!previewSection) return
+    const previewSection = document.getElementById('previewSection');
+    if (!previewSection) return;
 
-        const primaryIcon = document.querySelector('.preview-icon.primary')
-        const secondaryIcon = document.querySelector('.preview-icon.secondary')
-        if (!primaryIcon || !secondaryIcon) return
+    // Get active effects
+    const effects = Array.from(document.querySelectorAll('.effect-option.active'))
+        .map(opt => opt.dataset.effect);
 
-        const weight = document.getElementById('weightSlider').value
-        const fill = document.getElementById('fillSlider').value
-        const grade = document.getElementById('gradeSlider').value
-        const size = document.getElementById('sizeSlider').value
-        const offset = document.getElementById('offsetSlider').value
-        const primaryColor = document.getElementById('primaryColor').value
-        const secondaryColor = document.getElementById('secondaryColor').value
-        const opacity = document.getElementById('opacitySlider').value
+    const primaryIcon = document.querySelector('.preview-icon.primary');
+    const secondaryIcon = document.querySelector('.preview-icon.secondary');
+    if (!primaryIcon || !secondaryIcon) return;
 
-        // Clear previous icons
-        primaryIcon.className = 'preview-icon primary'
-        secondaryIcon.className = 'preview-icon secondary'
+    const weight = document.getElementById('weightSlider').value;
+    const fill = document.getElementById('fillSlider').value;
+    const grade = document.getElementById('gradeSlider').value;
+    const size = document.getElementById('sizeSlider').value;
+    const offset = document.getElementById('offsetSlider').value;
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const opacity = document.getElementById('opacitySlider').value;
 
-        if (currentLibrary === 'material') {
-            // Material Symbols setup
-            const baseClass = `material-symbols-${currentFamily}`
-            primaryIcon.className = `${baseClass} preview-icon primary`
-            secondaryIcon.className = `${baseClass} preview-icon secondary`
+    // Clear previous icons and styles
+    primaryIcon.className = 'preview-icon primary';
+    secondaryIcon.className = 'preview-icon secondary';
+    primaryIcon.style = '';
+    secondaryIcon.style = '';
 
-            primaryIcon.textContent = selectedIcon
-            secondaryIcon.textContent = selectedIcon
+    if (currentLibrary === 'material') {
+        const baseClass = `material-symbols-${currentFamily}`;
+        primaryIcon.className = `${baseClass} preview-icon primary`;
+        secondaryIcon.className = `${baseClass} preview-icon secondary`;
 
-            const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`
-            primaryIcon.style.fontVariationSettings = variationSettings
-            secondaryIcon.style.fontVariationSettings = variationSettings
-        } else {
-            // Font Awesome setup
-            const baseClass = `fa-${currentFamily} fa-${selectedIcon}`
-            primaryIcon.innerHTML = `<i class="${baseClass}"></i>`
-            secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`
-        }
+        primaryIcon.textContent = selectedIcon;
+        secondaryIcon.textContent = selectedIcon;
 
-        // Apply colors and positioning
-        primaryIcon.style.color = primaryColor
-        secondaryIcon.style.color = secondaryColor
-        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`
-        secondaryIcon.style.opacity = opacity
-
-        // Apply active effects
-        const activeEffects = Array.from(
-            document.querySelectorAll('.effect-option.active')
-        ).map(opt => opt.dataset.effect)
-
-        applyEffects(primaryIcon, secondaryIcon, activeEffects)
-        updateCSS()
+        const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+        primaryIcon.style.fontVariationSettings = variationSettings;
+        secondaryIcon.style.fontVariationSettings = variationSettings;
+    } else {
+        const baseClass = `fa-${currentFamily} fa-${selectedIcon}`;
+        primaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
+        secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
     }
+
+    // Handle gradient effect first
+    if (effects.includes('gradient')) {
+        const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
+        if (direction) {
+            primaryIcon.style.background = `linear-gradient(${direction.angle}deg, ${primaryColor}, ${secondaryColor})`;
+            primaryIcon.style.webkitBackgroundClip = 'text';
+            primaryIcon.style.webkitTextFillColor = 'transparent';
+            secondaryIcon.style.opacity = '0';
+        }
+    } else {
+        // Regular two-tone effect
+        primaryIcon.style.color = primaryColor;
+        secondaryIcon.style.color = secondaryColor;
+        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`;
+        secondaryIcon.style.opacity = opacity;
+    }
+
+    // Apply other effects last
+    if (!effects.includes('gradient')) {
+        applyEffects(primaryIcon, secondaryIcon, effects);
+    }
+    
+    updateCSS();
+}
+
+    // Helper function to calculate CSS angle
+function calculateCSSAngle(start, end) {
+    // Map gradient coordinates to CSS angles
+
+    const angleMap = {
+        'bottom-left': 45,  // [0,0] to [1,1]
+        'top-left': 135,  // [1,0] to [0,1]
+        'bottom-right': 315,    // [0,1] to [1,0]
+        'top-right': 225      // [1,1] to [0,0]
+    };
+    
+    // Find the matching angle
+    for (const [direction, coords] of Object.entries(GRADIENT_ANGLES)) {
+        if (coords.start[0] === start[0] && 
+            coords.start[1] === start[1] && 
+            coords.end[0] === end[0] && 
+            coords.end[1] === end[1]) {
+            return angleMap[direction];
+        }
+    }
+    return 45; // Default angle
+}
 
     // Effect application functions
     function applyEffects(primaryIcon, secondaryIcon, activeEffects) {
@@ -3099,21 +3164,44 @@ const identifier = workingIconsManager.generateIdentifier(getCurrentConfiguratio
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
 
-    if (effects.includes('gradient')) {
-        const {start, end} = GRADIENT_ANGLES[currentGradientAngle];
+
+if (effects.includes('gradient')) {
+    const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
+    if (direction) {
+        console.log('Gradient Export Debug:', {
+            'Direction Name': currentGradientAngle,
+            'CSS Angle': `${direction.angle}deg`,
+            'Start Coordinates': `(${direction.coords.start[0]}, ${direction.coords.start[1]})`,
+            'End Coordinates': `(${direction.coords.end[0]}, ${direction.coords.end[1]})`,
+            'Canvas Size': `${canvas.width} x ${canvas.height}`,
+            'Actual Start Point': `(${canvas.width * direction.coords.start[0]}, ${canvas.height * direction.coords.start[1]})`,
+            'Actual End Point': `(${canvas.width * direction.coords.end[0]}, ${canvas.height * direction.coords.end[1]})`,
+            'Primary Color': primaryColor,
+            'Secondary Color': secondaryColor
+        });
+
         const gradient = ctx.createLinearGradient(
-            canvas.width * start[0], 
-            canvas.height * start[1],
-            canvas.width * end[0], 
-            canvas.height * end[1]
+            canvas.width * direction.coords.start[0],
+            canvas.height * direction.coords.start[1],
+            canvas.width * direction.coords.end[0],
+            canvas.height * direction.coords.end[1]
         );
         gradient.addColorStop(0, primaryColor);
         gradient.addColorStop(1, secondaryColor);
-
         ctx.fillStyle = gradient;
         drawIcon(gradient);
+
+        // Log the current icon state
+        console.log('Icon State:', {
+            'Selected Icon': selectedIcon,
+            'Library': currentLibrary,
+            'Family': currentFamily
+        });
+    } else {
+        console.warn('No direction found for angle:', currentGradientAngle);
     }
-    
+}
+
     // Create final canvas with proper cropping
     const finalCanvas = document.createElement('canvas');
     const finalSize = size + (effects.includes('glow') ? baseGlowPadding : 0);
