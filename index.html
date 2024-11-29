@@ -1105,6 +1105,69 @@
     min-width: fit-content;
 }
 
+.color-pickers-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.swap-colors-btn {
+    align-self: flex-end;
+    margin-bottom: 4px; /* Align with color pickers */
+    padding: 4px;
+}
+
+.swap-colors-btn .material-symbols-outlined {
+    font-size: 20px;
+}
+
+
+.split-button {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+}
+
+.split-button .effect-option {
+    border-radius: 4px 0 0 4px;
+    flex-grow: 1;
+}
+
+.split-button .dropdown-trigger {
+    border-radius: 0 4px 4px 0;
+    padding: 0 8px;
+    border-left: 1px solid var(--border-color);
+}
+
+.gradient-angles {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: none;
+    z-index: 1000;
+}
+
+.gradient-angles.active {
+    display: block;
+}
+
+.gradient-angles button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.gradient-angles button:hover {
+    background: var(--bg-tertiary);
+}
     </style>
 </head>
 
@@ -1137,10 +1200,6 @@
                         <option value="fa-brands">Brands</option>
                     </optgroup>
                 </select>
-                <!-- Add this right after the library-dropdown -->
-<!-- <div class="library-info">
-    <span id="iconCount" class="icon-count-badge"></span>
-</div> -->
                 <button class="button help-button" id="startTour">
                     <span class="material-symbols-outlined">help_outline</span>
                 </button>
@@ -1150,33 +1209,6 @@
             <!-- Dynamically populated based on selected library -->
        </div>
 
-
-
-        <!-- <div class="library-selector">
-            <button class="button active" data-library="material">Material Symbols</button>
-            <button class="button" data-library="fa">Font Awesome</button>
-        </div> -->
-
-        <!-- <div class="library-selector">
-            <select class="library-dropdown" id="librarySelect">
-                <optgroup label="Material Symbols">
-                    <option value="material-outlined">Outlined</option>
-                    <option value="material-rounded">Rounded</option>
-                    <option value="material-sharp">Sharp</option>
-                </optgroup>
-                <optgroup label="Font Awesome">
-                    <option value="fa-solid">Solid</option>
-                    <option value="fa-regular">Regular</option>
-                    <option value="fa-brands">Brands</option>
-                </optgroup>
-            </select>
-        </div>
-        <div class="style-selector" style="display: none">
-             <!-- Dynamically populated based on selected library -->
-        </div>
-        <!-- <button class="button help-button" id="startTour">
-            <span class="material-symbols-outlined">help_outline</span>
-        </button> -->
     </header>
 
     <!-- Left Sidebar - Icon Libraries -->
@@ -1239,6 +1271,17 @@
                             Auto Update
                         </label>
                     </div>
+
+                    <div class="working-icons-options">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="autoSaveIcons">
+                            <span class="toggle-slider"></span>
+                            Auto-save icons
+                        </label>
+                    </div>
+
+
+
                     <button class="button" id="exportAllIcons">Export All</button>
                 </div>
             </div>
@@ -1254,18 +1297,20 @@
     <aside class="panel">
         <div class="panel-section">
             <h2 class="panel-title">Style</h2>
-
-            <div class="style-controls">
                 <div class="color-pickers-row">
                     <div class="control-group">
                         <label>Primary Color</label>
                         <div id="primaryColorPicker"></div>
                     </div>
+                    <button class="button swap-colors-btn" id="swapColorsBtn" title="Swap Primary/Secondary Colors">
+                        <span class="material-symbols-outlined">swap_horiz</span>
+                    </button>
                     <div class="control-group">
                         <label>Secondary Color</label>
                         <div id="secondaryPicker"></div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -1313,9 +1358,20 @@
                     <button class="button effect-option" data-effect="glow">
                         Glow Effect
                     </button>
-                    <button class="button effect-option" data-effect="gradient">
+                    <!-- <button class="button effect-option" data-effect="gradient">
                         Gradient Fill
-                    </button>
+                    </button> -->
+
+                    <div class="split-button">
+                        <button class="button effect-option" data-effect="gradient">Gradient</button>
+                        <button class="button dropdown-trigger">▼</button>
+                        <div class="gradient-angles">
+                            <button data-angle="top-right">↗️ Top Right</button>
+                            <button data-angle="top-left">↖️ Top Left</button>
+                            <button data-angle="bottom-right">↘️ Bottom Right</button>
+                            <button data-angle="bottom-left">↙️ Bottom Left</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1557,6 +1613,16 @@
     let currentLibrary = 'material'
     let currentFamily = 'outlined'
     let zoomLevel = 100
+    let primaryPickr, secondaryPickr; 
+    const GRADIENT_ANGLES = {
+    'top-right': { start: [0, 0], end: [1, 1] },        // 45 degrees
+    'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees
+    'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees
+    'bottom-left': { start: [1, 1], end: [0, 0] }       // -135 degrees
+};
+
+let currentGradientAngle = 'top-right'; // Default
+
 
     // Working Icons Manager
     class WorkingIconsManager {
@@ -1571,19 +1637,23 @@
         }
 
         addOrUpdateIcon(config) {
-            const identifier = this.generateIdentifier(config)
+        const identifier = this.generateIdentifier(config);
 
-            if (this.icons.has(identifier) && !this.autoUpdate) {
-                // Ask user if they want to update
-                if (!confirm('Update existing icon configuration?')) {
-                    return false
-                }
+        if (this.icons.has(identifier) && !this.autoUpdate) {
+            if (!confirm('Update existing icon configuration?')) {
+                return false;
             }
-
-            this.icons.set(identifier, { ...config })
-            this.updateDisplay()
-            return true
         }
+
+        this.icons.set(identifier, {
+            ...config,
+            gradientAngle: currentGradientAngle,
+            timestamp: Date.now()
+        });
+
+        this.updateDisplay();
+        return true;
+    }
 
         loadIcon(identifier) {
             const config = this.icons.get(identifier)
@@ -1679,12 +1749,14 @@
         try {
             const iconsLoaded = await loadIcons()
             if (iconsLoaded) {
-                initializeColorPickers()
-                initializeSavedConfigs()
-                initializeModals()
-                initializeLibrarySelectors()
-                initializeIconGrid()
-                initializeEventListeners()
+                initializeColorPickers();
+                initializeSavedConfigs();
+                initializeModals();
+                initializeLibrarySelectors();
+                initializeIconGrid();
+                initializeEventListeners();
+                initializeQuickFeatures();
+                initializeGradientControls();
             }
         } catch (error) {
             console.error('Initialization error:', error)
@@ -1770,14 +1842,6 @@
     if (countDisplay) {
         countDisplay.textContent = count;
     }
-
-    // For the tooltip version
-    // dropdown.setAttribute('data-count', 
-    //     `Material: ${iconLibraries.material.length} icons\n` +
-    //     `FA Solid: ${iconLibraries.fa.solid.length} icons\n` +
-    //     `FA Regular: ${iconLibraries.fa.regular.length} icons\n` +
-    //     `FA Brands: ${iconLibraries.fa.brands.length} icons`
-    // );
 }
 
     function initializeLibrarySelectors() {
@@ -1828,11 +1892,63 @@
         updateStyleButtons(currentLibrary)
     }
 
+    function initializeGradientControls() {
+    const dropdownTrigger = document.querySelector('.split-button .dropdown-trigger');
+    const gradientAngles = document.querySelector('.gradient-angles');
+
+    // Toggle dropdown
+    dropdownTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        gradientAngles.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        gradientAngles.classList.remove('active');
+    });
+
+    // Handle angle selection
+    gradientAngles.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (button) {
+            currentGradientAngle = button.dataset.angle;
+            updatePreview();
+            gradientAngles.classList.remove('active');
+        }
+    });
+}
+
+    function initializeQuickFeatures() {
+    document.getElementById('swapColorsBtn').addEventListener('click', () => {
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        
+        // Swap colors using our stored Pickr instances
+        primaryPickr.setColor(secondaryColor);
+        secondaryPickr.setColor(primaryColor);
+        
+        // Update hidden inputs
+        document.getElementById('primaryColor').value = secondaryColor;
+        document.getElementById('secondaryColor').value = primaryColor;
+        
+        // Update preview
+        updatePreview();
+    });
+
+    // Auto-save toggle
+    const autoSaveCheckbox = document.getElementById('autoSaveIcons');
+    autoSaveCheckbox.checked = localStorage.getItem('autoSaveIcons') === 'true';
+    
+    autoSaveCheckbox.addEventListener('change', (e) => {
+        localStorage.setItem('autoSaveIcons', e.target.checked);
+    });
+}
+
     // Color picker initialization
     function initializeColorPickers() {
         try {
             // Primary color picker
-            const primaryPickr = Pickr.create({
+             primaryPickr = Pickr.create({
                 el: '#primaryColorPicker',
                 theme: 'nano',
                 default: '#000000',
@@ -1861,7 +1977,7 @@
             })
 
             // Secondary color picker
-            const secondaryPickr = Pickr.create({
+             secondaryPickr = Pickr.create({
                 el: '#secondaryPicker',
                 theme: 'nano',
                 default: '#666666',
@@ -1912,97 +2028,6 @@
         }
     }
 
-    // Initialize icon grid
-    //     function initializeIconGrid() {
-    //         const grid = document.getElementById('iconGrid');
-    //         grid.innerHTML = ''; // Clear existing icons
-
-    //         iconLibraries[currentLibrary].forEach(icon => {
-    //             const div = document.createElement('div');
-    //             div.className = 'icon-item';
-
-    //             // if (currentLibrary === 'material') {
-    //             //     div.innerHTML = `
-    //             //     <span class="material-symbols-${currentFamily}">${icon}</span>
-    //             //     <span class="icon-name">${icon}</span>
-    //             // `;
-    //             // } else {
-    //             //     const iconClass = `fa-${currentFamily} fa-${icon}`;
-    //             //     div.innerHTML = `
-    //             //     <i class="${iconClass}"></i>
-    //             //     <span class="icon-name">${icon}</span>
-    //             // `;
-    //             // }
-
-    //             // In the initializeIconGrid function
-    // if (currentLibrary === 'material') {
-    //     div.innerHTML = `
-    //         <span class="material-symbols-${currentFamily}">${icon}</span>
-    //         <span class="icon-name">${icon}</span>
-    //     `;
-    // } else { // Font Awesome
-    //     let prefix;
-    //     switch(currentFamily) {
-    //         case 'solid':
-    //             prefix = 'fas';
-    //             break;
-    //         case 'regular':
-    //             prefix = 'far';
-    //             break;
-    //         case 'brands':
-    //             prefix = 'fab';
-    //             break;
-    //         default:
-    //             prefix = 'fas';
-    //     }
-    //     div.innerHTML = `
-    //         <i class="${prefix} fa-${icon}"></i>
-    //         <span class="icon-name">${icon}</span>
-    //     `;
-    // }
-
-    //             div.addEventListener('click', () => selectIcon(icon, div));
-    //             grid.appendChild(div);
-    //         });
-    //     }
-
-    // Event listeners initialization
-
-    // function initializeIconGrid() {
-    //     const grid = document.getElementById('iconGrid')
-    //     grid.innerHTML = '' // Clear existing icons
-
-    //     if (currentLibrary === 'material') {
-    //         iconLibraries.material.forEach(icon =>
-    //             createIconElement(icon, 'material')
-    //         )
-    //     } else {
-    //         // Get the correct FA icon list based on family
-    //         const icons = iconLibraries.fa[currentFamily] || []
-    //         icons.forEach(icon => createIconElement(icon, 'fa'))
-    //     }
-    // }
-
-    // function createIconElement(icon, library) {
-    //     const div = document.createElement('div')
-    //     div.className = 'icon-item'
-
-    //     if (library === 'material') {
-    //         div.innerHTML = `
-    //         <span class="material-symbols-${currentFamily}">${icon}</span>
-    //         <span class="icon-name">${icon}</span>
-    //     `
-    //     } else {
-    //         const prefix = getFAPrefix(currentFamily)
-    //         div.innerHTML = `
-    //         <i class="${prefix} fa-${icon}"></i>
-    //         <span class="icon-name">${icon}</span>
-    //     `
-    //     }
-
-    //     div.addEventListener('click', () => selectIcon(icon, div))
-    //     grid.appendChild(div)
-    // }
 
     function initializeIconGrid() {
     const grid = document.getElementById('iconGrid');
@@ -2253,14 +2278,28 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
                 workingIconsManager.addOrUpdateIcon(currentConfig)
             }
 
+
+
+                    // Store current icon if auto-save is enabled
+        if (selectedIcon && document.getElementById('autoSaveIcons').checked) {
+            const currentConfig = getCurrentConfiguration();
+            workingIconsManager.addOrUpdateIcon(currentConfig);
+        }
+
             // Remove previous selection
             document
                 .querySelectorAll('.icon-item.selected')
                 .forEach(item => item.classList.remove('selected'))
 
             // Add selection to clicked icon
-            element.classList.add('selected')
-            selectedIcon = icon
+            // element.classList.add('selected')
+            // selectedIcon = icon
+
+            selectedIcon = icon;
+            element.classList.add('selected');
+
+            const newConfig = getCurrentConfiguration();
+            workingIconsManager.addOrUpdateIcon(newConfig);
 
             // Update preview and info
             updatePreview()
@@ -2382,6 +2421,17 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
             }
         })
     }
+
+    function updateGradientAngle(angle) {
+    currentGradientAngle = angle;
+    updatePreview();
+    // Update working icon if it matches current
+    if (selectedIcon) {
+        const config = getCurrentConfiguration();
+        config.gradientAngle = angle;
+        workingIconsManager.addOrUpdateIcon(config);
+    }
+}
 
     // Zoom functionality
     function updateZoom() {
@@ -2972,118 +3022,123 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
         downloadFile(themeCode, filename, 'text/css')
     }
 
-    function exportAsPNG(size) {
-        if (!selectedIcon) return
+function exportAsPNG(size) {
+    if (!selectedIcon) return;
 
-        // Create temporary container with proper sizing
-        const tempDiv = document.createElement('div')
-        tempDiv.style.position = 'absolute'
-        tempDiv.style.left = '-9999px'
-        tempDiv.style.top = '-9999px'
-        tempDiv.style.width = `${size}px`
-        tempDiv.style.height = `${size}px`
-        tempDiv.style.display = 'flex'
-        tempDiv.style.alignItems = 'center'
-        tempDiv.style.justifyContent = 'center'
-        tempDiv.style.padding = '20%'
-        document.body.appendChild(tempDiv)
+// Get configuration from working icons if it exists
+const identifier = workingIconsManager.generateIdentifier(getCurrentConfiguration());
+    const config = workingIconsManager.icons.get(identifier) || getCurrentConfiguration();
 
-        // Create icon with all current settings
-        const iconElement = document.createElement('span')
-        if (currentLibrary === 'material') {
-            iconElement.className = `material-symbols-${currentFamily}`
-            iconElement.textContent = selectedIcon
-            iconElement.style.fontVariationSettings = `'FILL' ${document.getElementById('fillSlider').value
-                }, 
-             'wght' ${document.getElementById('weightSlider').value}, 
-             'GRAD' ${document.getElementById('gradeSlider').value}, 
-             'opsz' ${document.getElementById('sizeSlider').value}`
-        } else {
-            iconElement.className = `fa-${currentFamily} fa-${selectedIcon}`
-        }
-
-        // Apply current effects
-        const hasGradient = document
-            .querySelector('.effect-option[data-effect="gradient"]')
-            .classList.contains('active')
-        if (hasGradient) {
-            const primaryColor = document.getElementById('primaryColor').value
-            const secondaryColor = document.getElementById('secondaryColor').value
-            iconElement.style.display = 'inline-block'
-            iconElement.style.background = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`
-            iconElement.style.webkitBackgroundClip = 'text'
-            iconElement.style.backgroundClip = 'text' // Added standard property
-            iconElement.style.webkitTextFillColor = 'transparent'
-            iconElement.style.textFillColor = 'transparent' // Added standard property
-            iconElement.style.color = 'transparent' // Ensure text is transparent
-        } else {
-            iconElement.style.color = document.getElementById('primaryColor').value
-        }
-
-        iconElement.style.fontSize = `${size}px`
-        iconElement.style.width = '100%'
-        iconElement.style.height = '100%'
-        iconElement.style.display = 'flex'
-        iconElement.style.alignItems = 'center'
-        iconElement.style.justifyContent = 'center'
-        tempDiv.appendChild(iconElement)
-
-        // Use html2canvas with adjusted settings
-        html2canvas(tempDiv, {
-            backgroundColor: null,
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            allowTaint: true,
-            width: size,
-            height: size,
-            windowWidth: size,
-            windowHeight: size,
-            onclone: function (clonedDoc) {
-                // Ensure gradient is applied in the cloned document
-                const clonedIcon = clonedDoc.querySelector(
-                    `.material-symbols-${currentFamily}, [class*="fa-"]`
-                )
-                if (clonedIcon && hasGradient) {
-                    clonedIcon.style.webkitBackgroundClip = 'text'
-                    clonedIcon.style.backgroundClip = 'text'
-                    clonedIcon.style.webkitTextFillColor = 'transparent'
-                    clonedIcon.style.textFillColor = 'transparent'
-                }
-            }
-        }).then(renderedCanvas => {
-            // Rest of the code remains the same...
-            document.body.removeChild(tempDiv)
-
-            const finalCanvas = document.createElement('canvas')
-            const finalCtx = finalCanvas.getContext('2d')
-            finalCanvas.width = size
-            finalCanvas.height = size
-
-            const scale = Math.min(
-                finalCanvas.width / renderedCanvas.width,
-                finalCanvas.height / renderedCanvas.height
-            )
-
-            const x = (finalCanvas.width - renderedCanvas.width * scale) / 2
-            const y = (finalCanvas.height - renderedCanvas.height * scale) / 2
-
-            finalCtx.drawImage(
-                renderedCanvas,
-                x,
-                y,
-                renderedCanvas.width * scale,
-                renderedCanvas.height * scale
-            )
-
-            const link = document.createElement('a')
-            link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`
-            link.href = finalCanvas.toDataURL('image/png')
-            link.click()
-        })
+    
+    // Create canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Get all current settings
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const offset = parseFloat(document.getElementById('offsetSlider').value);
+    const effects = Array.from(document.querySelectorAll('.effect-option.active'))
+        .map(opt => opt.dataset.effect);
+    
+    // Determine padding based on effects
+    const baseGlowPadding = 40;
+    const padding = effects.includes('glow') ? baseGlowPadding : 20;
+    
+    // Set canvas size with padding for effects
+    canvas.width = size + (padding * 2);
+    canvas.height = size + (padding * 2);
+    
+    // Setup font with variations if Material
+    if (currentLibrary === 'material') {
+        const weight = document.getElementById('weightSlider').value;
+        const fill = document.getElementById('fillSlider').value;
+        const grade = document.getElementById('gradeSlider').value;
+        ctx.font = `normal normal 400 ${size}px 'Material Symbols ${currentFamily}'`;
+        const fontSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+        canvas.style.fontVariationSettings = fontSettings;
+        ctx.canvas.style.fontVariationSettings = fontSettings;
+    } else {
+        ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
     }
+    
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Function to draw the icon with specific color/position
+    function drawIcon(color, offsetX = 0, offsetY = 0) {
+        ctx.fillStyle = color;
+        
+        if (effects.includes('shadow')) {
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+        }
+        
+        if (effects.includes('glow')) {
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 20; // Increased blur for more visible glow
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
+        
+        const centerX = canvas.width/2 + offsetX;
+        const centerY = canvas.height/2 + offsetY;
+        
+        ctx.fillText(selectedIcon, centerX, centerY);
+        
+        // Reset shadow effects
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+    }
+    
+    // Clear canvas with transparency
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
 
-    // Modal handling
+    if (effects.includes('gradient')) {
+        const {start, end} = GRADIENT_ANGLES[currentGradientAngle];
+        const gradient = ctx.createLinearGradient(
+            canvas.width * start[0], 
+            canvas.height * start[1],
+            canvas.width * end[0], 
+            canvas.height * end[1]
+        );
+        gradient.addColorStop(0, primaryColor);
+        gradient.addColorStop(1, secondaryColor);
+
+        ctx.fillStyle = gradient;
+        drawIcon(gradient);
+    }
+    
+    // Create final canvas with proper cropping
+    const finalCanvas = document.createElement('canvas');
+    const finalSize = size + (effects.includes('glow') ? baseGlowPadding : 0);
+    finalCanvas.width = finalSize;
+    finalCanvas.height = finalSize;
+    const finalCtx = finalCanvas.getContext('2d');
+    
+    // Draw the padded canvas onto the final canvas, preserving glow
+    finalCtx.drawImage(
+        canvas,
+        padding/2, padding/2, 
+        canvas.width - padding, canvas.height - padding,
+        0, 0, finalSize, finalSize
+    );
+
+    // Create download link
+    const link = document.createElement('a');
+    link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
+    link.href = finalCanvas.toDataURL('image/png');
+    link.click();
+}
+    
+    
+    
+    
     function initializeModals() {
         // Close modal when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
