@@ -999,7 +999,387 @@ to {
     font-size: 0.9em;
 }
 
+.animation-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 4px;
+    display: none;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
 
+.animation-list.active {
+    display: block;
+}
+
+.animation-list button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.animation-list button:hover {
+    background: var(--bg-tertiary);
+}
+
+#currentAnimation {
+    margin-left: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+/* Add your friend's animation keyframes CSS here */
+/* [Previous animation CSS goes here] */
+
+        /* Animations */
+        .bounce {
+            animation: bounce 1s infinite;
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        .shake {
+            animation: shake 0.5s infinite;
+        }
+
+        .spin {
+            animation: spin 1s infinite linear;
+        }
+
+        .flip {
+            animation: flip 1s infinite;
+        }
+
+        /* Additional animation classes */
+        .swing {
+            animation: swing 1s infinite;
+        }
+
+        .float {
+            animation: float 2s infinite ease-in-out;
+        }
+
+        .tada {
+            animation: tada 1.5s infinite;
+        }
+
+        .wobble {
+            animation: wobble 1s infinite;
+        }
+
+        .jello {
+            animation: jello 1s infinite;
+        }
+
+        .heartbeat {
+            animation: heartbeat 1s infinite;
+        }
+
+        .rubberBand {
+            animation: rubberBand 1s infinite;
+        }
+
+        .rollIn {
+            animation: rollIn 1s infinite;
+        }
+
+        .zoomPulse {
+            animation: zoomPulse 1.5s infinite;
+        }
+
+        .spiral {
+            animation: spiral 1.5s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes flip {
+            0% {
+                transform: perspective(400px) rotateY(0);
+            }
+
+            100% {
+                transform: perspective(400px) rotateY(360deg);
+            }
+        }
+
+        @keyframes swing {
+            20% {
+                transform: rotate(15deg);
+            }
+
+            40% {
+                transform: rotate(-10deg);
+            }
+
+            60% {
+                transform: rotate(5deg);
+            }
+
+            80% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px) scale(1.05);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes tada {
+            0% {
+                transform: scale(1);
+            }
+
+            10%,
+            20% {
+                transform: scale(0.9) rotate(-3deg);
+            }
+
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: scale(1.1) rotate(3deg);
+            }
+
+            40%,
+            60%,
+            80% {
+                transform: scale(1.1) rotate(-3deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes wobble {
+            0% {
+                transform: translateX(0%);
+            }
+
+            15% {
+                transform: translateX(-25%) rotate(-5deg);
+            }
+
+            30% {
+                transform: translateX(20%) rotate(3deg);
+            }
+
+            45% {
+                transform: translateX(-15%) rotate(-3deg);
+            }
+
+            60% {
+                transform: translateX(10%) rotate(2deg);
+            }
+
+            75% {
+                transform: translateX(-5%) rotate(-1deg);
+            }
+
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        @keyframes jello {
+
+            0%,
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            30% {
+                transform: scale3d(1.25, 0.75, 1);
+            }
+
+            40% {
+                transform: scale3d(0.75, 1.25, 1);
+            }
+
+            50% {
+                transform: scale3d(1.15, 0.85, 1);
+            }
+
+            65% {
+                transform: scale3d(0.95, 1.05, 1);
+            }
+
+            75% {
+                transform: scale3d(1.05, 0.95, 1);
+            }
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.3);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.3);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rubberBand {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            30% {
+                transform: scale3d(1.25, 0.75, 1);
+            }
+
+            40% {
+                transform: scale3d(0.75, 1.25, 1);
+            }
+
+            50% {
+                transform: scale3d(1.15, 0.85, 1);
+            }
+
+            65% {
+                transform: scale3d(.95, 1.05, 1);
+            }
+
+            75% {
+                transform: scale3d(1.05, .95, 1);
+            }
+
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        @keyframes rollIn {
+            0% {
+                transform: translateX(-100%) rotate(-120deg);
+            }
+
+            100% {
+                transform: translateX(0) rotate(0);
+            }
+        }
+
+        @keyframes zoomPulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spiral {
+            0% {
+                transform: rotate(0) scale(1);
+            }
+
+            50% {
+                transform: rotate(180deg) scale(0.5);
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
     </style>
 </head>
 
@@ -1229,7 +1609,30 @@ to {
                                 <button data-mode="lighten">Lighten</button>
                             </div>
                         </div>
-                        <button class="button effect-option" data-effect="new3">New Effect 3</button>
+                        <div class="split-button">
+                            <button class="button effect-option" data-effect="animation">
+                                Animate <span id="currentAnimation">None</span>
+                            </button>
+                            <button class="button dropdown-trigger">▼</button>
+                            <div class="animation-list">
+                                <button data-animation="none">None</button>
+                                <button data-animation="bounce">Bounce</button>
+                                <button data-animation="pulse">Pulse</button>
+                                <button data-animation="shake">Shake</button>
+                                <button data-animation="spin">Spin</button>
+                                <button data-animation="flip">Flip</button>
+                                <button data-animation="swing">Swing</button>
+                                <button data-animation="float">Float</button>
+                                <button data-animation="tada">Tada</button>
+                                <button data-animation="wobble">Wobble</button>
+                                <button data-animation="jello">Jello</button>
+                                <button data-animation="heartbeat">Heartbeat</button>
+                                <button data-animation="rubberBand">Rubber Band</button>
+                                <button data-animation="rollIn">Roll In</button>
+                                <button data-animation="zoomPulse">Zoom Pulse</button>
+                                <button data-animation="spiral">Spiral</button>
+                            </div>
+                        </div>
                         <button class="button effect-option" data-effect="new4">New Effect 4</button>
                     </div>
                 </div>
@@ -1486,126 +1889,388 @@ to {
 
     let currentGradientAngle = 'top-right'; // Default
 
-
-    // Working Icons Manager
     class WorkingIconsManager {
-        constructor() {
-            this.icons = new Map()
-            this.autoUpdate = false
-        }
+    constructor() {
+        this.icons = new Map();
+        this.autoUpdate = false;
+    }
 
-        generateIdentifier(config) {
-            return `${config.library}-${config.family}-${config.icon}-${new Date().toISOString().split('T')[0]
-                }`
-        }
+    generateIdentifier(config) {
+        return `${config.library}-${config.family}-${config.icon}-${new Date().toISOString().split('T')[0]}`;
+    }
 
-        addOrUpdateIcon(config) {
-            const identifier = this.generateIdentifier(config);
-
-            if (this.icons.has(identifier) && !this.autoUpdate) {
-                if (!confirm('Update existing icon configuration?')) {
-                    return false;
-                }
+    validateConfig(config) {
+        if (!config) return false;
+        
+        const requiredFields = [
+            'library',
+            'family',
+            'icon',
+            'primaryColor',
+            'secondaryColor',
+            'weight',
+            'fill',
+            'grade',
+            'size',
+            'offset',
+            'opacity'
+        ];
+        
+        return requiredFields.every(field => {
+            const hasField = config.hasOwnProperty(field);
+            if (!hasField) {
+                console.warn(`Missing required field: ${field}`);
             }
+            return hasField;
+        });
+    }
 
-            this.icons.set(identifier, {
-                ...config,
-                gradientAngle: currentGradientAngle,
-                timestamp: Date.now()
-            });
-
-            this.updateDisplay();
-            return true;
+    addOrUpdateIcon(config) {
+        if (!this.validateConfig(config)) {
+            console.error('Invalid configuration provided');
+            return false;
         }
 
-        updateWithoutConfirm(config) {
-            const identifier = this.generateIdentifier(config);
-            this.icons.set(identifier, {
-                ...config,
-                gradientAngle: currentGradientAngle,
-                timestamp: Date.now()
-            });
-            this.updateDisplay();
+        const identifier = this.generateIdentifier(config);
+
+        if (this.icons.has(identifier) && !this.autoUpdate) {
+            if (!confirm('Update existing icon configuration?')) {
+                return false;
+            }
         }
 
-        loadIcon(identifier) {
-            const config = this.icons.get(identifier)
-            if (config) {
-                // Store current icon before loading new one
-                if (selectedIcon) {
-                    const currentConfig = getCurrentConfiguration()
-                    const currentIdentifier = this.generateIdentifier(currentConfig)
+        this.icons.set(identifier, {
+            ...config,
+            gradientAngle: currentGradientAngle,
+            animation: document.getElementById('currentAnimation')?.textContent?.toLowerCase() || 'none',
+            timestamp: Date.now()
+        });
+
+        this.updateDisplay();
+        return true;
+    }
+
+    updateWithoutConfirm(config) {
+        if (!this.validateConfig(config)) {
+            console.error('Invalid configuration provided');
+            return false;
+        }
+
+        const identifier = this.generateIdentifier(config);
+        this.icons.set(identifier, {
+            ...config,
+            gradientAngle: currentGradientAngle,
+            animation: document.getElementById('currentAnimation')?.textContent?.toLowerCase() || 'none',
+            timestamp: Date.now()
+        });
+        this.updateDisplay();
+        return true;
+    }
+
+    loadIcon(identifier) {
+        const config = this.icons.get(identifier);
+        if (!config) {
+            console.error('Configuration not found for identifier:', identifier);
+            return;
+        }
+
+        if (!this.validateConfig(config)) {
+            console.error('Invalid stored configuration');
+            return;
+        }
+
+        try {
+            // Store current icon before loading new one
+            if (selectedIcon) {
+                const currentConfig = getCurrentConfiguration();
+                if (this.validateConfig(currentConfig)) {
+                    const currentIdentifier = this.generateIdentifier(currentConfig);
                     if (currentIdentifier !== identifier) {
-                        this.addOrUpdateIcon(currentConfig)
+                        this.addOrUpdateIcon(currentConfig);
                     }
                 }
-
-                // Load the selected configuration
-                loadConfiguration(config)
-                selectedIcon = config.icon
-                updatePreview()
-            }
-        }
-
-        removeIcon(identifier) {
-            this.icons.delete(identifier)
-            this.updateDisplay()
-        }
-
-        exportAllIcons() {
-            let css = '/* Icon Studio - Bulk Export */\n\n'
-            this.icons.forEach((config, identifier) => {
-                css += `/* ${config.icon} */\n`
-                if (config.library === 'material') {
-                    css += generateMaterialThemeCSS(config)
-                } else {
-                    css += generateFontAwesomeThemeCSS(config)
-                }
-                css += '\n\n'
-            })
-            return css
-        }
-
-        updateDisplay() {
-            const grid = document.getElementById('workingIconsGrid')
-            if (!grid) return
-
-            grid.innerHTML = ''
-
-            this.icons.forEach((config, identifier) => {
-                const iconElement = this.createIconElement(config, identifier)
-                grid.appendChild(iconElement)
-            })
-        }
-
-        createIconElement(config, identifier) {
-            const div = document.createElement('div')
-            div.className = 'working-icon'
-            div.innerHTML = `
-        <div class="icon-preview">
-            ${config.library === 'material'
-                    ? `<span class="material-symbols-${config.family}" 
-                     style="color: ${config.primaryColor}">${config.icon}</span>`
-                    : `<i class="fa-${config.family} fa-${config.icon}" 
-                     style="color: ${config.primaryColor}"></i>`
-                }
-        </div>
-        <span class="icon-name" data-name="${config.icon}">${config.icon}</span>
-        <button class="remove-icon" title="Remove">×</button>
-    `
-
-            // Add tooltip to show full configuration on hover
-            div.title = `${config.icon}\nPrimary: ${config.primaryColor}\nSecondary: ${config.secondaryColor}`
-
-            div.querySelector('.remove-icon').onclick = e => {
-                e.stopPropagation()
-                this.removeIcon(identifier)
             }
 
-            div.onclick = () => this.loadIcon(identifier)
-            return div
+            // Load the selected configuration
+            applyConfiguration(config);
+            selectedIcon = config.icon;
+            updatePreview();
+        } catch (error) {
+            console.error('Error loading icon configuration:', error);
         }
     }
+
+    removeIcon(identifier) {
+        this.icons.delete(identifier);
+        this.updateDisplay();
+    }
+
+
+exportAllIcons() {
+    let css = `/* Icon Studio Theme */
+/* Generated: ${new Date().toLocaleString()} */\n
+/* Theme Base Styles */
+.icon-theme-base {
+    --icon-primary: ${document.getElementById('primaryColor').value};
+    --icon-secondary: ${document.getElementById('secondaryColor').value};
+}
+
+/* Material Symbols Base Config */
+.material-symbols-base {
+    font-variation-settings: 
+        'FILL' ${document.getElementById('fillSlider').value},
+        'wght' ${document.getElementById('weightSlider').value},
+        'GRAD' ${document.getElementById('gradeSlider').value},
+        'opsz' ${document.getElementById('sizeSlider').value};
+}\n`;
+
+    // Get current animation
+    const currentAnimation = document.getElementById('currentAnimation').textContent.toLowerCase();
+    if (currentAnimation && currentAnimation !== 'none') {
+        css += `\n/* Animation */\n`;
+        if (currentLibrary === 'material') {
+            css += `.material-symbols-${currentFamily} {\n`;
+        } else {
+            css += `.fa-${currentFamily} {\n`;
+        }
+        css += `    animation: ${currentAnimation} 1s infinite;\n`;
+        css += `}\n`;
+        css += getAnimationKeyframes(currentAnimation) + '\n';
+    }
+
+    // Individual icon styles
+    this.icons.forEach((config, identifier) => {
+        css += `\n/* ${config.icon} */\n`;
+        if (config.library === 'material') {
+            css += `.icon-${config.icon.toLowerCase()} {\n`;
+            css += `    font-family: "Material Symbols ${config.family}";\n`;
+            css += `    content: "${config.icon}";\n`;
+            css += `    color: ${config.primaryColor};\n`;
+            if (config.animation && config.animation !== 'none') {
+                css += `    animation: ${config.animation} 1s infinite;\n`;
+            }
+            css += `}\n`;
+        } else {
+            css += `.icon-${config.icon.toLowerCase()} {\n`;
+            css += `    font-family: "Font Awesome 6 ${config.family}";\n`;
+            css += `    content: "${config.icon}";\n`;
+            css += `    color: ${config.primaryColor};\n`;
+            if (config.animation && config.animation !== 'none') {
+                css += `    animation: ${config.animation} 1s infinite;\n`;
+            }
+            css += `}\n`;
+        }
+    });
+
+    // Add usage guide
+    css += `\n/* Theme Usage Guide */
+/*
+Usage Examples:
+
+1. Basic icon usage:
+.icon {
+    font-family: inherit;
+    color: var(--icon-primary);
+}
+
+2. File browser usage:
+.file-browser-icon {
+    font-size: 24px;
+    color: var(--icon-primary);
+}
+
+3. Theme customization:
+.custom-theme {
+    --icon-primary: #FF0000;
+    --icon-secondary: #00FF00;
+}
+
+4. File type specific icons:
+.file-pdf { @extend .file-type-pdf; }
+.file-image { @extend .file-type-image; }
+.folder { @extend .file-type-folder; }
+
+5. Animation usage:
+.animated-icon { animation: [animation-name] 1s infinite; }
+*/`;
+
+    return css;
+}
+
+generateIconCSS(config) {
+    let css = '';
+    const iconName = config.icon.toLowerCase().replace(/_/g, '-');
+
+    if (config.library === 'material') {
+        css += `.icon-${iconName} {\n`;
+        css += `    font-family: "Material Symbols ${config.family}";\n`;
+        css += `    content: "${config.icon}";\n`;
+    } else {
+        css += `.icon-${iconName} {\n`;
+        css += `    font-family: "Font Awesome 6 ${config.family}";\n`;
+        css += `    content: "\\f${config.icon}";\n`;
+    }
+
+    css += `    color: ${config.primaryColor};\n`;
+    
+    if (config.animation && config.animation !== 'none') {
+        css += `    animation: ${config.animation} 1s infinite;\n`;
+    }
+
+    css += `}\n`;
+    return css;
+}
+
+generateFileTypeCSS(config) {
+    // Map common icons to file types
+    const fileTypeMap = {
+        // Material Icons mappings
+        folder: ['folder', 'directory'],
+        description: ['file', 'document'],
+        picture_as_pdf: ['pdf'],
+        image: ['image', 'img', 'picture', 'photo'],
+        videocam: ['video', 'movie'],
+        audiotrack: ['audio', 'music', 'sound'],
+        code: ['code', 'programming'],
+        archive: ['zip', 'archive', 'compressed'],
+        
+        // Font Awesome mappings
+        'folder': ['folder', 'directory'],
+        'file': ['file', 'document'],
+        'file-pdf': ['pdf'],
+        'file-image': ['image', 'img', 'picture', 'photo'],
+        'file-video': ['video', 'movie'],
+        'file-audio': ['audio', 'music', 'sound'],
+        'file-code': ['code', 'programming'],
+        'file-archive': ['zip', 'archive', 'compressed']
+    };
+
+    let css = '';
+    const iconName = config.icon.toLowerCase();
+    
+    if (fileTypeMap[iconName]) {
+        fileTypeMap[iconName].forEach(type => {
+            css += `\n/* ${type} file type */\n`;
+            css += `.file-type-${type} {\n`;
+            css += `    @extend .icon-${iconName};\n`;
+            css += `}\n`;
+        });
+    }
+
+    return css;
+}
+
+    updateDisplay() {
+        const grid = document.getElementById('workingIconsGrid');
+        if (!grid) {
+            console.error('Working icons grid not found');
+            return;
+        }
+
+        grid.innerHTML = '';
+
+        this.icons.forEach((config, identifier) => {
+            if (this.validateConfig(config)) {
+                const iconElement = this.createIconElement(config, identifier);
+                grid.appendChild(iconElement);
+            }
+        });
+    }
+
+    createIconElement(config, identifier) {
+        const div = document.createElement('div');
+        div.className = 'working-icon';
+        
+        try {
+            div.innerHTML = `
+                <div class="icon-preview">
+                    ${config.library === 'material'
+                        ? `<span class="material-symbols-${config.family}" 
+                           style="color: ${config.primaryColor}">${config.icon}</span>`
+                        : `<i class="fa-${config.family} fa-${config.icon}" 
+                           style="color: ${config.primaryColor}"></i>`
+                    }
+                </div>
+                <span class="icon-name" data-name="${config.icon}">${config.icon}</span>
+                <button class="remove-icon" title="Remove">×</button>
+            `;
+
+            // Add tooltip to show configuration details
+            div.title = `${config.icon}
+Primary: ${config.primaryColor}
+Secondary: ${config.secondaryColor}
+Animation: ${config.animation || 'none'}`;
+
+            div.querySelector('.remove-icon').onclick = e => {
+                e.stopPropagation();
+                if (confirm('Remove this icon?')) {
+                    this.removeIcon(identifier);
+                }
+            };
+
+            div.onclick = () => this.loadIcon(identifier);
+
+            // Apply animation if it exists
+            if (config.animation && config.animation !== 'none') {
+                const iconElement = div.querySelector('.material-symbols-outlined, .fa');
+                if (iconElement) {
+                    iconElement.classList.add(config.animation);
+                }
+            }
+
+        } catch (error) {
+            console.error('Error creating icon element:', error);
+            return document.createElement('div'); // Return empty div on error
+        }
+
+        return div;
+    }
+}
+
+// Helper function to apply configuration
+function applyConfiguration(config) {
+    try {
+        // Set library and family
+        if (currentLibrary !== config.library) {
+            switchLibrary(config.library);
+        }
+        if (currentFamily !== config.family) {
+            currentFamily = config.family;
+            updateFamilyButtons();
+        }
+
+        // Set colors
+        document.getElementById('primaryColor').value = config.primaryColor;
+        document.getElementById('secondaryColor').value = config.secondaryColor;
+        if (primaryPickr) primaryPickr.setColor(config.primaryColor);
+        if (secondaryPickr) secondaryPickr.setColor(config.secondaryColor);
+
+        // Set sliders
+        setSliderValue('weightSlider', config.weight);
+        setSliderValue('fillSlider', config.fill);
+        setSliderValue('gradeSlider', config.grade);
+        setSliderValue('sizeSlider', config.size);
+        setSliderValue('offsetSlider', config.offset);
+        setSliderValue('opacitySlider', config.opacity);
+
+        // Set animation
+        if (config.animation) {
+            document.getElementById('currentAnimation').textContent = 
+                config.animation === 'none' ? 'None' : 
+                config.animation.charAt(0).toUpperCase() + config.animation.slice(1);
+        }
+
+        // Update effects
+        document.querySelectorAll('.effect-option').forEach(option => {
+            if (config.effects) {
+                option.classList.toggle('active', config.effects.includes(option.dataset.effect));
+            }
+        });
+
+    } catch (error) {
+        console.error('Error applying configuration:', error);
+    }
+}
 
     // Initialize working icons manager
     const workingIconsManager = new WorkingIconsManager()
@@ -1630,6 +2295,8 @@ to {
                 initializeEventListeners();
                 initializeQuickFeatures();
                 initializeGradientControls();
+                initializeAnimations();
+
             }
         } catch (error) {
             console.error('Initialization error:', error)
@@ -2098,15 +2765,21 @@ to {
             })
         }
 
-        const exportAllBtn = document.getElementById('exportAllIcons')
-        if (exportAllBtn) {
-            exportAllBtn.addEventListener('click', () => {
-                const css = workingIconsManager.exportAllIcons()
-                const filename = `icon-studio-theme-all-${new Date().toISOString().split('T')[0]
-                    }.css`
-                downloadFile(css, filename, 'text/css')
-            })
-        }
+        // const exportAllBtn = document.getElementById('exportAllIcons')
+        // if (exportAllBtn) {
+        //     exportAllBtn.addEventListener('click', () => {
+        //         const css = workingIconsManager.exportAllIcons()
+        //         const filename = `icon-studio-theme-all-${new Date().toISOString().split('T')[0]
+        //             }.css`
+        //         downloadFile(css, filename, 'text/css')
+        //     })
+        // }
+
+        document.getElementById('exportAllIcons').addEventListener('click', () => {
+    const css = workingIconsManager.exportAllIcons();
+    const filename = `icon-studio-theme-${new Date().toISOString().split('T')[0]}.css`;
+    downloadFile(css, filename, 'text/css');
+});
 
         document
             .getElementById('librarySelect')
@@ -2334,6 +3007,22 @@ to {
             }
         }
 
+            // Apply animation class if selected
+    const animation = document.getElementById('currentAnimation').textContent.toLowerCase();
+    if (animation !== 'none') {
+        primaryIcon.classList.add(animation);
+        secondaryIcon.classList.add(animation);
+    } else {
+        // Remove all animation classes
+        const animations = ['bounce', 'pulse', 'shake', 'spin', 'flip', 'swing', 
+                          'float', 'tada', 'wobble', 'jello', 'heartbeat', 
+                          'rubberBand', 'rollIn', 'zoomPulse', 'spiral'];
+        animations.forEach(anim => {
+            primaryIcon.classList.remove(anim);
+            secondaryIcon.classList.remove(anim);
+        });
+    }
+
 
         updateCSS();
     }
@@ -2460,40 +3149,179 @@ to {
     }
 
     // CSS Generation Functions
+
     function updateCSS() {
-        if (!selectedIcon) return
+    if (!selectedIcon) return;
 
-        const weight = document.getElementById('weightSlider').value
-        const fill = document.getElementById('fillSlider').value
-        const grade = document.getElementById('gradeSlider').value
-        const size = document.getElementById('sizeSlider').value
-        const offset = document.getElementById('offsetSlider').value
-        const primaryColor = document.getElementById('primaryColor').value
-        const secondaryColor = document.getElementById('secondaryColor').value
-        const opacity = document.getElementById('opacitySlider').value
+    const weight = document.getElementById('weightSlider').value;
+    const fill = document.getElementById('fillSlider').value;
+    const grade = document.getElementById('gradeSlider').value;
+    const size = document.getElementById('sizeSlider').value;
+    const offset = document.getElementById('offsetSlider').value;
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
 
-        const activeEffects = Array.from(
-            document.querySelectorAll('.effect-option.active')
-        ).map(opt => opt.dataset.effect)
+    const activeEffects = Array.from(
+        document.querySelectorAll('.effect-option.active')
+    ).map(opt => opt.dataset.effect);
 
-        let css = ''
+    let css = '';
 
-        if (currentLibrary === 'material') {
-            css = generateMaterialCSS(
-                selectedIcon,
-                { weight, fill, grade, size, offset, primaryColor, secondaryColor },
-                activeEffects
-            )
-        } else {
-            css = generateFontAwesomeCSS(
-                selectedIcon,
-                { primaryColor, secondaryColor, offset, opacity },
-                activeEffects
-            )
-        }
+    if (currentLibrary === 'material') {
+        const className = `material-symbols-${currentFamily}`;
+        const iconName = selectedIcon.replace(/_/g, '-');
 
-        document.getElementById('cssCode').textContent = css
+        css = generateMaterialCSS(
+            selectedIcon,
+            { weight, fill, grade, size, offset, primaryColor, secondaryColor },
+            activeEffects
+        );
+    } else {
+        css = generateFontAwesomeCSS(
+            selectedIcon,
+            { primaryColor, secondaryColor, offset },
+            activeEffects
+        );
     }
+
+    // Add animation CSS if selected
+    const animation = document.getElementById('currentAnimation').textContent.toLowerCase();
+    if (animation !== 'none') {
+        css += `\n/* Animation */\n`;
+        if (currentLibrary === 'material') {
+            css += `.material-symbols-${currentFamily}.icon-${selectedIcon.replace(/_/g, '-')} {\n`;
+        } else {
+            css += `.fa-${currentFamily}.fa-${selectedIcon}-wrapper {\n`;
+        }
+        css += `    animation: ${animation} 1s infinite;\n}\n\n`;
+        
+        // Add keyframe definition
+        css += getAnimationKeyframes(animation);
+    }
+
+    document.getElementById('cssCode').textContent = css;
+}
+
+// Add this new helper function to get animation keyframes
+function getAnimationKeyframes(animation) {
+    const keyframes = {
+        bounce: `@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}`,
+        pulse: `@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}`,
+        shake: `@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}`,
+        spin: `@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}`,
+        flip: `@keyframes flip {
+    0% { transform: perspective(400px) rotateY(0); }
+    100% { transform: perspective(400px) rotateY(360deg); }
+}`,
+        swing: `@keyframes swing {
+    20% { transform: rotate(15deg); }
+    40% { transform: rotate(-10deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}`,
+        float: `@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px) scale(1.05); }
+    100% { transform: translateY(0); }
+}`,
+        tada: `@keyframes tada {
+    0% { transform: scale(1); }
+    10%, 20% { transform: scale(0.9) rotate(-3deg); }
+    30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+    40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0); }
+}`,
+        wobble: `@keyframes wobble {
+    0% { transform: translateX(0%); }
+    15% { transform: translateX(-25%) rotate(-5deg); }
+    30% { transform: translateX(20%) rotate(3deg); }
+    45% { transform: translateX(-15%) rotate(-3deg); }
+    60% { transform: translateX(10%) rotate(2deg); }
+    75% { transform: translateX(-5%) rotate(-1deg); }
+    100% { transform: translateX(0%); }
+}`,
+        jello: `@keyframes jello {
+    0%, 100% { transform: scale3d(1, 1, 1); }
+    30% { transform: scale3d(1.25, 0.75, 1); }
+    40% { transform: scale3d(0.75, 1.25, 1); }
+    50% { transform: scale3d(1.15, 0.85, 1); }
+    65% { transform: scale3d(0.95, 1.05, 1); }
+    75% { transform: scale3d(1.05, 0.95, 1); }
+}`,
+        heartbeat: `@keyframes heartbeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.3); }
+    70% { transform: scale(1); }
+}`,
+        rubberBand: `@keyframes rubberBand {
+    0% { transform: scale3d(1, 1, 1); }
+    30% { transform: scale3d(1.25, 0.75, 1); }
+    40% { transform: scale3d(0.75, 1.25, 1); }
+    50% { transform: scale3d(1.15, 0.85, 1); }
+    65% { transform: scale3d(.95, 1.05, 1); }
+    75% { transform: scale3d(1.05, .95, 1); }
+    100% { transform: scale3d(1, 1, 1); }
+}`,
+        rollIn: `@keyframes rollIn {
+    0% { transform: translateX(-100%) rotate(-120deg); }
+    100% { transform: translateX(0) rotate(0); }
+}`,
+        zoomPulse: `@keyframes zoomPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}`,
+        spiral: `@keyframes spiral {
+    0% { transform: rotate(0) scale(1); }
+    50% { transform: rotate(180deg) scale(0.5); }
+    100% { transform: rotate(360deg) scale(1); }
+}`
+    };
+
+    return keyframes[animation] || '';
+}
+
+// Modify generateThemeCSS to include animations
+function generateThemeCSS() {
+    const config = getCurrentConfiguration();
+    
+    let css = `/* Icon Studio Theme Export */\n/* Generated: ${new Date().toLocaleString()} */\n\n`;
+
+    if (currentLibrary === 'material') {
+        css += generateMaterialThemeCSS(config);
+    } else {
+        css += generateFontAwesomeThemeCSS(config);
+    }
+
+    // Add animation if selected
+    const animation = document.getElementById('currentAnimation').textContent.toLowerCase();
+    if (animation !== 'none') {
+        css += `\n/* Animation */\n`;
+        css += `.${currentLibrary === 'material' ? 'material-symbols-' + currentFamily : 'fa-' + currentFamily} {\n`;
+        css += `    animation: ${animation} 1s infinite;\n}\n\n`;
+        css += getAnimationKeyframes(animation);
+    }
+
+    return css;
+}
+
 
     function generateMaterialCSS(icon, options, effects) {
         const className = `material-symbols-${currentFamily}`
@@ -2640,7 +3468,9 @@ to {
             opacity: parseFloat(document.getElementById('opacitySlider').value),
             effects: Array.from(
                 document.querySelectorAll('.effect-option.active')
-            ).map(opt => opt.dataset.effect)
+            ).map(opt => opt.dataset.effect),
+            animation: document.getElementById('currentAnimation').textContent.toLowerCase()
+
         }
     }
 
@@ -2912,23 +3742,6 @@ to {
         modal.classList.add('active')
     }
 
-    function generateThemeCSS() {
-        const config = getCurrentConfiguration()
-
-        let css = `/* Icon Studio Theme Export */
-/* Generated: ${new Date().toLocaleString()} */\n\n`
-
-        if (currentLibrary === 'material') {
-            css += generateMaterialThemeCSS(config)
-        } else {
-            css += generateFontAwesomeThemeCSS(config)
-        }
-
-        // Add effect classes
-        css += generateEffectClassesCSS()
-
-        return css
-    }
 
     function generateMaterialThemeCSS(config) {
         return `/* Material Symbols Base Styles */
@@ -3205,6 +4018,62 @@ function getIconUnicode(iconName, family) {
 
     return iconData ? iconData.unicode : null;
 }
+
+
+function initializeAnimations() {
+    // Update selector to match your HTML structure
+    const animationButton = document.querySelector('.split-button .effect-option[data-effect="animation"]');
+    if (!animationButton) {
+        console.error('Animation button not found');
+        return;
+    }
+    
+    const animationList = animationButton.closest('.split-button').querySelector('.animation-list');
+    if (!animationList) {
+        console.error('Animation list not found');
+        return;
+    }
+
+    let currentAnimation = 'none';
+
+    // Toggle dropdown
+    const dropdownTrigger = animationButton.closest('.split-button').querySelector('.dropdown-trigger');
+    dropdownTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        animationList.classList.toggle('active');
+    });
+
+    // Handle animation selection
+    animationList.addEventListener('click', (e) => {
+        const button = e.target.closest('button');
+        if (button) {
+            const animation = button.dataset.animation;
+            currentAnimation = animation;
+            
+            // Update display
+            document.getElementById('currentAnimation').textContent = 
+                animation === 'none' ? 'None' : 
+                animation.charAt(0).toUpperCase() + animation.slice(1);
+            
+            // Update preview
+            updatePreview();
+            
+            // Update working icons if auto-update is enabled
+            if (document.getElementById('autoUpdateIcons').checked) {
+                const config = getCurrentConfiguration();
+                workingIconsManager.updateWithoutConfirm(config);
+            }
+            
+            animationList.classList.remove('active');
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        animationList.classList.remove('active');
+    });
+}
+
 
     function initializeModals() {
         // Close modal when clicking outside
