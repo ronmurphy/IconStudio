@@ -14,6 +14,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+
     <!-- Font Awesome -->
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"> -->
     <script src="https://kit.fontawesome.com/187c1afb2a.js" crossorigin="anonymous"></script>
@@ -25,909 +26,179 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <style>
-        /* Base Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Colors */
-            --bg-primary: #1e1e1e;
-            --bg-secondary: #252525;
-            --bg-tertiary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-primary: #2196f3;
-            --accent-secondary: #1976d2;
-            --border-color: #404040;
-
-            /* Spacing */
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 12px;
-            --spacing-lg: 16px;
-            --spacing-xl: 24px;
-
-            /* Sizes */
-            --sidebar-width: 240px;
-            --toolbar-height: 48px;
-            --panel-width: 280px;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-                sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            height: 100vh;
-            overflow: hidden;
-            display: grid;
-            grid-template-areas:
-                'header header header'
-                'workstrip workstrip workstrip'
-                'sidebar workspace panel';
-            grid-template-rows: var(--toolbar-height) auto 1fr;
-            grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
-        }
-
-        /* Header/Toolbar */
-        .app-header {
-            grid-area: header;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            padding: 0 var(--spacing-md);
-            gap: var(--spacing-md);
-        }
-
-        .app-title {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-right: auto;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            grid-area: sidebar;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .sidebar-content {
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        /* Main Workspace */
-        .workspace {
-            grid-area: workspace;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .workspace-content {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: var(--spacing-xl);
-        }
-
-        /* Right Panel */
-        .panel {
-            grid-area: panel;
-            background: var(--bg-secondary);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .panel-section {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .panel-content {
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        /* Common Components */
-        .button {
-            padding: var(--spacing-xs) var(--spacing-xs);
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .button:hover {
-            background: var(--accent-primary);
-        }
-
-        .button.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-secondary);
-        }
-
-        /* Search Bar */
-        .search-bar {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .search-input {
-            width: 100%;
-            padding: var(--spacing-sm);
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-        }
-
-        /* Icon Grid */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: var(--spacing-sm);
-            padding: var(--spacing-md);
-        }
-
-        .icon-item {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: var(--spacing-sm);
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .icon-item:hover {
-            background: var(--bg-secondary);
-            transform: translateY(-2px);
-        }
-
-        .icon-item.selected {
-            border-color: var(--accent-primary);
-            background: var(--accent-primary);
-        }
-
-        /* Workspace Specific Styles */
-        .workspace-toolbar {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            gap: var(--spacing-md);
-            align-items: center;
-        }
-
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .workspace-footer {
-            padding: var(--spacing-md);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Icon Preview */
-        .icon-preview {
-            position: relative;
-            padding: var(--spacing-xl);
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            min-width: 75px;
-            min-height: 75px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .preview-layers {
-            position: relative;
-            display: inline-block;
-        }
-
-        .preview-icon {
-            font-size: 96px;
-            display: block;
-        }
-
-        .preview-icon.primary {
-            position: relative;
-            z-index: 2;
-        }
-
-        .preview-icon.secondary {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        /* Panel Controls */
-        .panel-title {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .control-group {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .control-group label {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-xs);
-            font-size: 14px;
-        }
-
-        .control-group input[type='range'] {
-            width: 100%;
-            height: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 2px;
-            -webkit-appearance: none;
-        }
-
-        .control-group input[type='range']::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Effect Options */
-        .effect-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .effect-option {
-            width: 100%;
-            text-align: left;
-        }
-
-        /* Code Preview */
-        .code-block {
-            background: var(--bg-tertiary);
-            padding: var(--spacing-md);
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 14px;
-            white-space: pre-wrap;
-            overflow-x: auto;
-            color: var(--text-secondary);
-        }
-
-        /* Export Options */
-        .export-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-md);
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-header {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-body {
-            padding: var(--spacing-md);
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .modal-footer {
-            padding: var(--spacing-md);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: flex-end;
-            gap: var(--spacing-md);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        /* Library Selector */
-        .library-selector {
-            display: flex;
-            gap: var(--spacing-sm);
-        }
-
-        /* Style Selector */
-        .style-selector {
-            display: flex;
-            gap: var(--spacing-sm);
-        }
-
-        /* Pickr Customization */
-        .pickr {
-            width: 100%;
-        }
-
-        .pickr button {
-            width: 100%;
-            height: 32px;
-            border-radius: 4px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 1200px) {
-            body {
-                grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                grid-template-areas:
-                    'header header'
-                    'workspace panel';
-                grid-template-columns: 1fr var(--panel-width);
-            }
-
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: var(--toolbar-height);
-                bottom: 0;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-                z-index: 100;
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-        }
-
-        /* Notification styles */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            background: var(--bg-tertiary);
-            border-left: 4px solid var(--accent-primary);
-            border-radius: 4px;
-            color: var(--text-primary);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 2000;
-        }
-
-        .notification.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .notification.error {
-            border-color: #f44336;
-        }
-
-        /* Add these styles for better preview visibility */
-        .preview-icon {
-            font-size: 96px;
-            display: block;
-            min-height: 96px;
-            min-width: 96px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icon-preview.dark-bg {
-            background: #1a1a1a;
-        }
-
-        /* Add to your existing CSS */
-        .icon-name {
-            display: none;
-            position: absolute;
-            background: var(--bg-tertiary);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1000;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .icon-item:hover .icon-name {
-            display: block;
-        }
-
-        /* Style for the selected icon name in toolbar */
-        .selected-icon-name {
-            padding: 4px 8px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 14px;
-            margin-left: auto;
-            /* This will push it to the right of the zoom controls */
-        }
-
-        .color-pickers-row {
-            display: flex;
-            gap: var(--spacing-md);
-        }
-
-        .color-pickers-row .control-group {
-            flex: 1;
-        }
-
-        /* Tour styles */
-        .tour-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        .tour-highlight {
-            position: absolute;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
-            border: 2px solid var(--accent-primary);
-            border-radius: 4px;
-            z-index: 1001;
-            animation: pulse 2s infinite;
-        }
-
-        .tour-tooltip {
-            position: absolute;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 16px;
-            max-width: 300px;
-            z-index: 1002;
-            color: var(--text-primary);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .tour-tooltip-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 12px;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
-                    0 0 0 0 rgba(33, 150, 243, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
-                    0 0 0 10px rgba(33, 150, 243, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
-                    0 0 0 0 rgba(33, 150, 243, 0);
-            }
-        }
-
-        .tour-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: transparent;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        .tour-highlight {
-            position: absolute;
-            border: 2px solid var(--accent-primary);
-            border-radius: 4px;
-            z-index: 1001;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
-            }
-        }
-
-        /* Working Icons Strip */
-        .working-icons-strip {
-            grid-area: workstrip;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: var(--spacing-md);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .working-icons-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 var(--spacing-md);
-        }
-
-        .auto-update-toggle {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-        }
-
-        /* Toggle Switch Styles */
-        .toggle-label {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            cursor: pointer;
-            gap: var(--spacing-md);
-        }
-
-        .toggle-label input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 24px;
-            background: var(--bg-tertiary);
-            border-radius: 24px;
-            transition: 0.4s;
-        }
-
-        .toggle-slider:before {
-            content: '';
-            position: absolute;
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
-            background: var(--text-primary);
-            border-radius: 50%;
-            transition: 0.4s;
-        }
-
-        .toggle-label input:checked+.toggle-slider {
-            background: var(--accent-primary);
-        }
-
-        .toggle-label input:checked+.toggle-slider:before {
-            transform: translateX(24px);
-        }
-
-        /* Working Icons Grid */
-        .working-icons-grid {
-            display: flex;
-            gap: var(--spacing-md);
-            overflow-x: auto;
-            padding: var(--spacing-sm);
-            min-height: 100px;
-        }
-
-        .working-icon {
-            position: relative;
-            min-width: 94px;
-            height: 94px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: var(--spacing-sm);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .working-icon:hover {
-            background: var(--bg-primary);
-            transform: translateY(-2px);
-            transition: all 0.2s;
-        }
-
-        .working-icon .remove-icon {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .working-icon:hover .remove-icon {
-            opacity: 1;
-        }
-
-        .workspace-toolbar {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-        }
-
-        .toolbar-controls {
-            display: flex;
-            gap: var(--spacing-md);
-            align-items: center;
-        }
-
-        .working-icons-strip {
-            padding: var(--spacing-sm);
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-        }
-
-        .workspace {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .workspace-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: var(--spacing-xl);
-            min-height: 0;
-            /* Important for proper flex sizing */
-        }
-
-        .working-icons-strip {
-            border-top: 1px solid var(--border-color);
-            padding: var(--spacing-md);
-            background: var(--bg-secondary);
-            max-height: 245px;
-            /* Limit the height */
-            min-height: 120px;
-            /* Ensure minimum visibility */
-        }
-
-        .working-icons-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .working-icons-header h3 {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .working-icons-options {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-        }
-
-        .working-icons-grid {
-            display: flex;
-            gap: var(--spacing-md);
-            overflow-x: auto;
-            padding: var(--spacing-sm);
-            /* Smooth scrolling for the grid */
-            scroll-behavior: smooth;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-primary) var(--bg-tertiary);
-        }
-
-        /* Scrollbar styling */
-        .working-icons-grid::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .working-icons-grid::-webkit-scrollbar-track {
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-        }
-
-        .working-icons-grid::-webkit-scrollbar-thumb {
-            background: var(--accent-primary);
-            border-radius: 3px;
-        }
-
-        .workspace-toolbar {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .toolbar-group {
-            display: flex;
-            gap: var(--spacing-md);
-            align-items: center;
-        }
-
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        /* fix thie eventually */
-        .working-icons-strip {
-            border-top: 1px solid var(--border-color);
-            padding: var(--spacing-md);
-            background: var(--bg-secondary);
-            height: 182px;
-            /* Fixed height */
-            max-height: 240;
-        }
-
-        .working-icons-grid {
-            display: flex;
-            gap: var(--spacing-md);
-            overflow-x: auto;
-            padding: var(--spacing-sm);
-            height: 108px;
-            /* Control height of icons row */
-        }
-
-        .working-icon {
-            position: relative;
-            min-width: 84px;
-            /* Smaller width */
-            height: 84px;
-            /* Smaller height */
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: var(--spacing-xs);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .working-icon .icon-preview {
-            font-size: 24px;
-            /* Smaller icon size */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .working-icon .icon-name {
-            font-size: 9px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        .working-icon:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        /* Add tooltip for truncated names */
-        .working-icon .icon-name:hover {
-            position: relative;
-        }
-
-        .working-icon .icon-name:hover::after {
-            content: attr(data-name);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-tertiary);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1000;
-        }
-
-        /* end fix this eventually you lazy ass */
-
-        .workspace-toolbar {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #252525;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent-primary: #2196f3;
+    --accent-secondary: #1976d2;
+    --border-color: #404040;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --sidebar-width: 240px;
+    --toolbar-height: 48px;
+    --panel-width: 280px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-areas:
+    'header header header'
+    'workstrip workstrip workstrip'
+    'sidebar workspace panel';    grid-template-rows: var(--toolbar-height) auto 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr var(--panel-width);
+}
+
+.app-header {
+    grid-area: header;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+    gap: var(--spacing-md);
+}
+
+.app-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-right: auto;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sidebar-content {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.workspace {
+    grid-area: workspace;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.workspace-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl);
+    min-height: 0;
+}
+
+.panel {
+    grid-area: panel;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.panel-section {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-content {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.button {
+    padding: var(--spacing-xs) var(--spacing-xs);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button:hover {
+    background: var(--accent-primary);
+}
+
+.button.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-secondary);
+}
+
+.search-bar {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+}
+
+.icon-item {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.icon-item:hover {
+    background: var(--bg-secondary);
+    transform: translateY(-2px);
+}
+
+.icon-item.selected {
+    border-color: var(--accent-primary);
+    background: var(--accent-primary);
+}
+
+.workspace-toolbar {
             padding: var(--spacing-md);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -936,129 +207,556 @@
             background: var(--bg-secondary);
             height: var(--toolbar-height) + 5px;
             padding: 6px;
-        }
+}
 
-        .toolbar-left,
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-        }
+.toolbar-group {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
 
-        .zoom-controls {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .icon-info {
-            padding: 4px 8px;
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* Add to your CSS */
-        .temp-icon-render {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        .library-dropdown {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            min-width: 200px;
-            appearance: none;
-            position: relative;
-        }
-
-        .library-dropdown:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        /* Custom dropdown arrow */
-        .library-selector {
-            position: relative;
-        }
-
-        .library-selector::after {
-            content: '▼';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            pointer-events: none;
-            font-size: 12px;
-        }
-
-        /* Optgroup styling */
-        .library-dropdown optgroup {
-            background: var(--bg-secondary);
-            font-weight: 600;
-            padding: 8px 0;
-        }
-
-        .library-dropdown option {
-            background: var(--bg-tertiary);
-            padding: 8px 12px;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .loading-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-md);
-        }
-
-        .loading-icon {
-            font-size: 48px;
-            animation: spin 2s linear infinite;
-            color: var(--accent-primary);
-        }
-
-        .loading-text {
-            color: var(--text-primary);
-            font-size: 16px;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .library-controls {
+.toolbar-left {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.workspace-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-preview {
+    position: relative;
+    padding: var(--spacing-xl);
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    min-width: 75px;
+    min-height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-layers {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-icon {
+    font-size: 96px;
+    display: flex;
+    min-height: 96px;
+    min-width: 96px;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-icon.primary {
+    position: relative;
+    z-index: 2;
+}
+
+.preview-icon.secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.panel-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+}
+
+.control-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.control-group label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+    font-size: 14px;
+}
+
+.control-group input[type='range'] {
+    width: 100%;
+    height: 4px;
+    background: var(--bg-tertiary);
+    border-radius: 2px;
+    -webkit-appearance: none;
+}
+
+.control-group input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.effect-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.effect-option {
+    width: 100%;
+    text-align: left;
+}
+
+.code-block {
+    background: var(--bg-tertiary);
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    color: var(--text-secondary);
+}
+
+.export-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.library-selector {
+    display: flex;
+    gap: var(--spacing-sm);
+    position: relative;
+}
+
+.style-selector {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.pickr {
+    width: 100%;
+}
+
+.pickr button {
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 24px;
+    background: var(--bg-tertiary);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 4px;
+    color: var(--text-primary);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2000;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification.error {
+    border-color: #f44336;
+}
+
+.icon-preview.dark-bg {
+    background: #1a1a1a;
+}
+
+.icon-name {
+    display: none;
+    position: absolute;
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.icon-item:hover .icon-name {
+    display: block;
+}
+
+.selected-icon-name {
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+.color-pickers-row {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.color-pickers-row .control-group {
+    flex: 1;
+}
+
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.tour-highlight {
+    position: absolute;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--accent-primary);
+    border-radius: 4px;
+    z-index: 1001;
+    animation: pulse 2s infinite;
+}
+
+.tour-tooltip {
+    position: absolute;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 16px;
+    max-width: 300px;
+    z-index: 1002;
+    color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tour-tooltip-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 0 0 rgba(33, 150, 243, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 0 10px rgba(33, 150, 243, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7),
+            0 0 0 0 rgba(33, 150, 243, 0);
+    }
+}
+
+.working-icons-strip {
+    grid-area: workstrip;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    border-radius: 4px;
+    border-top: 1px solid var(--border-color);
+    max-height: 240;
+    min-height: 120px;
+    height: 182px;
+}
+
+.working-icons-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+    gap: var(--spacing-md);
+}
+
+.auto-update-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.toggle-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: var(--spacing-md);
+}
+
+.toggle-label input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    transition: 0.4s;
+}
+
+.toggle-slider:before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.toggle-label input:checked+.toggle-slider {
+    background: var(--accent-primary);
+}
+
+.toggle-label input:checked+.toggle-slider:before {
+    transform: translateX(24px);
+}
+
+.working-icons-grid {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    padding: var(--spacing-sm);
+    min-height: 100px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) var(--bg-tertiary);
+    height: 108px;
+}
+
+.working-icon {
+    position: relative;
+    min-width: 84px;
+    height: 84px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.working-icon:hover {
+    background: var(--bg-primary);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.working-icon .remove-icon {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.working-icon:hover .remove-icon {
+    opacity: 1;
+}
+
+.toolbar-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.working-icons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.working-icons-header h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.working-icons-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.working-icons-grid::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+
+.working-icons-grid::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 3px;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.working-icon .icon-preview {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.working-icon .icon-name {
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.working-icon .icon-name:hover {
+    position: relative;
+}
+
+.working-icon .icon-name:hover::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.icon-info {
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.temp-icon-render {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .library-dropdown {
@@ -1067,32 +765,93 @@
     border: 1px solid var(--border-color);
     padding: 8px 12px;
     border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
     min-width: 200px;
     appearance: none;
     position: relative;
+}
+
+.library-dropdown:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.library-selector::after {
+    content: '▼';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    font-size: 12px;
+}
+
+.library-dropdown optgroup {
+    background: var(--bg-secondary);
+    font-weight: 600;
+    padding: 8px 0;
+}
+
+.library-dropdown option {
+    background: var(--bg-tertiary);
+    padding: 8px 12px;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.loading-icon {
+    font-size: 48px;
+    animation: spin 2s linear infinite;
+    color: var(--accent-primary);
+}
+
+.loading-text {
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+from {
+    transform: rotate(0deg);
+}
+
+to {
+    transform: rotate(360deg);
+}
+
+.library-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
 .help-button {
     margin-left: var(--spacing-sm);
 }
 
-/* Style for the icon count info */
 .library-info {
     font-size: 12px;
     color: var(--text-secondary);
     margin-top: 4px;
-}
-
-.icon-count-badge {
-    padding: 2px 6px;
-    background: var(--bg-tertiary);
-    border-radius: 4px;
-    font-family: monospace;
-}
-.library-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
 }
 
 .icon-count-badge {
@@ -1105,15 +864,9 @@
     min-width: fit-content;
 }
 
-.color-pickers-row {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
 .swap-colors-btn {
     align-self: flex-end;
-    margin-bottom: 4px; /* Align with color pickers */
+    margin-bottom: 4px;
     padding: 4px;
 }
 
@@ -1121,22 +874,31 @@
     font-size: 20px;
 }
 
-
 .split-button {
     position: relative;
-    display: inline-flex;
+    display: flex;
     align-items: stretch;
+    flex-direction: column;
 }
 
 .split-button .effect-option {
-    border-radius: 4px 0 0 4px;
+    border-radius: 4px;
     flex-grow: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .split-button .dropdown-trigger {
     border-radius: 0 4px 4px 0;
     padding: 0 8px;
     border-left: 1px solid var(--border-color);
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 24px;
 }
 
 .gradient-angles {
@@ -1148,6 +910,8 @@
     border-radius: 4px;
     display: none;
     z-index: 1000;
+    left: 0;
+    margin-top: 4px;
 }
 
 .gradient-angles.active {
@@ -1155,7 +919,7 @@
 }
 
 .gradient-angles button {
-    display: block;
+    display: flex;
     width: 100%;
     padding: 8px 16px;
     border: none;
@@ -1163,22 +927,12 @@
     color: var(--text-primary);
     text-align: left;
     cursor: pointer;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
 .gradient-angles button:hover {
     background: var(--bg-tertiary);
-}
-
-.gradient-angles button {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    width: 100%;
-    padding: 8px 16px;
-    border: none;
-    background: none;
-    color: var(--text-primary);
-    cursor: pointer;
 }
 
 .gradient-angles button .material-symbols-outlined {
@@ -1195,8 +949,6 @@
     font-size: 18px;
 }
 
-
-
 .effects-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1209,38 +961,7 @@
     gap: var(--spacing-sm);
 }
 
-.effect-options {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-/* Updated split button styles */
-.split-button {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.split-button .effect-option {
-    border-radius: 4px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.split-button .dropdown-trigger {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 24px;
-    border-radius: 0 4px 4px 0;
-    border-left: 1px solid var(--border-color);
-}
-
-.gradient-angles {
+.blend-modes {
     position: absolute;
     top: 100%;
     left: 0;
@@ -1249,8 +970,36 @@
     border: 1px solid var(--border-color);
     border-radius: 4px;
     margin-top: 4px;
+    display: none;
     z-index: 1000;
 }
+
+.blend-modes.active {
+    display: block;
+}
+
+.blend-modes button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.blend-modes button:hover {
+    background: var(--bg-tertiary);
+}
+
+#currentBlendMode {
+    margin-left: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+
     </style>
 </head>
 
@@ -1290,7 +1039,7 @@
         </div>
         <div class="style-selector" style="display: none">
             <!-- Dynamically populated based on selected library -->
-       </div>
+        </div>
 
     </header>
 
@@ -1380,21 +1129,21 @@
     <aside class="panel">
         <div class="panel-section">
             <h2 class="panel-title">Style</h2>
-                <div class="color-pickers-row">
-                    <div class="control-group">
-                        <label>Primary Color</label>
-                        <div id="primaryColorPicker"></div>
-                    </div>
-                    <button class="button swap-colors-btn" id="swapColorsBtn" title="Swap Primary/Secondary Colors">
-                        <span class="material-symbols-outlined">swap_horiz</span>
-                    </button>
-                    <div class="control-group">
-                        <label>Secondary Color</label>
-                        <div id="secondaryPicker"></div>
-                    </div>
+            <div class="color-pickers-row">
+                <div class="control-group">
+                    <label>Primary Color</label>
+                    <div id="primaryColorPicker"></div>
                 </div>
-
+                <button class="button swap-colors-btn" id="swapColorsBtn" title="Swap Primary/Secondary Colors">
+                    <span class="material-symbols-outlined">swap_horiz</span>
+                </button>
+                <div class="control-group">
+                    <label>Secondary Color</label>
+                    <div id="secondaryPicker"></div>
+                </div>
             </div>
+
+        </div>
         </div>
 
         <div class="panel-content">
@@ -1427,77 +1176,64 @@
                 </div>
             </div>
 
-            <!-- Common Controls -->
-            <!-- <div class="panel-section">
+            <div class="panel-section">
                 <h3>Effects</h3>
-                <div class="control-group">
-                    <label>Offset <span id="offsetValue">2</span>px</label>
-                    <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2" />
-                </div>
-                <div class="effect-options">
-                    <button class="button effect-option" data-effect="shadow">
-                        Drop Shadow
-                    </button>
-                    <button class="button effect-option" data-effect="glow">
-                        Glow Effect
-                    </button>
-
-
-                    <div class="split-button">
-                        Gradient <span id="currentGradientDirection" class="material-symbols-outlined">north_east</span>
-                        <button class="button dropdown-trigger">▼</button>
-                        <div class="gradient-angles"> -->
-
-
-    <div class="panel-section">
-    <h3>Effects</h3>
-    <div class="effects-grid">
-        <!-- Left Column -->
-        <div class="effects-column">
-            <div class="control-group">
-                <label>Offset <span id="offsetValue">2</span>px</label>
-                <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2">
-            </div>
-            <div class="effect-options">
-                <button class="button effect-option" data-effect="shadow">Drop Shadow</button>
-                <button class="button effect-option" data-effect="glow">Glow Effect</button>
-                <div class="split-button">
-                    <button class="button effect-option" data-effect="gradient">
-                        Gradient <span id="currentGradientDirection" class="material-symbols-outlined">north_east</span>
-                    </button>
-                    <button class="button dropdown-trigger">▼</button>
-                    <div class="gradient-angles">
-                            <button data-angle="top-right">
-                                <span class="material-symbols-outlined">north_east</span> Top Right
+                <div class="effects-grid">
+                    <div class="effects-column">
+                        <div class="control-group">
+                            <label>Offset <span id="offsetValue">2</span>px</label>
+                            <input type="range" id="offsetSlider" min="0" max="5" step="0.5" value="2">
+                        </div>
+                        <button class="button effect-option" data-effect="shadow">Drop Shadow</button>
+                        <button class="button effect-option" data-effect="glow">Glow Effect</button>
+                        <div class="split-button">
+                            <button class="button effect-option" data-effect="gradient">
+                                Gradient <span id="currentGradientDirection"
+                                    class="material-symbols-outlined">north_east</span>
                             </button>
-                            <button data-angle="top-left">
-                                <span class="material-symbols-outlined">north_west</span> Top Left
-                            </button>
-                            <button data-angle="bottom-right">
-                                <span class="material-symbols-outlined">south_east</span> Bottom Right
-                            </button>
-                            <button data-angle="bottom-left">
-                                <span class="material-symbols-outlined">south_west</span> Bottom Left
-                            </button>
+                            <button class="button dropdown-trigger">▼</button>
+                            <div class="gradient-angles">
+                                <button data-angle="top-right">
+                                    <span class="material-symbols-outlined">north_east</span> Top Right
+                                </button>
+                                <button data-angle="top-left">
+                                    <span class="material-symbols-outlined">north_west</span> Top Left
+                                </button>
+                                <button data-angle="bottom-right">
+                                    <span class="material-symbols-outlined">south_east</span> Bottom Right
+                                </button>
+                                <button data-angle="bottom-left">
+                                    <span class="material-symbols-outlined">south_west</span> Bottom Left
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="effects-column">
-                <div class="effect-options">
+
+                    <!-- Right Column -->
                     <div class="effects-column">
                         <div class="control-group">
                             <label>Rotation <span id="rotateValue">0</span>°</label>
                             <input type="range" id="rotateSlider" min="0" max="360" step="45" value="0">
                         </div>
-                    <button class="button effect-option" data-effect="new2">New Effect 2</button>
-                    <button class="button effect-option" data-effect="new3">New Effect 3</button>
-                    <button class="button effect-option" data-effect="new4">New Effect 4</button>
+                        <div class="split-button" data-effect="blend">
+                            <button class="button effect-option" data-effect="blend">
+                                Blend <span id="currentBlendMode">Normal</span>
+                            </button>
+                            <button class="button dropdown-trigger">▼</button>
+                            <div class="blend-modes">
+                                <button data-mode="normal">Normal</button>
+                                <button data-mode="multiply">Multiply</button>
+                                <button data-mode="screen">Screen</button>
+                                <button data-mode="overlay">Overlay</button>
+                                <button data-mode="darken">Darken</button>
+                                <button data-mode="lighten">Lighten</button>
+                            </div>
+                        </div>
+                        <button class="button effect-option" data-effect="new3">New Effect 3</button>
+                        <button class="button effect-option" data-effect="new4">New Effect 4</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
 
 
             <!-- Export Section -->
@@ -1738,30 +1474,17 @@
     let currentLibrary = 'material'
     let currentFamily = 'outlined'
     let zoomLevel = 100
-    let primaryPickr, secondaryPickr; 
+    let primaryPickr, secondaryPickr;
+    let currentBlendMode = 'normal';
 
-// const GRADIENT_ANGLES = {
-//     'bottom-left': { start: [0, 0], end: [1, 1] },        // 45 degrees - bottom right x
-//     'top-left': { start: [1, 0], end: [0, 1] },         // 135 degrees - bottom left x
-//     'bottom-right': { start: [0, 1], end: [1, 0] },     // -45 degrees - top right x
-//     'top-right': { start: [1, 1], end: [0, 0] }       // -135 degrees - top left
-// };
+    const GRADIENT_DIRECTIONS = {
+        'top-right': { angle: 225, coords: { start: [1, 0], end: [0, 1] } },    // Primary color starts at top-right
+        'top-left': { angle: 135, coords: { start: [0, 0], end: [1, 1] } },     // Primary color starts at top-left
+        'bottom-right': { angle: 315, coords: { start: [1, 1], end: [0, 0] } }, // Primary color starts at bottom-right
+        'bottom-left': { angle: 45, coords: { start: [0, 1], end: [1, 0] } }    // Primary color starts at bottom-left
+    };
 
-// const GRADIENT_DIRECTIONS = {
-//     'bottom-left': { angle: 45, coords: { start: [0, 0], end: [1, 1] } },
-//     'top-left': { angle: 135, coords: { start: [1, 0], end: [0, 1] } },
-//     'bottom-right': { angle: 315, coords: { start: [0, 1], end: [1, 0] } },
-//     'top-right': { angle: 225, coords: { start: [1, 1], end: [0, 0] } }
-// };
-
-const GRADIENT_DIRECTIONS = {
-    'top-right': { angle: 225, coords: { start: [1, 0], end: [0, 1] } },    // Primary color starts at top-right
-    'top-left': { angle: 135, coords: { start: [0, 0], end: [1, 1] } },     // Primary color starts at top-left
-    'bottom-right': { angle: 315, coords: { start: [1, 1], end: [0, 0] } }, // Primary color starts at bottom-right
-    'bottom-left': { angle: 45, coords: { start: [0, 1], end: [1, 0] } }    // Primary color starts at bottom-left
-};
-
-let currentGradientAngle = 'top-right'; // Default
+    let currentGradientAngle = 'top-right'; // Default
 
 
     // Working Icons Manager
@@ -1777,33 +1500,33 @@ let currentGradientAngle = 'top-right'; // Default
         }
 
         addOrUpdateIcon(config) {
-        const identifier = this.generateIdentifier(config);
+            const identifier = this.generateIdentifier(config);
 
-        if (this.icons.has(identifier) && !this.autoUpdate) {
-            if (!confirm('Update existing icon configuration?')) {
-                return false;
+            if (this.icons.has(identifier) && !this.autoUpdate) {
+                if (!confirm('Update existing icon configuration?')) {
+                    return false;
+                }
             }
+
+            this.icons.set(identifier, {
+                ...config,
+                gradientAngle: currentGradientAngle,
+                timestamp: Date.now()
+            });
+
+            this.updateDisplay();
+            return true;
         }
 
-        this.icons.set(identifier, {
-            ...config,
-            gradientAngle: currentGradientAngle,
-            timestamp: Date.now()
-        });
-
-        this.updateDisplay();
-        return true;
-    }
-
-    updateWithoutConfirm(config) {
-        const identifier = this.generateIdentifier(config);
-        this.icons.set(identifier, {
-            ...config,
-            gradientAngle: currentGradientAngle,
-            timestamp: Date.now()
-        });
-        this.updateDisplay();
-    }
+        updateWithoutConfirm(config) {
+            const identifier = this.generateIdentifier(config);
+            this.icons.set(identifier, {
+                ...config,
+                gradientAngle: currentGradientAngle,
+                timestamp: Date.now()
+            });
+            this.updateDisplay();
+        }
 
         loadIcon(identifier) {
             const config = this.icons.get(identifier)
@@ -1976,23 +1699,23 @@ let currentGradientAngle = 'top-right'; // Default
     }
 
     function updateIconCount() {
-    const dropdown = document.getElementById('librarySelect');
-    const countDisplay = document.getElementById('iconCount');
-    const selected = dropdown.value;
-    const [library, family] = selected.split('-');
+        const dropdown = document.getElementById('librarySelect');
+        const countDisplay = document.getElementById('iconCount');
+        const selected = dropdown.value;
+        const [library, family] = selected.split('-');
 
-    let count;
-    if (library === 'material') {
-        count = `${iconLibraries.material.length} Material icons`;
-    } else {
-        count = `${iconLibraries.fa[family].length} Font Awesome ${family} icons`;
-    }
+        let count;
+        if (library === 'material') {
+            count = `${iconLibraries.material.length} Material icons`;
+        } else {
+            count = `${iconLibraries.fa[family].length} Font Awesome ${family} icons`;
+        }
 
-    // For the badge version
-    if (countDisplay) {
-        countDisplay.textContent = count;
+        // For the badge version
+        if (countDisplay) {
+            countDisplay.textContent = count;
+        }
     }
-}
 
     function initializeLibrarySelectors() {
         // Populate style selector based on current library
@@ -2042,85 +1765,85 @@ let currentGradientAngle = 'top-right'; // Default
         updateStyleButtons(currentLibrary)
     }
 
-function initializeGradientControls() {
-    const dropdownTrigger = document.querySelector('.split-button .dropdown-trigger');
-    const gradientAngles = document.querySelector('.gradient-angles');
+    function initializeGradientControls() {
+        const dropdownTrigger = document.querySelector('.split-button .dropdown-trigger');
+        const gradientAngles = document.querySelector('.gradient-angles');
 
-    // Toggle dropdown
-    dropdownTrigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        gradientAngles.classList.toggle('active');
-    });
+        // Toggle dropdown
+        dropdownTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            gradientAngles.classList.toggle('active');
+        });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', () => {
-        gradientAngles.classList.remove('active');
-    });
-
-    // Handle angle selection
-    gradientAngles.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
-    if (button) {
-        currentGradientAngle = button.dataset.angle;
-        
-        // Update the direction indicator
-        const directionIcon = document.getElementById('currentGradientDirection');
-        // Map direction to icon name
-        const iconMap = {
-            'top-right': 'north_east',
-            'top-left': 'north_west',
-            'bottom-right': 'south_east',
-            'bottom-left': 'south_west'
-        };
-        directionIcon.textContent = iconMap[currentGradientAngle];
-
-            if (selectedIcon) {
-                // Just update preview - it handles everything now
-                updatePreview();
-
-                // Silently update working icons without confirmation
-                const config = getCurrentConfiguration();
-                config.gradientAngle = currentGradientAngle;
-                workingIconsManager.updateWithoutConfirm(config);
-            }
-            
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
             gradientAngles.classList.remove('active');
-        }
-    });
-}
+        });
+
+        // Handle angle selection
+        gradientAngles.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (button) {
+                currentGradientAngle = button.dataset.angle;
+
+                // Update the direction indicator
+                const directionIcon = document.getElementById('currentGradientDirection');
+                // Map direction to icon name
+                const iconMap = {
+                    'top-right': 'north_east',
+                    'top-left': 'north_west',
+                    'bottom-right': 'south_east',
+                    'bottom-left': 'south_west'
+                };
+                directionIcon.textContent = iconMap[currentGradientAngle];
+
+                if (selectedIcon) {
+                    // Just update preview - it handles everything now
+                    updatePreview();
+
+                    // Silently update working icons without confirmation
+                    const config = getCurrentConfiguration();
+                    config.gradientAngle = currentGradientAngle;
+                    workingIconsManager.updateWithoutConfirm(config);
+                }
+
+                gradientAngles.classList.remove('active');
+            }
+        });
+    }
 
 
     function initializeQuickFeatures() {
-    document.getElementById('swapColorsBtn').addEventListener('click', () => {
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
-        
-        // Swap colors using our stored Pickr instances
-        primaryPickr.setColor(secondaryColor);
-        secondaryPickr.setColor(primaryColor);
-        
-        // Update hidden inputs
-        document.getElementById('primaryColor').value = secondaryColor;
-        document.getElementById('secondaryColor').value = primaryColor;
-        
-        // Update preview
-        updatePreview();
-    });
+        document.getElementById('swapColorsBtn').addEventListener('click', () => {
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
 
-    // Auto-save toggle
-    const autoSaveCheckbox = document.getElementById('autoSaveIcons');
-    autoSaveCheckbox.checked = localStorage.getItem('autoSaveIcons') === 'true';
-    
-    autoSaveCheckbox.addEventListener('change', (e) => {
-        localStorage.setItem('autoSaveIcons', e.target.checked);
-    });
-}
+            // Swap colors using our stored Pickr instances
+            primaryPickr.setColor(secondaryColor);
+            secondaryPickr.setColor(primaryColor);
+
+            // Update hidden inputs
+            document.getElementById('primaryColor').value = secondaryColor;
+            document.getElementById('secondaryColor').value = primaryColor;
+
+            // Update preview
+            updatePreview();
+        });
+
+        // Auto-save toggle
+        const autoSaveCheckbox = document.getElementById('autoSaveIcons');
+        autoSaveCheckbox.checked = localStorage.getItem('autoSaveIcons') === 'true';
+
+        autoSaveCheckbox.addEventListener('change', (e) => {
+            localStorage.setItem('autoSaveIcons', e.target.checked);
+        });
+    }
 
     // Color picker initialization
     function initializeColorPickers() {
         try {
             // Primary color picker
-             primaryPickr = Pickr.create({
+            primaryPickr = Pickr.create({
                 el: '#primaryColorPicker',
                 theme: 'nano',
                 default: '#000000',
@@ -2149,7 +1872,7 @@ function initializeGradientControls() {
             })
 
             // Secondary color picker
-             secondaryPickr = Pickr.create({
+            secondaryPickr = Pickr.create({
                 el: '#secondaryPicker',
                 theme: 'nano',
                 default: '#666666',
@@ -2202,42 +1925,42 @@ function initializeGradientControls() {
 
 
     function initializeIconGrid() {
-    const grid = document.getElementById('iconGrid');
-    grid.innerHTML = ''; // Clear existing icons
-    
-    if (currentLibrary === 'material') {
-        iconLibraries.material.forEach(icon => {
-            createIconElement(icon, 'material', grid);  // Pass grid as parameter
-        });
-    } else {
-        // Get the correct FA icon list based on family
-        const icons = iconLibraries.fa[currentFamily] || [];
-        icons.forEach(icon => {
-            createIconElement(icon, 'fa', grid);  // Pass grid as parameter
-        });
-    }
-}
+        const grid = document.getElementById('iconGrid');
+        grid.innerHTML = ''; // Clear existing icons
 
-function createIconElement(icon, library, grid) {  // Add grid parameter
-    const div = document.createElement('div');
-    div.className = 'icon-item';
-    
-    if (library === 'material') {
-        div.innerHTML = `
+        if (currentLibrary === 'material') {
+            iconLibraries.material.forEach(icon => {
+                createIconElement(icon, 'material', grid);  // Pass grid as parameter
+            });
+        } else {
+            // Get the correct FA icon list based on family
+            const icons = iconLibraries.fa[currentFamily] || [];
+            icons.forEach(icon => {
+                createIconElement(icon, 'fa', grid);  // Pass grid as parameter
+            });
+        }
+    }
+
+    function createIconElement(icon, library, grid) {  // Add grid parameter
+        const div = document.createElement('div');
+        div.className = 'icon-item';
+
+        if (library === 'material') {
+            div.innerHTML = `
             <span class="material-symbols-${currentFamily}">${icon}</span>
             <span class="icon-name">${icon}</span>
         `;
-    } else {
-        const prefix = getFAPrefix(currentFamily);
-        div.innerHTML = `
+        } else {
+            const prefix = getFAPrefix(currentFamily);
+            div.innerHTML = `
             <i class="${prefix} fa-${icon}"></i>
             <span class="icon-name">${icon}</span>
         `;
+        }
+
+        div.addEventListener('click', () => selectIcon(icon, div));
+        grid.appendChild(div);
     }
-    
-    div.addEventListener('click', () => selectIcon(icon, div));
-    grid.appendChild(div);
-}
 
     function getFAPrefix(family) {
         switch (family) {
@@ -2301,9 +2024,38 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
         })
 
         document.getElementById('rotateSlider').addEventListener('input', (e) => {
-    document.getElementById('rotateValue').textContent = e.target.value;
-    updatePreview();
-});
+            document.getElementById('rotateValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        // blend mode
+        const blendButton = document.querySelector('.split-button[data-effect="blend"]');
+        const modesList = blendButton.querySelector('.blend-modes');
+
+        // Toggle dropdown
+        blendButton.querySelector('.dropdown-trigger').addEventListener('click', (e) => {
+            e.stopPropagation();
+            modesList.classList.toggle('active');
+        });
+
+        // Handle mode selection
+        modesList.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (button) {
+                currentBlendMode = button.dataset.mode;
+                document.getElementById('currentBlendMode').textContent =
+                    currentBlendMode.charAt(0).toUpperCase() + currentBlendMode.slice(1);
+                updatePreview();
+                modesList.classList.remove('active');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            modesList.classList.remove('active');
+        });
+
+
 
         // Search functionality
         document.getElementById('searchInput').addEventListener('input', e => {
@@ -2457,11 +2209,11 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
 
 
 
-                    // Store current icon if auto-save is enabled
-        if (selectedIcon && document.getElementById('autoSaveIcons').checked) {
-            const currentConfig = getCurrentConfiguration();
-            workingIconsManager.addOrUpdateIcon(currentConfig);
-        }
+            // Store current icon if auto-save is enabled
+            if (selectedIcon && document.getElementById('autoSaveIcons').checked) {
+                const currentConfig = getCurrentConfiguration();
+                workingIconsManager.addOrUpdateIcon(currentConfig);
+            }
 
             // Remove previous selection
             document
@@ -2495,111 +2247,119 @@ function createIconElement(icon, library, grid) {  // Add grid parameter
     }
 
     function updatePreview() {
-    if (!selectedIcon) return;
+        if (!selectedIcon) return;
 
-    const previewSection = document.getElementById('previewSection');
-    if (!previewSection) return;
+        const previewSection = document.getElementById('previewSection');
+        if (!previewSection) return;
 
-    // Get active effects
-    const effects = Array.from(document.querySelectorAll('.effect-option.active'))
-        .map(opt => opt.dataset.effect);
+        // Get active effects
+        const effects = Array.from(document.querySelectorAll('.effect-option.active'))
+            .map(opt => opt.dataset.effect);
 
-    const primaryIcon = document.querySelector('.preview-icon.primary');
-    const secondaryIcon = document.querySelector('.preview-icon.secondary');
-    if (!primaryIcon || !secondaryIcon) return;
+        const primaryIcon = document.querySelector('.preview-icon.primary');
+        const secondaryIcon = document.querySelector('.preview-icon.secondary');
+        if (!primaryIcon || !secondaryIcon) return;
 
-    const weight = document.getElementById('weightSlider').value;
-    const fill = document.getElementById('fillSlider').value;
-    const grade = document.getElementById('gradeSlider').value;
-    const size = document.getElementById('sizeSlider').value;
-    const offset = document.getElementById('offsetSlider').value;
-    const primaryColor = document.getElementById('primaryColor').value;
-    const secondaryColor = document.getElementById('secondaryColor').value;
-    const opacity = document.getElementById('opacitySlider').value;
-    const rotation = document.getElementById('rotateSlider').value;
+        const weight = document.getElementById('weightSlider').value;
+        const fill = document.getElementById('fillSlider').value;
+        const grade = document.getElementById('gradeSlider').value;
+        const size = document.getElementById('sizeSlider').value;
+        const offset = document.getElementById('offsetSlider').value;
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        const opacity = document.getElementById('opacitySlider').value;
+        const rotation = document.getElementById('rotateSlider').value;
 
-    // Clear previous icons and styles
-    primaryIcon.className = 'preview-icon primary';
-    secondaryIcon.className = 'preview-icon secondary';
-    primaryIcon.style = '';
-    secondaryIcon.style = '';
+        // Clear previous icons and styles
+        primaryIcon.className = 'preview-icon primary';
+        secondaryIcon.className = 'preview-icon secondary';
+        primaryIcon.style = '';
+        secondaryIcon.style = '';
 
-    if (currentLibrary === 'material') {
-        const baseClass = `material-symbols-${currentFamily}`;
-        primaryIcon.className = `${baseClass} preview-icon primary`;
-        secondaryIcon.className = `${baseClass} preview-icon secondary`;
+        if (currentLibrary === 'material') {
+            const baseClass = `material-symbols-${currentFamily}`;
+            primaryIcon.className = `${baseClass} preview-icon primary`;
+            secondaryIcon.className = `${baseClass} preview-icon secondary`;
 
-        primaryIcon.textContent = selectedIcon;
-        secondaryIcon.textContent = selectedIcon;
+            primaryIcon.textContent = selectedIcon;
+            secondaryIcon.textContent = selectedIcon;
 
-        const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
-        primaryIcon.style.fontVariationSettings = variationSettings;
-        secondaryIcon.style.fontVariationSettings = variationSettings;
-    } else {
-        const baseClass = `fa-${currentFamily} fa-${selectedIcon}`;
-        primaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
-        secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
-    }
-
-    // Handle gradient effect first
-    if (effects.includes('gradient')) {
-        const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
-        if (direction) {
-            primaryIcon.style.background = `linear-gradient(${direction.angle}deg, ${primaryColor}, ${secondaryColor})`;
-            primaryIcon.style.webkitBackgroundClip = 'text';
-            primaryIcon.style.webkitTextFillColor = 'transparent';
-            secondaryIcon.style.opacity = '0';
+            const variationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+            primaryIcon.style.fontVariationSettings = variationSettings;
+            secondaryIcon.style.fontVariationSettings = variationSettings;
+        } else {
+            const baseClass = `fa-${currentFamily} fa-${selectedIcon}`;
+            primaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
+            secondaryIcon.innerHTML = `<i class="${baseClass}"></i>`;
         }
-    } else {
-        // Regular two-tone effect
-        primaryIcon.style.color = primaryColor;
-        secondaryIcon.style.color = secondaryColor;
-        secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`;
-        secondaryIcon.style.opacity = opacity;
-    }
 
-    // Apply other effects last
-    if (!effects.includes('gradient')) {
-        applyEffects(primaryIcon, secondaryIcon, effects);
-    }
+        // Handle gradient effect first
+        if (effects.includes('gradient')) {
+            const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
+            if (direction) {
+                primaryIcon.style.background = `linear-gradient(${direction.angle}deg, ${primaryColor}, ${secondaryColor})`;
+                primaryIcon.style.webkitBackgroundClip = 'text';
+                primaryIcon.style.webkitTextFillColor = 'transparent';
+                secondaryIcon.style.opacity = '0';
+            }
+        } else {
+            // Regular two-tone effect
+            primaryIcon.style.color = primaryColor;
+            secondaryIcon.style.color = secondaryColor;
+            secondaryIcon.style.transform = `translate(${offset}px, ${offset}px)`;
+            secondaryIcon.style.opacity = opacity;
+        }
+
+        // Apply other effects last
+        if (!effects.includes('gradient')) {
+            applyEffects(primaryIcon, secondaryIcon, effects);
+        }
 
         // Apply rotation along with other transforms
         if (rotation !== "0") {
-        primaryIcon.style.transform = `rotate(${rotation}deg)`;
-        // If there's an offset, combine transforms
-        if (effects.includes('gradient')) {
-            secondaryIcon.style.opacity = '0';
-        } else {
-            secondaryIcon.style.transform = `translate(${offset}px, ${offset}px) rotate(${rotation}deg)`;
+            primaryIcon.style.transform = `rotate(${rotation}deg)`;
+            // If there's an offset, combine transforms
+            if (effects.includes('gradient')) {
+                secondaryIcon.style.opacity = '0';
+            } else {
+                secondaryIcon.style.transform = `translate(${offset}px, ${offset}px) rotate(${rotation}deg)`;
+            }
         }
-    }
 
-    
-    updateCSS();
-}
+        // Apply blend mode if active
+        if (effects.includes('blend') && currentBlendMode !== 'normal') {
+            primaryIcon.style.mixBlendMode = currentBlendMode;
+            if (!effects.includes('gradient')) {
+                secondaryIcon.style.mixBlendMode = currentBlendMode;
+            }
+        }
+
+
+        updateCSS();
+    }
 
     // Helper function to calculate CSS angle
-function calculateCSSAngle(start, end) {
-    // Map gradient coordinates to CSS angles
+    function calculateCSSAngle(start, end) {
+        // Map gradient coordinates to CSS angles
 
-    const angleMap = {
-        'bottom-left': 45,  // [0,0] to [1,1]
-        'top-left': 135,  // [1,0] to [0,1]
-        'bottom-right': 315,    // [0,1] to [1,0]
-        'top-right': 225      // [1,1] to [0,0]
-    };
-    
-    // Find the matching angle
-    for (const [direction, coords] of Object.entries(GRADIENT_ANGLES)) {
-        if (coords.start[0] === start[0] && 
-            coords.start[1] === start[1] && 
-            coords.end[0] === end[0] && 
-            coords.end[1] === end[1]) {
-            return angleMap[direction];
+        const angleMap = {
+            'bottom-left': 45,  // [0,0] to [1,1]
+            'top-left': 135,  // [1,0] to [0,1]
+            'bottom-right': 315,    // [0,1] to [1,0]
+            'top-right': 225      // [1,1] to [0,0]
+        };
+
+        // Find the matching angle
+        for (const [direction, coords] of Object.entries(GRADIENT_ANGLES)) {
+            if (coords.start[0] === start[0] &&
+                coords.start[1] === start[1] &&
+                coords.end[0] === end[0] &&
+                coords.end[1] === end[1]) {
+                return angleMap[direction];
+            }
         }
+        return 45; // Default angle
     }
-    return 45; // Default angle
-}
 
     // Effect application functions
     function applyEffects(primaryIcon, secondaryIcon, activeEffects) {
@@ -2649,15 +2409,15 @@ function calculateCSSAngle(start, end) {
     }
 
     function updateGradientAngle(angle) {
-    currentGradientAngle = angle;
-    updatePreview();
-    // Update working icon if it matches current
-    if (selectedIcon) {
-        const config = getCurrentConfiguration();
-        config.gradientAngle = angle;
-        workingIconsManager.addOrUpdateIcon(config);
+        currentGradientAngle = angle;
+        updatePreview();
+        // Update working icon if it matches current
+        if (selectedIcon) {
+            const config = getCurrentConfiguration();
+            config.gradientAngle = angle;
+            workingIconsManager.addOrUpdateIcon(config);
+        }
     }
-}
 
     // Zoom functionality
     function updateZoom() {
@@ -2775,10 +2535,10 @@ function calculateCSSAngle(start, end) {
         }
 
         const rotation = document.getElementById('rotateSlider').value;
-    if (rotation !== "0") {
-        css += `\n/* Rotation */\n`;
-        css += `.${className}.icon-${iconName} {\n    transform: rotate(${rotation}deg);\n}`;
-    }
+        if (rotation !== "0") {
+            css += `\n/* Rotation */\n`;
+            css += `.${className}.icon-${iconName} {\n    transform: rotate(${rotation}deg);\n}`;
+        }
 
         return css
     }
@@ -3254,191 +3014,156 @@ function calculateCSSAngle(start, end) {
         downloadFile(themeCode, filename, 'text/css')
     }
 
-function exportAsPNG(size) {
-    if (!selectedIcon) return;
 
-// Get configuration from working icons if it exists
-const identifier = workingIconsManager.generateIdentifier(getCurrentConfiguration());
-    const config = workingIconsManager.icons.get(identifier) || getCurrentConfiguration();
+    function exportAsPNG(size) {
+        if (!selectedIcon) return;
 
-    
-    // Create canvas
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Get all current settings
-    const primaryColor = document.getElementById('primaryColor').value;
-    const secondaryColor = document.getElementById('secondaryColor').value;
-    const offset = parseFloat(document.getElementById('offsetSlider').value);
-    const effects = Array.from(document.querySelectorAll('.effect-option.active'))
-        .map(opt => opt.dataset.effect);
-    
-    // Determine padding based on effects
-    const baseGlowPadding = 40;
-    const padding = effects.includes('glow') ? baseGlowPadding : 20;
-    
-    // Set canvas size with padding for effects
-    canvas.width = size + (padding * 2);
-    canvas.height = size + (padding * 2);
-    
-    // Setup font with variations if Material
-    if (currentLibrary === 'material') {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Get all current settings
+        const primaryColor = document.getElementById('primaryColor').value;
+        const secondaryColor = document.getElementById('secondaryColor').value;
+        const offset = parseFloat(document.getElementById('offsetSlider').value);
         const weight = document.getElementById('weightSlider').value;
         const fill = document.getElementById('fillSlider').value;
         const grade = document.getElementById('gradeSlider').value;
-        ctx.font = `normal normal 400 ${size}px 'Material Symbols ${currentFamily}'`;
-        const fontSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
-        canvas.style.fontVariationSettings = fontSettings;
-        ctx.canvas.style.fontVariationSettings = fontSettings;
-    } else {
-        ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
-    }
-    
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    
-    // Function to draw the icon with specific color/position
-    // function drawIcon(color, offsetX = 0, offsetY = 0) {
-    //     ctx.fillStyle = color;
-        
-    //     if (effects.includes('shadow')) {
-    //         ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    //         ctx.shadowBlur = 4;
-    //         ctx.shadowOffsetX = 2;
-    //         ctx.shadowOffsetY = 2;
-    //     }
-        
-    //     if (effects.includes('glow')) {
-    //         ctx.shadowColor = color;
-    //         ctx.shadowBlur = 20; // Increased blur for more visible glow
-    //         ctx.shadowOffsetX = 0;
-    //         ctx.shadowOffsetY = 0;
-    //     }
-        
-    //     const centerX = canvas.width/2 + offsetX;
-    //     const centerY = canvas.height/2 + offsetY;
-        
-    //     ctx.fillText(selectedIcon, centerX, centerY);
-        
-    //     // Reset shadow effects
-    //     ctx.shadowColor = 'transparent';
-    //     ctx.shadowBlur = 0;
-    //     ctx.shadowOffsetX = 0;
-    //     ctx.shadowOffsetY = 0;
-    // }
-    
+        const effects = Array.from(document.querySelectorAll('.effect-option.active'))
+            .map(opt => opt.dataset.effect);
 
-    function drawIcon(color, offsetX = 0, offsetY = 0) {
-    ctx.fillStyle = color;
-    
-    // Save the current context state
-    ctx.save();
-    
-    // Apply shadow/glow effects before rotation
-    if (effects.includes('shadow')) {
-        ctx.shadowColor = 'rgba(0,0,0,0.3)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-    }
-    
-    if (effects.includes('glow')) {
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 20;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-    }
-    
-    const centerX = canvas.width/2 + offsetX;
-    const centerY = canvas.height/2 + offsetY;
-    
-    // Apply rotation around the center point
-    const rotation = parseInt(document.getElementById('rotateSlider').value);
-    if (rotation !== 0) {
-        ctx.translate(centerX, centerY);
-        ctx.rotate(rotation * Math.PI / 180);
-        ctx.translate(-centerX, -centerY);
-    }
-    
-    // Draw the icon
-    ctx.fillText(selectedIcon, centerX, centerY);
-    
-    // Restore the context to its original state
-    ctx.restore();
-    
-    // Reset shadow effects
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-}
-    // Clear canvas with transparency
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+        const padding = effects.includes('glow') ? 40 : 20;
+        canvas.width = size + (padding * 2);
+        canvas.height = size + (padding * 2);
 
+        // Clear canvas with transparency
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-if (effects.includes('gradient')) {
-    const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
-    if (direction) {
-        console.log('Gradient Export Debug:', {
-            'Direction Name': currentGradientAngle,
-            'CSS Angle': `${direction.angle}deg`,
-            'Start Coordinates': `(${direction.coords.start[0]}, ${direction.coords.start[1]})`,
-            'End Coordinates': `(${direction.coords.end[0]}, ${direction.coords.end[1]})`,
-            'Canvas Size': `${canvas.width} x ${canvas.height}`,
-            'Actual Start Point': `(${canvas.width * direction.coords.start[0]}, ${canvas.height * direction.coords.start[1]})`,
-            'Actual End Point': `(${canvas.width * direction.coords.end[0]}, ${canvas.height * direction.coords.end[1]})`,
-            'Primary Color': primaryColor,
-            'Secondary Color': secondaryColor
-        });
+        function drawIcon(color, offsetX = 0, offsetY = 0) {
+            ctx.save();
 
-        const gradient = ctx.createLinearGradient(
-            canvas.width * direction.coords.start[0],
-            canvas.height * direction.coords.start[1],
-            canvas.width * direction.coords.end[0],
-            canvas.height * direction.coords.end[1]
+            // Set up font with variations for Material Symbols
+            // if (currentLibrary === 'material') {
+            //     // Create a temporary div to load and apply the font variations
+            //     const tempDiv = document.createElement('div');
+            //     tempDiv.style.fontFamily = `'Material Symbols ${currentFamily}'`;
+            //     tempDiv.style.fontSize = `${size}px`;
+            //     tempDiv.style.fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+            //     document.body.appendChild(tempDiv);
+            //     console.log('tDiv:', tempDiv)
+
+            //     // Apply the computed font style to canvas
+            //     const computedStyle = window.getComputedStyle(tempDiv);
+            //     ctx.font = computedStyle.font;
+            //     ctx.fontVariationSettings = computedStyle.fontVariationSettings;
+
+            //     // Clean up
+            //     document.body.removeChild(tempDiv);
+            // } else {
+            //     ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
+            // }
+
+            if (currentLibrary === 'material') {
+                ctx.font = `${size}px 'Material Symbols ${currentFamily}'`;
+                ctx.fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+            } else {
+                ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
+            }
+
+            if (typeof color === 'string') {
+                ctx.fillStyle = color;
+            } else {
+                ctx.fillStyle = color;
+            }
+
+            // Apply effects
+            if (effects.includes('shadow')) {
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+            }
+
+            if (effects.includes('glow')) {
+                ctx.shadowColor = typeof color === 'string' ? color : primaryColor;
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
+
+            const centerX = canvas.width / 2 + offsetX;
+            const centerY = canvas.height / 2 + offsetY;
+
+            // Apply rotation
+            const rotation = parseInt(document.getElementById('rotateSlider').value);
+            if (rotation !== 0) {
+                ctx.translate(centerX, centerY);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.translate(-centerX, -centerY);
+            }
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(selectedIcon, centerX, centerY);
+
+            ctx.restore();
+        }
+
+        // Draw icons with blend modes or gradient
+        if (effects.includes('gradient')) {
+            const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
+            if (direction) {
+                const gradient = ctx.createLinearGradient(
+                    canvas.width * direction.coords.start[0],
+                    canvas.height * direction.coords.start[1],
+                    canvas.width * direction.coords.end[0],
+                    canvas.height * direction.coords.end[1]
+                );
+                gradient.addColorStop(0, primaryColor);
+                gradient.addColorStop(1, secondaryColor);
+
+                if (effects.includes('blend') && currentBlendMode !== 'normal') {
+                    ctx.globalCompositeOperation = currentBlendMode;
+                }
+
+                drawIcon(gradient);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+        } else {
+            if (effects.includes('blend') && currentBlendMode !== 'normal') {
+                ctx.globalCompositeOperation = currentBlendMode;
+                drawIcon(secondaryColor, offset, offset);
+                drawIcon(primaryColor);
+                ctx.globalCompositeOperation = 'source-over';
+            } else {
+                drawIcon(secondaryColor, offset, offset);
+                drawIcon(primaryColor);
+            }
+        }
+
+        // Create final canvas with proper cropping
+        const finalCanvas = document.createElement('canvas');
+        const finalSize = size + (effects.includes('glow') ? 40 : 0);
+        finalCanvas.width = finalSize;
+        finalCanvas.height = finalSize;
+        const finalCtx = finalCanvas.getContext('2d');
+
+        finalCtx.drawImage(
+            canvas,
+            padding / 2, padding / 2,
+            canvas.width - padding, canvas.height - padding,
+            0, 0, finalSize, finalSize
         );
-        gradient.addColorStop(0, primaryColor);
-        gradient.addColorStop(1, secondaryColor);
-        ctx.fillStyle = gradient;
-        drawIcon(gradient);
 
-        // Log the current icon state
-        console.log('Icon State:', {
-            'Selected Icon': selectedIcon,
-            'Library': currentLibrary,
-            'Family': currentFamily
-        });
-    } else {
-        console.warn('No direction found for angle:', currentGradientAngle);
+        // Create download link
+        const link = document.createElement('a');
+        link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
+        link.href = finalCanvas.toDataURL('image/png');
+        link.click();
     }
-}
 
-    // Create final canvas with proper cropping
-    const finalCanvas = document.createElement('canvas');
-    const finalSize = size + (effects.includes('glow') ? baseGlowPadding : 0);
-    finalCanvas.width = finalSize;
-    finalCanvas.height = finalSize;
-    const finalCtx = finalCanvas.getContext('2d');
-    
-    // Draw the padded canvas onto the final canvas, preserving glow
-    finalCtx.drawImage(
-        canvas,
-        padding/2, padding/2, 
-        canvas.width - padding, canvas.height - padding,
-        0, 0, finalSize, finalSize
-    );
 
-    // Create download link
-    const link = document.createElement('a');
-    link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
-    link.href = finalCanvas.toDataURL('image/png');
-    link.click();
-}
-    
-    
-    
-    
+
+
     function initializeModals() {
         // Close modal when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
