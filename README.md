@@ -24,9 +24,15 @@ A powerful web-based tool for customizing Material Symbols and Font Awesome icon
 
 - **Export Options**
   - Copy CSS
-  - Export complete themes
+  - Export complete themes with variables
   - Save configurations
   - One-click code copying
+ 
+  - **Animation Support**
+  - Multiple animation presets (spin, bounce, pulse, etc.)
+  - Live preview of animations
+  - Export animation CSS with themes
+  - Configurable animation settings
 
 ## Getting Started
 
