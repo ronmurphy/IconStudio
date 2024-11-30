@@ -3015,154 +3015,196 @@ to {
     }
 
 
-    function exportAsPNG(size) {
-        if (!selectedIcon) return;
+function exportAsPNG(size) {
+    if (!selectedIcon) return;
 
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-        // Get all current settings
-        const primaryColor = document.getElementById('primaryColor').value;
-        const secondaryColor = document.getElementById('secondaryColor').value;
-        const offset = parseFloat(document.getElementById('offsetSlider').value);
-        const weight = document.getElementById('weightSlider').value;
-        const fill = document.getElementById('fillSlider').value;
-        const grade = document.getElementById('gradeSlider').value;
-        const effects = Array.from(document.querySelectorAll('.effect-option.active'))
-            .map(opt => opt.dataset.effect);
+    // Get all current settings
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const offset = parseFloat(document.getElementById('offsetSlider').value);
+    const weight = document.getElementById('weightSlider').value;
+    const fill = parseInt(document.getElementById('fillSlider').value);
+    const grade = document.getElementById('gradeSlider').value;
+    const effects = Array.from(document.querySelectorAll('.effect-option.active'))
+        .map(opt => opt.dataset.effect);
 
-        const padding = effects.includes('glow') ? 40 : 20;
-        canvas.width = size + (padding * 2);
-        canvas.height = size + (padding * 2);
+    const padding = effects.includes('glow') ? 40 : 20;
+    canvas.width = size + (padding * 2);
+    canvas.height = size + (padding * 2);
 
-        // Clear canvas with transparency
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas with transparency
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        function drawIcon(color, offsetX = 0, offsetY = 0) {
-            ctx.save();
 
-            // Set up font with variations for Material Symbols
-            // if (currentLibrary === 'material') {
-            //     // Create a temporary div to load and apply the font variations
-            //     const tempDiv = document.createElement('div');
-            //     tempDiv.style.fontFamily = `'Material Symbols ${currentFamily}'`;
-            //     tempDiv.style.fontSize = `${size}px`;
-            //     tempDiv.style.fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
-            //     document.body.appendChild(tempDiv);
-            //     console.log('tDiv:', tempDiv)
+function drawIcon(color, offsetX = 0, offsetY = 0) {
+    ctx.save();
 
-            //     // Apply the computed font style to canvas
-            //     const computedStyle = window.getComputedStyle(tempDiv);
-            //     ctx.font = computedStyle.font;
-            //     ctx.fontVariationSettings = computedStyle.fontVariationSettings;
-
-            //     // Clean up
-            //     document.body.removeChild(tempDiv);
-            // } else {
-            //     ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
-            // }
-
-            if (currentLibrary === 'material') {
-                ctx.font = `${size}px 'Material Symbols ${currentFamily}'`;
-                ctx.fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
-            } else {
-                ctx.font = `${size}px 'Font Awesome 6 ${currentFamily}'`;
-            }
-
-            if (typeof color === 'string') {
-                ctx.fillStyle = color;
-            } else {
-                ctx.fillStyle = color;
-            }
-
-            // Apply effects
-            if (effects.includes('shadow')) {
-                ctx.shadowColor = 'rgba(0,0,0,0.3)';
-                ctx.shadowBlur = 4;
-                ctx.shadowOffsetX = 2;
-                ctx.shadowOffsetY = 2;
-            }
-
-            if (effects.includes('glow')) {
-                ctx.shadowColor = typeof color === 'string' ? color : primaryColor;
-                ctx.shadowBlur = 20;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
-            }
-
-            const centerX = canvas.width / 2 + offsetX;
-            const centerY = canvas.height / 2 + offsetY;
-
-            // Apply rotation
-            const rotation = parseInt(document.getElementById('rotateSlider').value);
-            if (rotation !== 0) {
-                ctx.translate(centerX, centerY);
-                ctx.rotate(rotation * Math.PI / 180);
-                ctx.translate(-centerX, -centerY);
-            }
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(selectedIcon, centerX, centerY);
-
-            ctx.restore();
-        }
-
-        // Draw icons with blend modes or gradient
-        if (effects.includes('gradient')) {
-            const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
-            if (direction) {
-                const gradient = ctx.createLinearGradient(
-                    canvas.width * direction.coords.start[0],
-                    canvas.height * direction.coords.start[1],
-                    canvas.width * direction.coords.end[0],
-                    canvas.height * direction.coords.end[1]
-                );
-                gradient.addColorStop(0, primaryColor);
-                gradient.addColorStop(1, secondaryColor);
-
-                if (effects.includes('blend') && currentBlendMode !== 'normal') {
-                    ctx.globalCompositeOperation = currentBlendMode;
-                }
-
-                drawIcon(gradient);
-                ctx.globalCompositeOperation = 'source-over';
-            }
-        } else {
-            if (effects.includes('blend') && currentBlendMode !== 'normal') {
-                ctx.globalCompositeOperation = currentBlendMode;
-                drawIcon(secondaryColor, offset, offset);
-                drawIcon(primaryColor);
-                ctx.globalCompositeOperation = 'source-over';
-            } else {
-                drawIcon(secondaryColor, offset, offset);
-                drawIcon(primaryColor);
-            }
-        }
-
-        // Create final canvas with proper cropping
-        const finalCanvas = document.createElement('canvas');
-        const finalSize = size + (effects.includes('glow') ? 40 : 0);
-        finalCanvas.width = finalSize;
-        finalCanvas.height = finalSize;
-        const finalCtx = finalCanvas.getContext('2d');
-
-        finalCtx.drawImage(
-            canvas,
-            padding / 2, padding / 2,
-            canvas.width - padding, canvas.height - padding,
-            0, 0, finalSize, finalSize
-        );
-
-        // Create download link
-        const link = document.createElement('a');
-        link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
-        link.href = finalCanvas.toDataURL('image/png');
-        link.click();
+    if (currentLibrary === 'material') {
+        ctx.font = `${size}px "Material Symbols ${currentFamily}"`;
+        ctx.fontVariationSettings = `'FILL' ${fill}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${size}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+    } else {
+        // Font Awesome handling
+        const faFamily = currentFamily === 'solid' ? 'Free Solid' :
+                        currentFamily === 'regular' ? 'Free Regular' : 'Brands';
+        ctx.font = `${size}px "Font Awesome 6 ${faFamily}"`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
     }
 
+    const centerX = canvas.width / 2 + offsetX;
+    const centerY = canvas.height / 2 + offsetY;
+
+    // Handle gradient if active
+    if (effects.includes('gradient')) {
+        const direction = GRADIENT_DIRECTIONS[currentGradientAngle];
+        if (direction) {
+            const gradient = ctx.createLinearGradient(
+                canvas.width * direction.coords.start[0],
+                canvas.height * direction.coords.start[1],
+                canvas.width * direction.coords.end[0],
+                canvas.height * direction.coords.end[1]
+            );
+            gradient.addColorStop(0, primaryColor);
+            gradient.addColorStop(1, secondaryColor);
+            ctx.fillStyle = gradient;
+        }
+    } else {
+        ctx.fillStyle = color;
+    }
+
+    // Handle rotation
+    const rotation = parseInt(document.getElementById('rotateSlider').value);
+    if (rotation !== 0) {
+        ctx.translate(centerX, centerY);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.translate(-centerX, -centerY);
+    }
+
+    // Apply effects
+    if (effects.includes('shadow')) {
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+    }
+
+    if (effects.includes('glow')) {
+        ctx.shadowColor = typeof color === 'string' ? color : primaryColor;
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+    }
+
+    // Draw the icon
+    if (currentLibrary === 'material') {
+        ctx.fillText(selectedIcon, centerX, centerY);
+    } else {
+        // Create a temporary element to get the Font Awesome character
+        const tempDiv = document.createElement('div');
+        tempDiv.style.cssText = 'position:absolute;visibility:hidden;';
+        tempDiv.innerHTML = `<i class="fa-${currentFamily} fa-${selectedIcon}"></i>`;
+        document.body.appendChild(tempDiv);
+
+        // Get the icon element and its computed style
+        const iconElement = tempDiv.querySelector('i');
+        const computedStyle = window.getComputedStyle(iconElement, ':before');
+        const content = computedStyle.content;
+        
+        // Clean up
+        document.body.removeChild(tempDiv);
+
+        // Draw the character if we got valid content
+        if (content && content !== 'none' && content !== '""') {
+            const iconChar = content.replace(/['"]/g, '');
+            ctx.fillText(iconChar, centerX, centerY);
+        } else {
+            console.error('Could not get Font Awesome character content');
+        }
+    }
+
+    ctx.restore();
+}
+
+// Helper function for Font Awesome family names
+function getFontAwesomeFamily(family) {
+    switch (family) {
+        case 'solid':
+            return 'Free Solid';
+        case 'regular':
+            return 'Free Regular';
+        case 'brands':
+            return 'Brands';
+        default:
+            return 'Free Solid';
+    }
+}
+
+    // Draw with effects
+    if (effects.includes('gradient')) {
+        drawIcon(null); // Gradient is handled inside drawIcon
+    } else {
+        drawIcon(secondaryColor, offset, offset);
+        drawIcon(primaryColor);
+    }
+
+    // Create final canvas for proper cropping
+    const finalCanvas = document.createElement('canvas');
+    const finalSize = size + (effects.includes('glow') ? 40 : 0);
+    finalCanvas.width = finalSize;
+    finalCanvas.height = finalSize;
+    const finalCtx = finalCanvas.getContext('2d');
+
+    finalCtx.drawImage(
+        canvas,
+        padding / 2, padding / 2,
+        canvas.width - padding, canvas.height - padding,
+        0, 0, finalSize, finalSize
+    );
+
+    // Create download link
+    const link = document.createElement('a');
+    link.download = `icon-studio-${selectedIcon}-${size}x${size}.png`;
+    link.href = finalCanvas.toDataURL('image/png');
+    link.click();
+}
 
 
+// Helper function to get proper Font Awesome family name
+function getFontAwesomeFamily(family) {
+    switch (family) {
+        case 'solid':
+            return 'Free Solid';
+        case 'regular':
+            return 'Free Regular';
+        case 'brands':
+            return 'Brands';
+        default:
+            return 'Free Solid';
+    }
+}
+
+// Helper function to get icon unicode
+function getIconUnicode(iconName, family) {
+    // Make sure iconLibraries.fa contains the unicode values
+    // This assumes your fa_free_icons.json has unicode values
+    const familyIcons = iconLibraries.fa[family];
+    if (!familyIcons) return null;
+
+    // Find the icon data - this structure depends on your JSON format
+    const iconData = familyIcons.find(icon => {
+        if (typeof icon === 'object') {
+            return icon.name === iconName;
+        }
+        return false;
+    });
+
+    return iconData ? iconData.unicode : null;
+}
 
     function initializeModals() {
         // Close modal when clicking outside
