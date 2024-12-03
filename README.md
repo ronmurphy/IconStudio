@@ -32,7 +32,7 @@ A powerful web-based tool for customizing Material Symbols and Font Awesome icon
     -   Save configurations
     -   One-click code copying
 
-    -   **Animation Support**
+-   **Animation Support**
     -   Multiple animation presets (spin, bounce, pulse, etc.)
     -   Live preview of animations
     -   Export animation CSS with themes
@@ -108,12 +108,12 @@ Special thanks to the Material Symbols and Font Awesome teams
 
 ## Future Plans
 
-Save/Load custom configurations
-Export to different framework formats (React, Vue, etc.)
-Batch processing multiple icons
-Custom icon upload support
-More effect options
-Animation presets
+-   Save/Load custom configurations
+-   Export to different framework formats (React, Vue, etc.)
+-   Batch processing multiple icons
+-   Custom icon upload support
+-   More effect options
+-   Animation presets
 
 ## Support
 
