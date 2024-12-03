@@ -618,7 +618,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 async function loadFontAwesomeIcons() {
     try {
-        const response = await fetch('fa_free_icons.json')
+        const response = await fetch('icons/fa_free_icons.json')
         const faIcons = await response.json()
         iconLibraries.fa = faIcons
         console.log('Font Awesome icons loaded successfully')
@@ -634,12 +634,12 @@ async function loadIcons() {
     try {
         console.log("loading material icons")
         loadingText.textContent = 'Loading Material Icons...'
-        const materialResponse = await fetch('material_icons.json')
+        const materialResponse = await fetch('icons/material_icons.json')
         const materialData = await materialResponse.json()
 
         console.log("loading fa icons")
         loadingText.textContent = 'Loading Font Awesome Icons...'
-        const faResponse = await fetch('fa_free_icons.json')
+        const faResponse = await fetch('icons/fa_free_icons.json')
         const faData = await faResponse.json()
 
         // Update iconLibraries object
@@ -2319,7 +2319,7 @@ function getFontAwesomeFamily(family) {
 // Helper function to get icon unicode
 function getIconUnicode(iconName, family) {
     // Make sure iconLibraries.fa contains the unicode values
-    // This assumes your fa_free_icons.json has unicode values
+    // This assumes your icons/fa_free_icons.json has unicode values
     const familyIcons = iconLibraries.fa[family];
     if (!familyIcons) return null;
 
